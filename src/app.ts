@@ -3,14 +3,14 @@ import cors from "cors";
 import { config } from "dotenv";
 
 //import routes
-import { OrderRoutes } from "./routes";
+import { BalanceRoutes } from "./routes";
 
 config();
 
 const app: Application = express();
 const baseUri = "api/v1";
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8001;
 
 app.listen(PORT, () => {
 	console.log(`Server listening at port ${PORT}`);
@@ -31,7 +31,7 @@ function startServer() {
 	app.use(express.json());
 
 	//api routes
-	app.use(`/${baseUri}/orders`, OrderRoutes);
+	app.use(`/${baseUri}/balances`, BalanceRoutes);
 
 	//health check
 	app.get(`/${baseUri}/ping`, (_req, res) => {
