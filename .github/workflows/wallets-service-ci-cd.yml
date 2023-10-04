@@ -3,9 +3,9 @@ name: wallets-service-cicd-pipeline
 on:
   # Uncomment and adjust the following lines for trigger events like pushes or pull requests.
   push:
-     branches:
-       - dev
-       - pull_request
+#     branches:
+#       - dev
+#       - pull_request
   workflow_dispatch: # setting for manual runs of the pipeline.
 
 jobs:
