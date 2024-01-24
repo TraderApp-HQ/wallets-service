@@ -1,18 +1,28 @@
 import admin from "firebase-admin";
-import { config } from "dotenv";
+import { Storage } from "firebase-admin/lib/storage/storage";
+import "dotenv/config";
 
-config();
+let db: admin.firestore.Firestore;
+let storage: Storage;
 
-//get firebase service account key from env
-const firebaseKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string;
+export async function firebase() {
+	return { db, storage };
+}
 
-//parse firebase key back to js object
-const serviceAccountKey = JSON.parse(firebaseKey);
+function initFirebase() {
+	try {
+		const projectId = process.env.FIREBASE_PROJECT_ID || "";
+		const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string);
+		admin.initializeApp({
+			credential: admin.credential.cert(serviceAccount),
+			databaseURL: `https://${projectId}.firebaseio.com`,
+			storageBucket: `${projectId}.appspot.com`,
+		});
+		db = admin.firestore();
+		storage = admin.storage();
+	} catch (error) {
+		console.log(`Error initializing firebase ${JSON.stringify(error)}`);
+	}
+}
 
-//initialize firebase
-admin.initializeApp({
-	credential: admin.credential.cert(serviceAccountKey),
-	databaseURL: "https://wallets-service-demo.firebaseio.com",
-});
-
-export default admin.firestore();
+export default initFirebase;
