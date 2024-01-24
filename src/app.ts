@@ -20,8 +20,6 @@ const env = process.env.NODE_ENV || "development";
 const suffix = ENVIRONMENTS[env];
 const secretNames = ["common-secrets", "wallets-service-secrets"];
 
-const baseUri = "api/v1";
-
 initSecrets({
 	env: suffix,
 	secretNames,
@@ -58,10 +56,10 @@ function startServer() {
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 	// api routes
-	app.use(`/${baseUri}/balances`, BalanceRoutes);
+	app.use(`/balances`, BalanceRoutes);
 
 	// health check
-	app.get(`/${baseUri}/ping`, (_req, res) => {
+	app.get(`/ping`, (_req, res) => {
 		res.status(200).send({ message: "pong" });
 	});
 
