@@ -13,13 +13,10 @@ function initFirebase() {
 	try {
 		const projectId = process.env.FIREBASE_PROJECT_ID || "";
 		const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string);
-		admin.initializeApp({
-			credential: admin.credential.cert(serviceAccount),
-			databaseURL: `https://${projectId}.firebaseio.com`,
-			storageBucket: `${projectId}.appspot.com`,
-		});
-		db = admin.firestore();
-		storage = admin.storage();
+
+		if (projectId && serviceAccount) {
+			return;
+		}
 	} catch (error) {
 		console.log(`Error initializing firebase ${JSON.stringify(error)}`);
 	}
