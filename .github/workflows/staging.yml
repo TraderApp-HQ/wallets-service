@@ -79,3 +79,7 @@ jobs:
         run: |
             docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-staging:latest
             docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-staging:$GITHUB_SHA
+
+      - name: Update ECS service
+        run: |
+            aws ecs update-service --cluster traderapp_staging --service deploy_wallets_service_staging --force-new-deployment
