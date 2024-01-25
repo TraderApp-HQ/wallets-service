@@ -12,6 +12,12 @@
 		"format": "prettier --write \"src/**/*.ts\"",
 		"prepare": "husky install"
 	},
+	"lint-staged": {
+		"**/*": [
+			"eslint --fix",
+			"prettier --write --ignore-unknown"
+		]
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
