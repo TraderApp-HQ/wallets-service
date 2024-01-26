@@ -1,19 +1,19 @@
-name: wallets-service-cicd-pipeline
+name: wallets-service-staging-pipeline
 
 on:
   push:
     branches:
-      - dev
+      - staging
   pull_request:
     branches:
-      - dev
+      - staging
   workflow_dispatch: # manual runs of the pipeline.
 
 jobs:
   build: # this is the first job - to build the application first with npm
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.event_name == 'pull_request' && 'dev' || github.ref_name }}
+      name: ${{ github.event_name == 'pull_request' && 'staging' || github.ref_name }}
 
     steps:
       - name: Checkout code from branch # 1st step in this build JOB.
@@ -43,7 +43,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.event_name == 'pull_request' && 'dev' || github.ref_name }}
+      name: ${{ github.event_name == 'pull_request' && 'staging' || github.ref_name }}
 
     steps:
       - name: Check out code from branch again to build into Docker image
@@ -67,19 +67,19 @@ jobs:
 
 
       - name: Build Docker image
-        run: docker build -t wallets-service-dev:$GITHUB_SHA .
+        run: docker build -t wallets-service-staging:$GITHUB_SHA .
 
       - name: Tag Docker image with "latest"
         run: |
-           DOCKER_TAG=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-dev:latest
-           docker tag wallets-service-dev:$GITHUB_SHA $DOCKER_TAG
-           docker tag wallets-service-dev:$GITHUB_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-dev:$GITHUB_SHA
+           DOCKER_TAG=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-staging:latest
+           docker tag wallets-service-staging:$GITHUB_SHA $DOCKER_TAG
+           docker tag wallets-service-staging:$GITHUB_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-staging:$GITHUB_SHA
         
       - name: Push Docker image to ECR
         run: |
-            docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-dev:latest
-            docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-dev:$GITHUB_SHA
+            docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-staging:latest
+            docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/wallets-service-staging:$GITHUB_SHA
 
       - name: Update ECS service
         run: |
-            aws ecs update-service --cluster traderapp_dev --service deploy_wallets_service_dev --force-new-deployment
+            aws ecs update-service --cluster traderapp_staging --service deploy_wallets_service_staging --force-new-deployment
