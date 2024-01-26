@@ -1,4 +1,4 @@
-name: wallets-service-cicd-pipeline
+name: wallets-service-cicd-dev-pipeline
 
 on:
   push:
