@@ -29,7 +29,7 @@ const options: swaggerJsdoc.Options = {
 			},
 		],
 		paths: {
-			[`/balance${ROUTES.processOrder}`]: { get: createProcessOrder },
+			[`/balances${ROUTES.processOrder}`]: { patch: createProcessOrder },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files
