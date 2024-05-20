@@ -1,0 +1,14 @@
+import { Currency } from "./currency";
+
+export enum WalletType {
+	MAIN = "MAIN",
+	SPOT = "SPOT",
+	FUTURES = "FUTURES",
+}
+
+export interface UserWallet {
+	userId: string;
+	walletType: WalletType;
+	currency: Currency;
+	balance: number;
+}
