@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { ROUTES } from "../config/constants";
 import { getWallets } from "../controllers/WalletController";
 
 const router = Router();
 
-router.get(ROUTES.getWallets, getWallets);
+router.get("/", getWallets);
 
 export default router;
