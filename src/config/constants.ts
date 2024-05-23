@@ -14,6 +14,7 @@ export const ResponseType = {
 export const RESPONSE_TAGS = {
 	processOrder: "processOrder",
 	wallets: "Wallets",
+	transactions: "Transactions",
 };
 
 export const RESPONSE_CODES = {
@@ -33,4 +34,5 @@ export const DOC_RESPONSE = {
 export const ROUTES = {
 	processOrder: "/process",
 	getWallets: "/wallets",
+	transactions: "/transactions",
 };

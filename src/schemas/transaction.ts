@@ -35,6 +35,23 @@ export interface ITransaction {
 	fromWalletAddress?: string;
 	toWalletAddress?: string;
 	status: TransactionStatus;
-	tag: TransactionWalletType;
 	transactionWalletType: TransactionWalletType;
+}
+
+export interface IDepositFundsPayload {
+	userId: string;
+	fromWallet?: WalletType;
+	fromWalletAddress?: string;
+	fromCurrency: Currency;
+	toCurrency: Currency;
+	fromAmount: number;
+}
+
+export interface IWithdrawFundsPayload {
+	userId: string;
+	toWallet?: WalletType;
+	toWalletAddress?: string;
+	fromCurrency: Currency;
+	toCurrency: Currency;
+	fromAmount: number;
 }

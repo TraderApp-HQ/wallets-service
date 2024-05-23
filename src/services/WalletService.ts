@@ -7,16 +7,6 @@ import { UserWallet, WalletType } from "../schemas/wallet";
 import { HttpStatus } from "../utils/httpStatus";
 
 export class WalletService {
-	private db: any;
-
-	constructor() {
-		this.initializeDB();
-	}
-
-	private async initializeDB() {
-		this.db = db;
-	}
-
 	public async createUserWallet(userId: string, res: Response): Promise<any> {
 		try {
 			const wallets = await this.getUserWalletBalance(userId);
@@ -69,7 +59,7 @@ export class WalletService {
 		}
 	}
 
-	private async getUserWalletBalance(userId: string): Promise<UserWallet[] | null> {
+	public async getUserWalletBalance(userId: string): Promise<UserWallet[] | null> {
 		try {
 			const docs = await db.collection("wallets").where("userId", "==", `${userId}`).get();
 

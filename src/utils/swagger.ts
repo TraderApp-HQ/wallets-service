@@ -6,8 +6,16 @@ import {
 	createUserWalletBody,
 	getWallets,
 	getWalletsParams,
-} from "../documentation/getWallets";
+} from "../documentation/wallets";
 import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+import {
+	depositFunds,
+	depositFundsBody,
+	getTransactions,
+	getTransactionsParams,
+	withdrawFunds,
+	withdrawFundsBody,
+} from "../documentation/transactions";
 
 const options: swaggerJsdoc.Options = {
 	swaggerDefinition: {
@@ -29,6 +37,9 @@ const options: swaggerJsdoc.Options = {
 				createProcessOrderBody,
 				getWalletsParams,
 				createUserWalletBody,
+				depositFundsBody,
+				withdrawFundsBody,
+				getTransactionsParams,
 			},
 		},
 		security: [
@@ -39,6 +50,9 @@ const options: swaggerJsdoc.Options = {
 		paths: {
 			[`/balances${ROUTES.processOrder}`]: { patch: createProcessOrder },
 			[`${ROUTES.getWallets}`]: { post: createUserWallet, get: getWallets },
+			[`${ROUTES.transactions}`]: { get: getTransactions },
+			[`${ROUTES.transactions}/deposit`]: { post: depositFunds },
+			[`${ROUTES.transactions}/withdrawal`]: { post: withdrawFunds },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files
