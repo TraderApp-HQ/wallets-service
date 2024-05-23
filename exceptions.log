@@ -8,3 +8,1007 @@ CredentialsProviderError: Could not load credentials from any providers
     at /Users/test/Desktop/Traderapp/wallets-service/node_modules/@aws-sdk/credential-provider-node/dist-cjs/index.js:62:13
     at /Users/test/Desktop/Traderapp/wallets-service/node_modules/@smithy/property-provider/dist-cjs/index.js:79:33
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) [unkown-service] development 2024-01-24T16:42:32.652Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m19[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m19[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m19[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m19[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:54:54
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m19[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m19[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m19[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m19[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:54:54.753Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:56:28
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:56:28.568Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:56:35
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:56:35.747Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:56:46
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m20[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'Secret | GetPublicKeyOrSecret'.
+      Type 'undefined' is not assignable to type 'Secret | GetPublicKeyOrSecret'.
+
+[7m20[0m      process.env.JWT_SECRET,
+[7m  [0m [91m     ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:56:46.091Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:56:49
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:56:49.323Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:57:07
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:57:07.126Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m9[0m - [91merror[0m[90m TS2724: [0m'"jsonwebtoken"' has no exported member named 'jwt'. Did you mean 'Jwt'?
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m        ~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m13[0m - [91merror[0m[90m TS2305: [0mModule '"jsonwebtoken"' has no exported member 'from'.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m            ~~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m13[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m            ~~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m18[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m                 ~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m9[0m - [91merror[0m[90m TS2724: [0m'"jsonwebtoken"' has no exported member named 'jwt'. Did you mean 'Jwt'?
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m        ~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m13[0m - [91merror[0m[90m TS2305: [0mModule '"jsonwebtoken"' has no exported member 'from'.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m            ~~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m13[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m            ~~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m18[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m                 ~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:57:21
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m9[0m - [91merror[0m[90m TS2724: [0m'"jsonwebtoken"' has no exported member named 'jwt'. Did you mean 'Jwt'?
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m        ~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m13[0m - [91merror[0m[90m TS2305: [0mModule '"jsonwebtoken"' has no exported member 'from'.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m            ~~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m13[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m            ~~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m18[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m                 ~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m9[0m - [91merror[0m[90m TS2724: [0m'"jsonwebtoken"' has no exported member named 'jwt'. Did you mean 'Jwt'?
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m        ~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m13[0m - [91merror[0m[90m TS2305: [0mModule '"jsonwebtoken"' has no exported member 'from'.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m            ~~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m13[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m            ~~~~[0m
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m18[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m6[0m import {jwt from "jsonwebtoken";
+[7m [0m [91m                 ~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:57:21.477Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"jsonwebtoken"' has no exported member named 'jwt'. Did you mean 'Jwt'?
+
+[7m6[0m import { jwt } from "jsonwebtoken";
+[7m [0m [91m         ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"jsonwebtoken"' has no exported member named 'jwt'. Did you mean 'Jwt'?
+
+[7m6[0m import { jwt } from "jsonwebtoken";
+[7m [0m [91m         ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:57:27
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"jsonwebtoken"' has no exported member named 'jwt'. Did you mean 'Jwt'?
+
+[7m6[0m import { jwt } from "jsonwebtoken";
+[7m [0m [91m         ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m6[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"jsonwebtoken"' has no exported member named 'jwt'. Did you mean 'Jwt'?
+
+[7m6[0m import { jwt } from "jsonwebtoken";
+[7m [0m [91m         ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:57:27.425Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'jwt'.
+
+[7m18[0m     jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'jwt'.
+
+[7m18[0m     jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:57:37
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'jwt'.
+
+[7m18[0m     jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'jwt'.
+
+[7m18[0m     jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:57:37.289Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2693: [0m'Jwt' only refers to a type, but is being used as a value here.
+
+[7m18[0m     Jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2693: [0m'Jwt' only refers to a type, but is being used as a value here.
+
+[7m18[0m     Jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:57:40
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2693: [0m'Jwt' only refers to a type, but is being used as a value here.
+
+[7m18[0m     Jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2693: [0m'Jwt' only refers to a type, but is being used as a value here.
+
+[7m18[0m     Jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:57:40.765Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'Jwt'.
+
+[7m18[0m     Jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'Jwt'.
+
+[7m18[0m     Jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:57:52
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'Jwt'.
+
+[7m18[0m     Jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2304: [0mCannot find name 'Jwt'.
+
+[7m18[0m     Jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:57:52.662Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2693: [0m'jwt' only refers to a type, but is being used as a value here.
+
+[7m18[0m     jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2693: [0m'jwt' only refers to a type, but is being used as a value here.
+
+[7m18[0m     jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:57:56
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2693: [0m'jwt' only refers to a type, but is being used as a value here.
+
+[7m18[0m     jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m18[0m:[93m5[0m - [91merror[0m[90m TS2693: [0m'jwt' only refers to a type, but is being used as a value here.
+
+[7m18[0m     jwt.verify(
+[7m  [0m [91m    ~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:57:56.039Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 01:58:13
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m21[0m:[93m6[0m - [91merror[0m[90m TS2769: [0mNo overload matches this call.
+  The last overload gave the following error.
+    Type '(error: any, auth: { user: { id: string; }; }) => Promise<Response<any, Record<string, any>> | undefined>' has no properties in common with type 'VerifyOptions'.
+
+[7m 21[0m      async (
+[7m   [0m [91m     ~~~~~~~[0m
+[7m 22[0m       error: any,
+[7m   [0m [91m~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 27[0m       }
+[7m   [0m [91m~~~~~~~[0m
+[7m 28[0m      ) => {
+[7m   [0m [91m~~~~~~~~~~~[0m
+
+  [96mnode_modules/@types/jsonwebtoken/index.d.ts[0m:[93m238[0m:[93m17[0m
+    [7m238[0m export function verify(
+    [7m   [0m [96m                ~~~~~~[0m
+    The last overload is declared here.
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T00:58:13.671Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m59[0m:[93m26[0m - [91merror[0m[90m TS18046: [0m'error' is of type 'unknown'.
+
+[7m59[0m                 message: error.message,
+[7m  [0m [91m                         ~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m59[0m:[93m26[0m - [91merror[0m[90m TS18046: [0m'error' is of type 'unknown'.
+
+[7m59[0m                 message: error.message,
+[7m  [0m [91m                         ~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 02:01:08
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m59[0m:[93m26[0m - [91merror[0m[90m TS18046: [0m'error' is of type 'unknown'.
+
+[7m59[0m                 message: error.message,
+[7m  [0m [91m                         ~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m59[0m:[93m26[0m - [91merror[0m[90m TS18046: [0m'error' is of type 'unknown'.
+
+[7m59[0m                 message: error.message,
+[7m  [0m [91m                         ~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T01:01:08.090Z
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m52[0m:[93m31[0m - [91merror[0m[90m TS18047: [0m'auth' is possibly 'null'.
+
+[7m52[0m             req.body.userId = auth.user.id;
+[7m  [0m [91m                              ~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m52[0m:[93m31[0m - [91merror[0m[90m TS18047: [0m'auth' is possibly 'null'.
+
+[7m52[0m             req.body.userId = auth.user.id;
+[7m  [0m [91m                              ~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23T01:05:24.862Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m52[0m:[93m31[0m - [91merror[0m[90m TS18047: [0m'auth' is possibly 'null'.
+
+[7m52[0m             req.body.userId = auth.user.id;
+[7m  [0m [91m                              ~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/middlewares/authMiddleware.ts[0m:[93m52[0m:[93m31[0m - [91merror[0m[90m TS18047: [0m'auth' is possibly 'null'.
+
+[7m52[0m             req.body.userId = auth.user.id;
+[7m  [0m [91m                              ~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-23 02:05:24

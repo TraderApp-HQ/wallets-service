@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { WalletController } from "../controllers/WalletController";
+import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { WalletService } from "../services/WalletService";
 
 const router = async () => {
@@ -7,8 +8,8 @@ const router = async () => {
 	const walletController = new WalletController(walletService);
 	const routerInit = Router();
 
-	routerInit.post("/", walletController.createUserWallet.bind(walletController));
-	routerInit.get("/", walletController.getUserWallets.bind(walletController));
+	routerInit.post("/", AuthMiddleware, walletController.createUserWallet.bind(walletController));
+	routerInit.get("/", AuthMiddleware, walletController.getUserWallets.bind(walletController));
 
 	return routerInit;
 };

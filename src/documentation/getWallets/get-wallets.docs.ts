@@ -72,4 +72,35 @@ const getWallets = {
 	},
 };
 
-export { getWallets, getWalletsParams };
+const createUserWalletBody = {
+	type: "object",
+	properties: {
+		userId: {
+			type: "string",
+			example: "1234567890",
+		},
+	},
+};
+
+const createUserWallet = {
+	tags: ["Wallets"],
+	description: "Create a new user wallet",
+	requestBody: {
+		content: {
+			"application/json": {
+				schema: {
+					$ref: "#/components/schemas/createUserWalletBody",
+				},
+			},
+		},
+		required: true,
+	},
+	responses: {
+		[RESPONSE_CODES.ok]: DOC_RESPONSE.SUCCESS,
+		[RESPONSE_CODES.badRequest]: DOC_RESPONSE.BADREQUEST,
+		[RESPONSE_CODES.unauthorized]: DOC_RESPONSE.UNAUTHORIZED,
+		[RESPONSE_CODES.serverError]: DOC_RESPONSE.SERVERERROR,
+	},
+};
+
+export { createUserWallet, createUserWalletBody, getWallets, getWalletsParams };
