@@ -5,21 +5,25 @@ import "dotenv/config";
 let db: admin.firestore.Firestore;
 let storage: Storage;
 
-export async function firebase() {
-	return { db, storage };
-}
-
 function initFirebase() {
 	try {
 		const projectId = process.env.FIREBASE_PROJECT_ID || "";
 		const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string);
 
-		if (projectId && serviceAccount) {
-			return;
+		if (!admin.apps.length) {
+			admin.initializeApp({
+				credential: admin.credential.cert(serviceAccount),
+				projectId,
+			});
+			db = admin.firestore();
+			storage = admin.storage();
+			console.log("Firebase initialized successfully");
 		}
 	} catch (error) {
-		console.log(`Error initializing firebase ${JSON.stringify(error)}`);
+		console.log(`Error initializing firebase: ${JSON.stringify(error)}`);
 	}
 }
 
-export default initFirebase;
+initFirebase(); // Initialize Firebase when this module is imported
+
+export { db, storage };

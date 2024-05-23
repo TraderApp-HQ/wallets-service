@@ -11,4 +11,5 @@ export interface UserWallet {
 	walletType: WalletType;
 	currency: Currency;
 	balance: number;
+	createdAt: Date;
 }

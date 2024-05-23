@@ -9,7 +9,7 @@ import swaggerUi from "swagger-ui-express";
 import specs from "./utils/swagger";
 
 // import routes
-import initFirebase from "./firebase";
+// import initFirebase from "./firebase";
 import { routeHandler } from "./routes";
 
 config();
@@ -27,7 +27,7 @@ initSecrets({
 })
 	.then(async () => {
 		const PORT = process.env.PORT;
-		initFirebase();
+		// initFirebase();
 		app.listen(PORT, () => {
 			logger.log(`Server listening at port ${PORT}`);
 			startServer();

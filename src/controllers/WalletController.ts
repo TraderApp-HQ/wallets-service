@@ -1,41 +1,22 @@
 import { Request, Response, NextFunction } from "express";
-// import { firebase } from "../firebase";
-import { apiResponseHandler } from "@traderapp/shared-resources";
-import { ResponseType } from "../config/constants";
-import { UserWallet } from "../schemas/wallet";
+import { WalletService } from "../services/WalletService";
 
-// A function to get wallet information
-export async function getWallets(req: Request, res: Response, next: NextFunction) {
-	// get firebase db ref
-	// const { db } = await firebase();
+export class WalletController {
+	private readonly walletService: WalletService;
 
-	// const { currency, walletType, page } = req.query;
+	constructor(walletService: WalletService) {
+		this.walletService = walletService;
+	}
 
-	try {
-		// get all wallet records
-		// const docs = await db
-		// 	.collection("wallets")
-		// 	.where("currency", "==", `${currency}`)
-		// 	.where("walletType", "==", `${walletType}`)
-		// 	.get();
+	public async createUserWallet(req: Request, res: Response, next: NextFunction) {
+		const userId: string = "123456789";
 
-		// 	console.log('docs', docs)
-		// 	if (docs.empty) {
-		// 		const error = new Error("No wallets available");
-		// 		error.name = "Not Found";
-		// 		throw error;
-		// 	}
+		return await this.walletService.createUserWallet(userId, res);
+	}
 
-		const wallets: UserWallet[] = [];
+	public async getUserWallets(req: Request, res: Response, next: NextFunction) {
+		const userId: string = "123456789";
 
-		res.status(200).json(
-			apiResponseHandler({
-				type: ResponseType.SUCCESS,
-				message: "List of wallets!",
-				object: { wallets },
-			})
-		);
-	} catch (error: any) {
-		next(error);
+		return await this.walletService.getWalletBalance(userId, res);
 	}
 }

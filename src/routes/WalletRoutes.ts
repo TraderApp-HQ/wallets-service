@@ -1,8 +1,16 @@
 import { Router } from "express";
-import { getWallets } from "../controllers/WalletController";
+import { WalletController } from "../controllers/WalletController";
+import { WalletService } from "../services/WalletService";
 
-const router = Router();
+const router = async () => {
+	const walletService = new WalletService();
+	const walletController = new WalletController(walletService);
+	const routerInit = Router();
 
-router.get("/", getWallets);
+	routerInit.post("/", walletController.createUserWallet.bind(walletController));
+	routerInit.get("/", walletController.getUserWallets.bind(walletController));
+
+	return routerInit;
+};
 
 export default router;
