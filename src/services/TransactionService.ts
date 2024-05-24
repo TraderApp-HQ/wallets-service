@@ -23,7 +23,7 @@ export class TransactionService {
 				return res.status(200).json(
 					apiResponseHandler({
 						type: ResponseType.SUCCESS,
-						message: "No transactionss found!",
+						message: "No transactions found!",
 					})
 				);
 			}
@@ -63,14 +63,14 @@ export class TransactionService {
 				transactionNetwork: "network_name",
 				userId,
 				fromCurrency: Currency.USDT,
-				ToCurrency: Currency.BTC,
+				ToCurrency: Currency.USDT,
 				conversionRate: 0.1,
 				fromAmount: 6500,
 				ToAmount: 0.1,
 				type: TransactionType.DEPOSIT,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
-				transactionWalletType: TransactionWalletType.INTERNAL,
+				transactionWalletType: TransactionWalletType.EXTERNAL,
 			};
 
 			await db.collection("transactions").add(transaction);
@@ -108,15 +108,15 @@ export class TransactionService {
 				transactionId,
 				transactionNetwork: "network_name",
 				userId,
-				fromCurrency: Currency.USDT,
+				fromCurrency: Currency.BTC,
 				ToCurrency: Currency.BTC,
 				conversionRate: 0.1,
 				fromAmount: 6500,
 				ToAmount: 0.1,
-				type: TransactionType.DEPOSIT,
+				type: TransactionType.WITHDRAWAL,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
-				transactionWalletType: TransactionWalletType.INTERNAL,
+				transactionWalletType: TransactionWalletType.EXTERNAL,
 			};
 
 			await db.collection("transactions").add(transaction);
@@ -130,6 +130,98 @@ export class TransactionService {
 			);
 		} catch (error: any) {
 			throw new Error(`Error with fund withdrawal: ${error.message}`);
+		}
+	}
+
+	public async convertFunds(userId: string, res: Response): Promise<Response> {
+		try {
+			const wallets = await this.walletService.getUserWalletBalance(userId);
+			if (!wallets) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: "No existing wallets found",
+					})
+				);
+			}
+			// TODO
+			// Check external service availability & requirements
+			// Retrieve outgoing funds detail and validate
+
+			const transactionId = uuidv4();
+
+			const transaction: ITransaction = {
+				transactionId,
+				transactionNetwork: "network_name",
+				userId,
+				fromCurrency: Currency.USDT,
+				ToCurrency: Currency.BTC,
+				conversionRate: 0.1,
+				fromAmount: 6500,
+				ToAmount: 0.1,
+				type: TransactionType.CONVERT,
+				timestamp: new Date().toISOString(),
+				status: TransactionStatus.PENDING,
+				transactionWalletType: TransactionWalletType.INTERNAL,
+			};
+
+			await db.collection("transactions").add(transaction);
+
+			return res.status(HttpStatus.OK).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: "Funds conversion completed successfully!",
+					object: { transaction },
+				})
+			);
+		} catch (error: any) {
+			throw new Error(`Error with fund conversion: ${error.message}`);
+		}
+	}
+
+	public async transferFunds(userId: string, res: Response): Promise<Response> {
+		try {
+			const wallets = await this.walletService.getUserWalletBalance(userId);
+			if (!wallets) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: "No existing wallets found",
+					})
+				);
+			}
+			// TODO
+			// Check external service availability & requirements
+			// Retrieve outgoing funds detail and validate
+
+			const transactionId = uuidv4();
+
+			const transaction: ITransaction = {
+				transactionId,
+				transactionNetwork: "network_name",
+				userId,
+				fromCurrency: Currency.USDT,
+				ToCurrency: Currency.BTC,
+				conversionRate: 0.1,
+				fromAmount: 6500,
+				ToAmount: 0.1,
+				type: TransactionType.TRANSFER,
+				timestamp: new Date().toISOString(),
+				status: TransactionStatus.PENDING,
+				transactionWalletType: TransactionWalletType.INTERNAL,
+			};
+
+			await db.collection("transactions").add(transaction);
+
+			return res.status(HttpStatus.OK).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: "Funds transfer completed successfully!",
+					object: { transaction },
+				})
+			);
+		} catch (error: any) {
+			throw new Error(`Error with fund transfer: ${error.message}`);
 		}
 	}
 

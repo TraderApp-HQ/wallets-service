@@ -16,41 +16,49 @@ interface AuthPayload {
 }
 
 export const AuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-	const { authorization } = req.headers;
-
-	if (!authorization) {
-		return res.status(HttpStatus.FORBIDDEN).json(
-			apiResponseHandler({
-				type: ResponseType.ERROR,
-				message: "No Authorization header provided",
-			})
-		);
-	}
-
-	const token = authorization.split(" ")[1];
-
-	if (!token) {
-		return res.status(HttpStatus.FORBIDDEN).json(
-			apiResponseHandler({
-				type: ResponseType.ERROR,
-				message: "Authorization token missing",
-			})
-		);
-	}
-
+	const AUTH_TEST = process.env.AUTH_TEST ?? false;
+	const TEST_USER_ID = process.env.TEST_USER_ID ?? "";
 	try {
-		const auth = await verifyToken(token, JWT_SECRET);
-
-		if (!auth) {
-			return res.status(HttpStatus.FORBIDDEN).json(
-				apiResponseHandler({
-					type: ResponseType.ERROR,
-					message: "Invalid token",
-				})
-			);
-		} else {
-			req.body.userId = auth.user.id;
+		if (AUTH_TEST && TEST_USER_ID) {
+			const testUserId = TEST_USER_ID;
+			req.body.userId = testUserId;
 			next();
+		} else {
+			const { authorization } = req.headers;
+
+			if (!authorization) {
+				return res.status(HttpStatus.FORBIDDEN).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: "No Authorization header provided",
+					})
+				);
+			}
+
+			const token = authorization.split(" ")[1];
+
+			if (!token) {
+				return res.status(HttpStatus.FORBIDDEN).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: "Authorization token missing",
+					})
+				);
+			}
+
+			const auth = await verifyToken(token, JWT_SECRET);
+
+			if (!auth) {
+				return res.status(HttpStatus.FORBIDDEN).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: "Invalid token",
+					})
+				);
+			} else {
+				req.body.userId = auth.user.id;
+				next();
+			}
 		}
 	} catch (error: any) {
 		return res.status(HttpStatus.FORBIDDEN).json(

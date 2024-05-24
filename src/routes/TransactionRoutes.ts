@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { TransactionController } from "../controllers/TransactionController";
-// import { AuthMiddleware } from "../middlewares/authMiddleware";
+import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { TransactionService } from "../services/TransactionService";
 import { WalletService } from "../services/WalletService";
 
@@ -10,9 +10,31 @@ const router = async () => {
 	const transactionController = new TransactionController(transactionService);
 	const routerInit = Router();
 
-	routerInit.get("/", transactionController.getTransactions.bind(transactionController));
-	routerInit.post("/deposit", transactionController.depositFunds.bind(transactionController));
-	routerInit.post("/withdrawal", transactionController.withdrawFunds.bind(transactionController));
+	routerInit.get(
+		"/",
+		AuthMiddleware,
+		transactionController.getTransactions.bind(transactionController)
+	);
+	routerInit.post(
+		"/deposit",
+		AuthMiddleware,
+		transactionController.depositFunds.bind(transactionController)
+	);
+	routerInit.post(
+		"/withdrawal",
+		AuthMiddleware,
+		transactionController.withdrawFunds.bind(transactionController)
+	);
+	routerInit.post(
+		"/convert",
+		AuthMiddleware,
+		transactionController.convertFunds.bind(transactionController)
+	);
+	routerInit.post(
+		"/transfer",
+		AuthMiddleware,
+		transactionController.transferFunds.bind(transactionController)
+	);
 
 	return routerInit;
 };

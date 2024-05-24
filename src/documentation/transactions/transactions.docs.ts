@@ -134,6 +134,68 @@ const withdrawFunds = {
 	},
 };
 
+const convertFundsBody = {
+	type: "object",
+	properties: {
+		userId: {
+			type: "string",
+			example: "1234567890",
+		},
+	},
+};
+
+const convertFunds = {
+	tags: ["Transactions"],
+	description: "Create a new convert transaction",
+	requestBody: {
+		content: {
+			"application/json": {
+				schema: {
+					$ref: "#/components/schemas/convertFundsBody",
+				},
+			},
+		},
+		required: true,
+	},
+	responses: {
+		[RESPONSE_CODES.ok]: DOC_RESPONSE.SUCCESS,
+		[RESPONSE_CODES.badRequest]: DOC_RESPONSE.BADREQUEST,
+		[RESPONSE_CODES.unauthorized]: DOC_RESPONSE.UNAUTHORIZED,
+		[RESPONSE_CODES.serverError]: DOC_RESPONSE.SERVERERROR,
+	},
+};
+
+const transferFundsBody = {
+	type: "object",
+	properties: {
+		userId: {
+			type: "string",
+			example: "1234567890",
+		},
+	},
+};
+
+const transferFunds = {
+	tags: ["Transactions"],
+	description: "Create a new transfer transaction",
+	requestBody: {
+		content: {
+			"application/json": {
+				schema: {
+					$ref: "#/components/schemas/transferFundsBody",
+				},
+			},
+		},
+		required: true,
+	},
+	responses: {
+		[RESPONSE_CODES.ok]: DOC_RESPONSE.SUCCESS,
+		[RESPONSE_CODES.badRequest]: DOC_RESPONSE.BADREQUEST,
+		[RESPONSE_CODES.unauthorized]: DOC_RESPONSE.UNAUTHORIZED,
+		[RESPONSE_CODES.serverError]: DOC_RESPONSE.SERVERERROR,
+	},
+};
+
 export {
 	depositFunds,
 	depositFundsBody,
@@ -141,4 +203,8 @@ export {
 	getTransactionsParams,
 	withdrawFunds,
 	withdrawFundsBody,
+	convertFunds,
+	convertFundsBody,
+	transferFunds,
+	transferFundsBody,
 };

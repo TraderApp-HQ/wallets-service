@@ -9,10 +9,14 @@ import {
 } from "../documentation/wallets";
 import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
 import {
+	convertFunds,
+	convertFundsBody,
 	depositFunds,
 	depositFundsBody,
 	getTransactions,
 	getTransactionsParams,
+	transferFunds,
+	transferFundsBody,
 	withdrawFunds,
 	withdrawFundsBody,
 } from "../documentation/transactions";
@@ -39,6 +43,8 @@ const options: swaggerJsdoc.Options = {
 				createUserWalletBody,
 				depositFundsBody,
 				withdrawFundsBody,
+				convertFundsBody,
+				transferFundsBody,
 				getTransactionsParams,
 			},
 		},
@@ -53,6 +59,8 @@ const options: swaggerJsdoc.Options = {
 			[`${ROUTES.transactions}`]: { get: getTransactions },
 			[`${ROUTES.transactions}/deposit`]: { post: depositFunds },
 			[`${ROUTES.transactions}/withdrawal`]: { post: withdrawFunds },
+			[`${ROUTES.transactions}/convert`]: { post: convertFunds },
+			[`${ROUTES.transactions}/transfer`]: { post: transferFunds },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files
