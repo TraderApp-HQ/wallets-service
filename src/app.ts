@@ -9,8 +9,8 @@ import swaggerUi from "swagger-ui-express";
 import specs from "./utils/swagger";
 
 // import routes
-import { BalanceRoutes } from "./routes";
-import initFirebase from "./firebase";
+// import initFirebase from "./firebase";
+import { routeHandler } from "./routes";
 
 config();
 
@@ -27,7 +27,7 @@ initSecrets({
 })
 	.then(async () => {
 		const PORT = process.env.PORT;
-		initFirebase();
+		// initFirebase();
 		app.listen(PORT, () => {
 			logger.log(`Server listening at port ${PORT}`);
 			startServer();
@@ -55,8 +55,8 @@ function startServer() {
 	// documentation
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-	// api routes
-	app.use(`/balances`, BalanceRoutes);
+	// // api routes handler
+	routeHandler(app);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {

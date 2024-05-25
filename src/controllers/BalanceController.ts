@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { firebase } from "../firebase";
+import { db } from "../firebase";
 import { apiResponseHandler } from "@traderapp/shared-resources";
 import { ResponseType } from "../config/constants";
 
@@ -9,7 +9,6 @@ const TRADING_FEES = 0.5;
 // A function to check balance, deduct/add order amount and fees
 export async function processOrder(req: Request, res: Response, next: NextFunction) {
 	// get firebase db ref
-	const { db } = await firebase();
 
 	const { userId, currencyId, amount, transactionType } = req.body;
 
