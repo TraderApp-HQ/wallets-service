@@ -34,7 +34,7 @@ initSecrets({
 			logger.log(`Docs available at http://localhost:${PORT}/api-docs`);
 		});
 	})
-	.catch((err) => {
+	.catch((err: any) => {
 		logger.error(`Error getting secrets. Error == ${JSON.stringify(err)}`);
 		throw err;
 	});
