@@ -82,21 +82,25 @@ export class WalletService {
 	}
 
 	private generateWalletCombinations({ userId }: BaseInput): UserWallet[] {
-		const walletTypes = Object.values(WalletType);
-		const currencies = Object.values(Currency);
+		// Define the wallet type to currency mapping
+		const walletTypeCurrency = {
+			[WalletType.MAIN]: [Currency.BTC, Currency.ETH, Currency.USDT],
+			[WalletType.SPOT]: [Currency.USDT],
+			[WalletType.FUTURES]: [Currency.USDT],
+		};
 		const walletCombinations: UserWallet[] = [];
 
-		walletTypes.forEach((walletType) => {
+		for (const [walletType, currencies] of Object.entries(walletTypeCurrency)) {
 			currencies.forEach((currency) => {
-				return walletCombinations.push({
+				walletCombinations.push({
 					userId,
-					walletType,
+					walletType: walletType as WalletType,
 					currency,
 					balance: 0.0,
 					createdAt: new Date(),
 				});
 			});
-		});
+		}
 
 		return walletCombinations;
 	}

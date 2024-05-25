@@ -1,0 +1,412 @@
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m95[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m95[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m95[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m95[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m96[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m96[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m96[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m96[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m95[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m95[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m95[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m95[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m96[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m96[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m96[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m96[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25 08:26:47
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m95[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m95[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m95[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m95[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m96[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m96[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m96[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m96[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m95[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m95[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m95[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m95[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m96[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m96[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m96[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m96[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25T07:26:47.497Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25 08:26:52
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25T07:26:52.418Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25 08:30:51
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25T07:30:51.773Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25 08:30:57
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m3[0m - [91merror[0m[90m TS2552: [0mCannot find name 'walletTypes'. Did you mean 'WalletType'?
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m93[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'walletType' implicitly has an 'any' type.
+
+[7m93[0m   walletTypes.forEach((walletType) => {
+[7m  [0m [91m                       ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m4[0m - [91merror[0m[90m TS2552: [0mCannot find name 'currencies'. Did you mean 'Currency'?
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m   ~~~~~~~~~~[0m
+[96msrc/services/WalletService.ts[0m:[93m94[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'currency' implicitly has an 'any' type.
+
+[7m94[0m    currencies.forEach((currency) => {
+[7m  [0m [91m                       ~~~~~~~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25T07:30:57.748Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m92[0m:[93m15[0m - [91merror[0m[90m TS2304: [0mCannot find name 'wa'.
+
+[7m92[0m   console.log(wa)
+[7m  [0m [91m              ~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m92[0m:[93m15[0m - [91merror[0m[90m TS2304: [0mCannot find name 'wa'.
+
+[7m92[0m   console.log(wa)
+[7m  [0m [91m              ~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25 08:42:25
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m92[0m:[93m15[0m - [91merror[0m[90m TS2304: [0mCannot find name 'wa'.
+
+[7m92[0m   console.log(wa)
+[7m  [0m [91m              ~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/WalletService.ts[0m:[93m92[0m:[93m15[0m - [91merror[0m[90m TS2304: [0mCannot find name 'wa'.
+
+[7m92[0m   console.log(wa)
+[7m  [0m [91m              ~~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25T07:42:25.868Z
