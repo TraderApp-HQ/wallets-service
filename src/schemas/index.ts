@@ -1,7 +1,9 @@
 import { Currency } from "./currency";
 import { TransactionType } from "./transaction";
 import { WalletType } from "./wallet";
+import { Response } from "express";
 
+// Helper function to transform data types to object values
 export const enumToObject = <T extends object>(enumObj: T): Record<string, string> => {
 	const result: Record<string, string> = {};
 	for (const key in enumObj) {
@@ -15,3 +17,15 @@ export const enumToObject = <T extends object>(enumObj: T): Record<string, strin
 export const transactionTypeValues = enumToObject(TransactionType);
 export const currencyTypeValues = enumToObject(Currency);
 export const walletTypeValues = enumToObject(WalletType);
+
+export interface BaseInput {
+	userId: string;
+}
+
+export interface ITransactionInput extends BaseInput {
+	res: Response;
+}
+
+export interface IWalletInput extends BaseInput {
+	res: Response;
+}

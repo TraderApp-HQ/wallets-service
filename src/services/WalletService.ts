@@ -1,15 +1,15 @@
 import { apiResponseHandler } from "@traderapp/shared-resources";
-import { Response } from "express";
-import { ResponseType } from "../config/constants";
+import { COLLECTIONS, ResponseType } from "../config/constants";
 import { db } from "../firebase";
+import { BaseInput, IWalletInput } from "../schemas";
 import { Currency } from "../schemas/currency";
 import { UserWallet, WalletType } from "../schemas/wallet";
 import { HttpStatus } from "../utils/httpStatus";
 
 export class WalletService {
-	public async createUserWallet(userId: string, res: Response): Promise<any> {
+	public async createUserWallet({ userId, res }: IWalletInput): Promise<any> {
 		try {
-			const wallets = await this.getUserWalletBalance(userId);
+			const wallets = await this.getUserWalletBalance({ userId });
 			if (wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
@@ -18,10 +18,9 @@ export class WalletService {
 					})
 				);
 			}
-			const walletCombinations = this.generateWalletCombinations(userId);
-			console.log(walletCombinations);
+			const walletCombinations = this.generateWalletCombinations({ userId });
 			for (const wallet of walletCombinations) {
-				await db.collection("wallets").add(wallet);
+				await db.collection(COLLECTIONS.wallets).add(wallet);
 			}
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
@@ -35,9 +34,9 @@ export class WalletService {
 		}
 	}
 
-	public async getWalletBalance(userId: string, res: Response): Promise<any> {
+	public async getWalletBalance({ userId, res }: IWalletInput): Promise<any> {
 		try {
-			const wallets = await this.getUserWalletBalance(userId);
+			const wallets = await this.getUserWalletBalance({ userId });
 			if (!wallets) {
 				return res.status(200).json(
 					apiResponseHandler({
@@ -59,9 +58,12 @@ export class WalletService {
 		}
 	}
 
-	public async getUserWalletBalance(userId: string): Promise<UserWallet[] | null> {
+	public async getUserWalletBalance({ userId }: BaseInput): Promise<UserWallet[] | null> {
 		try {
-			const docs = await db.collection("wallets").where("userId", "==", `${userId}`).get();
+			const docs = await db
+				.collection(COLLECTIONS.wallets)
+				.where("userId", "==", `${userId}`)
+				.get();
 
 			const wallets: UserWallet[] = [];
 
@@ -79,7 +81,7 @@ export class WalletService {
 		}
 	}
 
-	private generateWalletCombinations(userId: string): UserWallet[] {
+	private generateWalletCombinations({ userId }: BaseInput): UserWallet[] {
 		const walletTypes = Object.values(WalletType);
 		const currencies = Object.values(Currency);
 		const walletCombinations: UserWallet[] = [];

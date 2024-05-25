@@ -1,6 +1,6 @@
 import { apiResponseHandler } from "@traderapp/shared-resources";
 import { Response } from "express";
-import { ResponseType } from "../config/constants";
+import { COLLECTIONS, ResponseType } from "../config/constants";
 import { db } from "../firebase";
 import { Currency } from "../schemas/currency";
 import {
@@ -12,15 +12,22 @@ import {
 import { HttpStatus } from "../utils/httpStatus";
 import { WalletService } from "./WalletService";
 import { v4 as uuidv4 } from "uuid";
+import { WalletType } from "../schemas/wallet";
+import { BaseInput, ITransactionInput } from "../schemas";
+
+// TODO
+// Refactor to accomodate the webhook logic
+// to update transaction status from third party API services
+// eg. TransactionStatus.PENDING ==> TransactionStatus.SUCCESS or TransactionStatus.FAILED
 
 export class TransactionService {
 	constructor(private readonly walletService: WalletService) {}
 
-	public async getTransactions(userId: string, res: Response): Promise<Response> {
+	public async getTransactions({ userId, res }: ITransactionInput): Promise<Response> {
 		try {
-			const transactions = await this.getUserTransactions(userId);
+			const transactions = await this.getUserTransactions({ userId });
 			if (!transactions) {
-				return res.status(200).json(
+				return res.status(HttpStatus.OK).json(
 					apiResponseHandler({
 						type: ResponseType.SUCCESS,
 						message: "No transactions found!",
@@ -28,7 +35,7 @@ export class TransactionService {
 				);
 			}
 
-			return res.status(200).json(
+			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
 					type: ResponseType.SUCCESS,
 					message: "List of user transactions!",
@@ -36,14 +43,14 @@ export class TransactionService {
 				})
 			);
 		} catch (error: any) {
-			throw new Error(error.message);
+			throw new Error(`Error with getting transactions: ${error.message}`);
 		}
 	}
 
-	public async depositFunds(userId: string, res: Response): Promise<Response> {
+	public async depositFunds({ userId, res }: ITransactionInput): Promise<Response> {
 		try {
 			// Confirm user has an existing wallet
-			const wallets = await this.walletService.getUserWalletBalance(userId);
+			const wallets = await this.walletService.getUserWalletBalance({ userId });
 			if (!wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
@@ -63,17 +70,20 @@ export class TransactionService {
 				transactionNetwork: "network_name",
 				userId,
 				fromCurrency: Currency.USDT,
-				ToCurrency: Currency.USDT,
-				conversionRate: 0.1,
-				fromAmount: 6500,
-				ToAmount: 0.1,
+				toCurrency: Currency.USDT,
+				fromWalletAddress: "walletAddressReference",
+				toWalletAddress: "toWalletAddressRefence",
+				toWallet: WalletType.MAIN,
+				conversionRate: 1,
+				fromAmount: 65,
+				toAmount: 65,
 				type: TransactionType.DEPOSIT,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
 				transactionWalletType: TransactionWalletType.EXTERNAL,
 			};
 
-			await db.collection("transactions").add(transaction);
+			await db.collection(COLLECTIONS.transactions).add(transaction);
 
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
@@ -87,9 +97,9 @@ export class TransactionService {
 		}
 	}
 
-	public async withdrawFunds(userId: string, res: Response): Promise<Response> {
+	public async withdrawFunds({ userId, res }: ITransactionInput): Promise<Response> {
 		try {
-			const wallets = await this.walletService.getUserWalletBalance(userId);
+			const wallets = await this.walletService.getUserWalletBalance({ userId });
 			if (!wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
@@ -109,17 +119,20 @@ export class TransactionService {
 				transactionNetwork: "network_name",
 				userId,
 				fromCurrency: Currency.BTC,
-				ToCurrency: Currency.BTC,
-				conversionRate: 0.1,
-				fromAmount: 6500,
-				ToAmount: 0.1,
+				toCurrency: Currency.BTC,
+				fromWalletAddress: "walletAddressReference",
+				toWalletAddress: "toWalletAddressRefence",
+				fromWallet: WalletType.MAIN,
+				conversionRate: 1,
+				fromAmount: 2,
+				toAmount: 2,
 				type: TransactionType.WITHDRAWAL,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
 				transactionWalletType: TransactionWalletType.EXTERNAL,
 			};
 
-			await db.collection("transactions").add(transaction);
+			await db.collection(COLLECTIONS.transactions).add(transaction);
 
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
@@ -133,9 +146,9 @@ export class TransactionService {
 		}
 	}
 
-	public async convertFunds(userId: string, res: Response): Promise<Response> {
+	public async convertFunds({ userId, res }: ITransactionInput): Promise<Response> {
 		try {
-			const wallets = await this.walletService.getUserWalletBalance(userId);
+			const wallets = await this.walletService.getUserWalletBalance({ userId });
 			if (!wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
@@ -155,17 +168,17 @@ export class TransactionService {
 				transactionNetwork: "network_name",
 				userId,
 				fromCurrency: Currency.USDT,
-				ToCurrency: Currency.BTC,
+				toCurrency: Currency.BTC,
 				conversionRate: 0.1,
 				fromAmount: 6500,
-				ToAmount: 0.1,
+				toAmount: 0.1,
 				type: TransactionType.CONVERT,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
 				transactionWalletType: TransactionWalletType.INTERNAL,
 			};
 
-			await db.collection("transactions").add(transaction);
+			await db.collection(COLLECTIONS.transactions).add(transaction);
 
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
@@ -179,9 +192,9 @@ export class TransactionService {
 		}
 	}
 
-	public async transferFunds(userId: string, res: Response): Promise<Response> {
+	public async transferFunds({ userId, res }: ITransactionInput): Promise<Response> {
 		try {
-			const wallets = await this.walletService.getUserWalletBalance(userId);
+			const wallets = await this.walletService.getUserWalletBalance({ userId });
 			if (!wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
@@ -201,17 +214,21 @@ export class TransactionService {
 				transactionNetwork: "network_name",
 				userId,
 				fromCurrency: Currency.USDT,
-				ToCurrency: Currency.BTC,
-				conversionRate: 0.1,
-				fromAmount: 6500,
-				ToAmount: 0.1,
+				toCurrency: Currency.USDT,
+				fromWalletAddress: "walletAddressReference",
+				toWalletAddress: "toWalletAddressRefence",
+				fromWallet: WalletType.MAIN,
+				toWallet: WalletType.FUTURES,
+				conversionRate: 1,
+				fromAmount: 50,
+				toAmount: 50,
 				type: TransactionType.TRANSFER,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
 				transactionWalletType: TransactionWalletType.INTERNAL,
 			};
 
-			await db.collection("transactions").add(transaction);
+			await db.collection(COLLECTIONS.transactions).add(transaction);
 
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
@@ -225,10 +242,10 @@ export class TransactionService {
 		}
 	}
 
-	public async getUserTransactions(userId: string): Promise<ITransaction[] | null> {
+	private async getUserTransactions({ userId }: BaseInput): Promise<ITransaction[] | null> {
 		try {
 			const docs = await db
-				.collection("transactions")
+				.collection(COLLECTIONS.transactions)
 				.where("userId", "==", `${userId}`)
 				.get();
 
@@ -244,7 +261,7 @@ export class TransactionService {
 
 			return transactions;
 		} catch (error: any) {
-			throw new Error(error.message);
+			throw new Error(`Error with getting user transactions: ${error.message}`);
 		}
 	}
 }

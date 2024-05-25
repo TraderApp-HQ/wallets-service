@@ -36,3 +36,8 @@ export const ROUTES = {
 	getWallets: "/wallets",
 	transactions: "/transactions",
 };
+
+export const COLLECTIONS = {
+	wallets: "wallets",
+	transactions: "transactions",
+};

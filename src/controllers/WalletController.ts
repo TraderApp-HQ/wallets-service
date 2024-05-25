@@ -10,13 +10,19 @@ export class WalletController {
 
 	public async createUserWallet(req: Request, res: Response, next: NextFunction) {
 		const { userId } = req.body;
-
-		return await this.walletService.createUserWallet(userId, res);
+		try {
+			return await this.walletService.createUserWallet({ userId, res });
+		} catch (error) {
+			next(error);
+		}
 	}
 
 	public async getUserWallets(req: Request, res: Response, next: NextFunction) {
 		const { userId } = req.body;
-
-		return await this.walletService.getWalletBalance(userId, res);
+		try {
+			return await this.walletService.getWalletBalance({ userId, res });
+		} catch (error) {
+			next(error);
+		}
 	}
 }
