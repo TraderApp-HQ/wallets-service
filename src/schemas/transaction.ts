@@ -26,10 +26,10 @@ export interface ITransaction {
 	fromWallet?: WalletType;
 	toWallet?: WalletType;
 	fromCurrency: Currency;
-	toCurrency: Currency;
+	toCurrency?: Currency;
 	conversionRate?: number;
 	fromAmount: number;
-	toAmount: number;
+	toAmount?: number;
 	type: TransactionType;
 	timestamp: string;
 	fromWalletAddress?: string;
