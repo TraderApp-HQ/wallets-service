@@ -23,7 +23,7 @@ export enum TransactionStatus {
 
 export interface ITransaction {
 	transactionId: string;
-	transactionNetwork: Network;
+	transactionNetwork?: Network;
 	userId: string;
 	fromWallet?: WalletType;
 	toWallet?: WalletType;
@@ -43,6 +43,7 @@ export interface ITransaction {
 export interface IDepositFundsPayload extends ITransactionInput {
 	userId: string;
 	fromWalletAddress?: string;
+	toWalletAddress?: string;
 	toWallet?: WalletType;
 	fromCurrency: Currency;
 	toCurrency: Currency;
@@ -50,10 +51,29 @@ export interface IDepositFundsPayload extends ITransactionInput {
 	network: Network;
 }
 
-export interface IWithdrawFundsPayload {
+export interface IWithdrawFundsPayload extends ITransactionInput {
 	userId: string;
-	toWallet?: WalletType;
+	fromWalletAddress?: string;
 	toWalletAddress?: string;
+	fromCurrency: Currency;
+	toCurrency: Currency;
+	fromAmount: number;
+	network: Network;
+}
+
+export interface IConvertFundsPayload extends ITransactionInput {
+	userId: string;
+	fromWallet: WalletType;
+	toWallet: WalletType;
+	fromCurrency: Currency;
+	toCurrency: Currency;
+	fromAmount: number;
+}
+
+export interface ITransferFundsPayload extends ITransactionInput {
+	userId: string;
+	fromWallet: WalletType;
+	toWallet: WalletType;
 	fromCurrency: Currency;
 	toCurrency: Currency;
 	fromAmount: number;

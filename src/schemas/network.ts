@@ -8,6 +8,7 @@ export enum Network {
 	BTC = "Bitcoin (BTC) Network",
 	AVAX = "Avalanche (AVAX)",
 	XRP = "Ripple (XRP)",
+	ETH = "Ethereum (ERC20)",
 }
 
 export interface UserNetworkAddress {
