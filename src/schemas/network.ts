@@ -1,3 +1,4 @@
+import { IAddressInput } from ".";
 import { Currency } from "./currency";
 
 export enum Network {
@@ -15,4 +16,18 @@ export interface UserNetworkAddress {
 	network: Network;
 	address: string;
 	createdAt: Date;
+}
+
+export interface INetworkAddressPayload extends IAddressInput {
+	userId: string;
+	network?: Network;
+	currency?: Currency;
+	address?: string;
+}
+
+export interface INetworkAddressInput {
+	userId: string;
+	network?: Network;
+	currency?: Currency;
+	address?: string;
 }

@@ -67,9 +67,9 @@ export class TransactionService {
 					})
 				);
 			}
-
+			const { userId, network, fromCurrency: currency } = payload;
 			const validateUserNetworkAddress: UserNetworkAddress[] | null =
-				await this.addressService.getUserAddresses({ userId: payload.userId });
+				await this.addressService.getUserAddresses({ userId, network, currency });
 			if (!validateUserNetworkAddress) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({

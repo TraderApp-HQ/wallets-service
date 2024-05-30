@@ -1,17 +1,23 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
+import { Currency } from "../../schemas/currency";
+import { Network } from "../../schemas/network";
 
 const getNetworkAddressParams = {
 	type: "object",
 	properties: {
 		currency: {
 			type: "string",
-			example: 1,
+			enum: Object.values(Currency),
+		},
+		network: {
+			type: "string",
+			enum: Object.values(Network),
 		},
 	},
 };
 
 const getNetworkAddresses = {
-	tags: [RESPONSE_TAGS.wallets],
+	tags: [RESPONSE_TAGS.addresses],
 	description: "get all user network addresses",
 	parameters: [
 		{
@@ -20,7 +26,16 @@ const getNetworkAddresses = {
 			description: "filter by currency",
 			required: false,
 			schema: {
-				$ref: "#/components/schemas/etNetworkAddressesParams/properties/currency",
+				$ref: "#/components/schemas/getNetworkAddressParams/properties/currency",
+			},
+		},
+		{
+			in: "query",
+			name: "network",
+			description: "filter by network",
+			required: false,
+			schema: {
+				$ref: "#/components/schemas/getNetworkAddressParams/properties/network",
 			},
 		},
 	],
@@ -41,17 +56,17 @@ const createUserNetworkAddressBody = {
 		},
 		network: {
 			type: "string",
-			example: "TRON",
+			enum: Object.values(Network),
 		},
 		currency: {
 			type: "string",
-			example: "BTC",
+			enum: Object.values(Currency),
 		},
 	},
 };
 
 const createUserNetworkAddress = {
-	tags: ["Network Addresses"],
+	tags: [RESPONSE_TAGS.addresses],
 	description: "Create a new user network address",
 	requestBody: {
 		content: {

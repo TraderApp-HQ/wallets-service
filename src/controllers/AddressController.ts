@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { INetworkAddressPayload } from "../schemas/network";
 import { AddressService } from "../services/AddressService";
 
 export class AddressController {
@@ -9,7 +10,7 @@ export class AddressController {
 	}
 
 	public async createUserAddress(req: Request, res: Response, next: NextFunction) {
-		const payload = req.body;
+		const payload: INetworkAddressPayload = req.body;
 		try {
 			return await this.addressService.createUserNetworkAddress({ ...payload, res });
 		} catch (error) {
@@ -18,9 +19,13 @@ export class AddressController {
 	}
 
 	public async getUserAddress(req: Request, res: Response, next: NextFunction) {
-		const { userId } = req.body;
+		const payload = req.query;
 		try {
-			return await this.addressService.getAddresses({ userId, res });
+			return await this.addressService.getAddresses({
+				...payload,
+				userId: req.body.userId,
+				res,
+			});
 		} catch (error) {
 			next(error);
 		}

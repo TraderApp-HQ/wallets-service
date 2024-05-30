@@ -1,13 +1,21 @@
 import { apiResponseHandler } from "@traderapp/shared-resources";
 import { COLLECTIONS, ResponseType } from "../config/constants";
 import { db } from "../firebase";
-import { BaseInput, IAddressInput } from "../schemas";
-import { UserNetworkAddress } from "../schemas/network";
+import {
+	INetworkAddressInput,
+	INetworkAddressPayload,
+	UserNetworkAddress,
+} from "../schemas/network";
 import { HttpStatus } from "../utils/httpStatus";
 
 export class AddressService {
-	public async createUserNetworkAddress({ res, ...payload }: IAddressInput): Promise<any> {
+	public async createUserNetworkAddress({
+		res,
+		...payload
+	}: INetworkAddressPayload): Promise<any> {
 		try {
+			// generate randomNetworkAddress
+			payload.address = `${payload.network}-${payload.currency}:${payload.userId}`;
 			await db.collection(COLLECTIONS.addresses).add(payload);
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
@@ -21,9 +29,9 @@ export class AddressService {
 		}
 	}
 
-	public async getAddresses({ userId, res }: IAddressInput): Promise<any> {
+	public async getAddresses({ res, ...payload }: INetworkAddressPayload): Promise<any> {
 		try {
-			const addresses = await this.getUserAddresses({ userId });
+			const addresses = await this.getUserAddresses({ ...payload });
 			if (!addresses) {
 				return res.status(200).json(
 					apiResponseHandler({
@@ -45,12 +53,19 @@ export class AddressService {
 		}
 	}
 
-	public async getUserAddresses({ userId }: BaseInput): Promise<UserNetworkAddress[] | null> {
+	public async getUserAddresses(
+		payload: INetworkAddressInput
+	): Promise<UserNetworkAddress[] | null> {
 		try {
-			const docs = await db
-				.collection(COLLECTIONS.addresses)
-				.where("userId", "==", `${userId}`)
-				.get();
+			let query: any = db.collection(COLLECTIONS.addresses);
+			query = query.where("userId", "==", payload.userId);
+			if (payload.currency) {
+				query = query.where("currency", "==", payload.currency);
+			}
+			if (payload.network) {
+				query = query.where("network", "==", payload.network);
+			}
+			const docs = await query.get();
 
 			const addresses: UserNetworkAddress[] = [];
 
@@ -58,7 +73,7 @@ export class AddressService {
 				return null;
 			}
 
-			docs.forEach((doc) => {
+			docs.forEach((doc: any) => {
 				addresses.push(doc.data() as UserNetworkAddress);
 			});
 

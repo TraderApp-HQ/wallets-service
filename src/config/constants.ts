@@ -15,6 +15,7 @@ export const RESPONSE_TAGS = {
 	processOrder: "processOrder",
 	wallets: "Wallets",
 	transactions: "Transactions",
+	addresses: "Network Addresses",
 };
 
 export const RESPONSE_CODES = {
