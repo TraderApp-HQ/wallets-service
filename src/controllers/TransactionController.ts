@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { IDepositFundsPayload } from "../schemas/transaction";
 import { TransactionService } from "../services/TransactionService";
 
 export class TransactionController {
@@ -18,9 +19,9 @@ export class TransactionController {
 	}
 
 	public async depositFunds(req: Request, res: Response, next: NextFunction) {
-		const { userId } = req.body;
+		const payload: IDepositFundsPayload = req.body;
 		try {
-			return await this.transactionService.depositFunds({ userId, res });
+			return await this.transactionService.depositFunds({ ...payload, res });
 		} catch (error) {
 			next(error);
 		}

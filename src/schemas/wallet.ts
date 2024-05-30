@@ -7,6 +7,7 @@ export enum WalletType {
 }
 
 export interface UserWallet {
+	id: string;
 	userId: string;
 	walletType: WalletType;
 	currency: Currency;

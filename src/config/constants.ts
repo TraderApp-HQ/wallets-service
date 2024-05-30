@@ -35,9 +35,11 @@ export const ROUTES = {
 	processOrder: "/process",
 	getWallets: "/wallets",
 	transactions: "/transactions",
+	addresses: "/addresses",
 };
 
 export const COLLECTIONS = {
 	wallets: "wallets",
 	transactions: "transactions",
+	addresses: "addresses",
 };
