@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { TransactionController } from "../controllers/TransactionController";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
+import { AddressService } from "../services/AddressService";
 import { TransactionService } from "../services/TransactionService";
 import { WalletService } from "../services/WalletService";
 
 const router = async () => {
 	const walletService = new WalletService();
-	const transactionService = new TransactionService(walletService);
+	const addressService = new AddressService();
+	const transactionService = new TransactionService(walletService, addressService);
 	const transactionController = new TransactionController(transactionService);
 	const routerInit = Router();
 

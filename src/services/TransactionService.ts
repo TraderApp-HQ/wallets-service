@@ -117,7 +117,7 @@ export class TransactionService {
 				transactionWalletType: TransactionWalletType.EXTERNAL,
 			};
 
-			const wallet: UserWallet | undefined = wallets.find(
+			const wallet: UserWallet | any = wallets.find(
 				(wallet) => wallet.currency === payload.toCurrency
 			);
 			if (wallet) {
