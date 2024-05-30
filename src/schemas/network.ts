@@ -12,6 +12,7 @@ export enum Network {
 }
 
 export interface UserNetworkAddress {
+	id?: string;
 	userId: string;
 	currency: Currency;
 	network: Network;

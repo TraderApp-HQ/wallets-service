@@ -183,7 +183,7 @@ export class TransactionService {
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
 					type: ResponseType.SUCCESS,
-					message: "Deposit transaction submitted for processing!!",
+					message: "Withdrawal transaction submitted for processing!!",
 					object: { transaction },
 				})
 			);
@@ -391,7 +391,9 @@ export class TransactionService {
 			}
 
 			docs.forEach((doc) => {
-				transactions.push(doc.data() as ITransaction);
+				const data = doc.data() as ITransaction;
+				data.id = doc.id;
+				transactions.push(data);
 			});
 
 			return transactions;

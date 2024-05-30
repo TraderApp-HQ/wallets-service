@@ -22,6 +22,7 @@ export enum TransactionStatus {
 }
 
 export interface ITransaction {
+	id?: string;
 	transactionId: string;
 	transactionNetwork?: Network;
 	userId: string;

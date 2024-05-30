@@ -72,7 +72,9 @@ export class WalletService {
 			}
 
 			docs.forEach((doc) => {
-				wallets.push(doc.data() as UserWallet);
+				const data = doc.data() as UserWallet;
+				data.id = doc.id;
+				wallets.push(data);
 			});
 
 			return wallets;

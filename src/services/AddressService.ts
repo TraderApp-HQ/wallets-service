@@ -74,7 +74,9 @@ export class AddressService {
 			}
 
 			docs.forEach((doc: any) => {
-				addresses.push(doc.data() as UserNetworkAddress);
+				const data = doc.data() as UserNetworkAddress;
+				data.id = doc.id;
+				addresses.push(data);
 			});
 
 			return addresses;
