@@ -118,8 +118,11 @@ export class TransactionService {
 			};
 
 			const wallet: UserWallet | any = wallets.find(
-				(wallet) => wallet.currency === payload.toCurrency
+				(wallet) =>
+					wallet.currency === payload.toCurrency && wallet.walletType === WalletType.MAIN
 			);
+			// updates wallet balance
+			// this step would be handled by a webhook call to update transaction status and possibly wallet balance
 			if (wallet) {
 				await db
 					.collection(COLLECTIONS.wallets)

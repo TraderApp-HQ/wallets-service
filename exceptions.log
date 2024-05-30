@@ -410,3 +410,359 @@ TSError: ⨯ Unable to compile TypeScript:
     at Module.load (node:internal/modules/cjs/loader:1004:32)
     at Function.Module._load (node:internal/modules/cjs/loader:839:12)
     at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-25T07:42:25.868Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30 16:37:43
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30T15:37:43.196Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30 16:37:48
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30T15:37:48.751Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'wa'.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wa
+[7m   [0m [91m                                                             ~~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'wa'.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wa
+[7m   [0m [91m                                                             ~~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30 16:37:53
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'wa'.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wa
+[7m   [0m [91m                                                             ~~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'wa'.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wa
+[7m   [0m [91m                                                             ~~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30T15:37:53.270Z
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m4[0m - [91merror[0m[90m TS1003: [0mIdentifier expected.
+
+[7m122[0m    );
+[7m   [0m [91m   ~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m4[0m - [91merror[0m[90m TS1003: [0mIdentifier expected.
+
+[7m122[0m    );
+[7m   [0m [91m   ~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30T15:37:59.776Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m4[0m - [91merror[0m[90m TS1003: [0mIdentifier expected.
+
+[7m122[0m    );
+[7m   [0m [91m   ~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m4[0m - [91merror[0m[90m TS1003: [0mIdentifier expected.
+
+[7m122[0m    );
+[7m   [0m [91m   ~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m5[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+[7m122[0m    );
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30 16:37:59
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m84[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wallet.walletType === ))
+[7m   [0m [91m                                                                                   ~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m4[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m122[0m    );
+[7m   [0m [91m   ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m84[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wallet.walletType === ))
+[7m   [0m [91m                                                                                   ~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m4[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m122[0m    );
+[7m   [0m [91m   ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30 16:38:05
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m84[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wallet.walletType === ))
+[7m   [0m [91m                                                                                   ~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m4[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m122[0m    );
+[7m   [0m [91m   ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m84[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wallet.walletType === ))
+[7m   [0m [91m                                                                                   ~[0m
+[96msrc/services/TransactionService.ts[0m:[93m122[0m:[93m4[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m122[0m    );
+[7m   [0m [91m   ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30T15:38:05.881Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m84[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wallet.walletType === )
+[7m   [0m [91m                                                                                   ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m84[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wallet.walletType === )
+[7m   [0m [91m                                                                                   ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30 16:38:09
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m84[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wallet.walletType === )
+[7m   [0m [91m                                                                                   ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m84[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && wallet.walletType === )
+[7m   [0m [91m                                                                                   ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30T15:38:09.207Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m85[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && (wallet.walletType === ))
+[7m   [0m [91m                                                                                    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m85[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && (wallet.walletType === ))
+[7m   [0m [91m                                                                                    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30 16:38:18
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m85[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && (wallet.walletType === ))
+[7m   [0m [91m                                                                                    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/TransactionService.ts[0m:[93m121[0m:[93m85[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+[7m121[0m     (wallet) => ((wallet.currency === payload.toCurrency) && (wallet.walletType === ))
+[7m   [0m [91m                                                                                    ~[0m
+
+    at createTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/macbook/Desktop/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19) [unkown-service] development 2024-05-30T15:38:18.632Z

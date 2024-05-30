@@ -2,12 +2,12 @@ import { IAddressInput } from ".";
 import { Currency } from "./currency";
 
 export enum Network {
-	BSC = "Binance Smart Chain",
-	TRX = "Tron",
-	SOL = "Solana",
+	BSC = "Binance Smart Chain (BEP20)",
+	TRX = "Tron (TRC20)",
+	SOL = "Solana (SOL)",
 	BTC = "Bitcoin (BTC) Network",
-	AVAX = "Avalanche",
-	XRP = "Ripple",
+	AVAX = "Avalanche (AVAX)",
+	XRP = "Ripple (XRP)",
 }
 
 export interface UserNetworkAddress {
