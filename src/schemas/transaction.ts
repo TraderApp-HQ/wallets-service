@@ -1,4 +1,6 @@
+import { ITransactionInput } from ".";
 import { Currency } from "./currency";
+import { Network } from "./network";
 import { WalletType } from "./wallet";
 
 export enum TransactionType {
@@ -20,8 +22,9 @@ export enum TransactionStatus {
 }
 
 export interface ITransaction {
+	id?: string;
 	transactionId: string;
-	transactionNetwork: string;
+	transactionNetwork?: Network;
 	userId: string;
 	fromWallet?: WalletType;
 	toWallet?: WalletType;
@@ -38,19 +41,40 @@ export interface ITransaction {
 	transactionWalletType: TransactionWalletType;
 }
 
-export interface IDepositFundsPayload {
+export interface IDepositFundsPayload extends ITransactionInput {
 	userId: string;
-	fromWallet?: WalletType;
 	fromWalletAddress?: string;
+	toWalletAddress?: string;
+	toWallet?: WalletType;
+	fromCurrency: Currency;
+	toCurrency: Currency;
+	fromAmount: number;
+	network: Network;
+}
+
+export interface IWithdrawFundsPayload extends ITransactionInput {
+	userId: string;
+	fromWalletAddress?: string;
+	toWalletAddress?: string;
+	fromCurrency: Currency;
+	toCurrency: Currency;
+	fromAmount: number;
+	network: Network;
+}
+
+export interface IConvertFundsPayload extends ITransactionInput {
+	userId: string;
+	fromWallet: WalletType;
+	toWallet: WalletType;
 	fromCurrency: Currency;
 	toCurrency: Currency;
 	fromAmount: number;
 }
 
-export interface IWithdrawFundsPayload {
+export interface ITransferFundsPayload extends ITransactionInput {
 	userId: string;
-	toWallet?: WalletType;
-	toWalletAddress?: string;
+	fromWallet: WalletType;
+	toWallet: WalletType;
 	fromCurrency: Currency;
 	toCurrency: Currency;
 	fromAmount: number;

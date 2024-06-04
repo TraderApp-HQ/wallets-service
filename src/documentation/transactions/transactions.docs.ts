@@ -1,4 +1,7 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
+import { Currency } from "../../schemas/currency";
+import { Network } from "../../schemas/network";
+import { WalletType } from "../../schemas/wallet";
 
 const getTransactionsParams = {
 	type: "object",
@@ -79,6 +82,31 @@ const depositFundsBody = {
 			type: "string",
 			example: "1234567890",
 		},
+		fromWalletAddress: {
+			type: "string",
+		},
+		toWalletAddress: {
+			type: "string",
+		},
+		toWallet: {
+			type: "string",
+			enum: Object.values(WalletType),
+		},
+		fromCurrency: {
+			type: "string",
+			enum: Object.values(Currency),
+		},
+		toCurrency: {
+			type: "string",
+			enum: Object.values(Currency),
+		},
+		fromAmount: {
+			type: "number",
+		},
+		network: {
+			type: "string",
+			enum: Object.values(Network),
+		},
 	},
 };
 
@@ -110,17 +138,42 @@ const withdrawFundsBody = {
 			type: "string",
 			example: "1234567890",
 		},
+		fromWalletAddress: {
+			type: "string",
+		},
+		toWalletAddress: {
+			type: "string",
+		},
+		fromWallet: {
+			type: "string",
+			enum: Object.values(WalletType),
+		},
+		fromCurrency: {
+			type: "string",
+			enum: Object.values(Currency),
+		},
+		toCurrency: {
+			type: "string",
+			enum: Object.values(Currency),
+		},
+		fromAmount: {
+			type: "string",
+		},
+		network: {
+			type: "string",
+			enum: Object.values(Network),
+		},
 	},
 };
 
 const withdrawFunds = {
 	tags: ["Transactions"],
-	description: "Create a new deposit transaction",
+	description: "Create a new withdrawal transaction",
 	requestBody: {
 		content: {
 			"application/json": {
 				schema: {
-					$ref: "#/components/schemas/depositFundsBody",
+					$ref: "#/components/schemas/withdrawFundsBody",
 				},
 			},
 		},
@@ -140,6 +193,25 @@ const convertFundsBody = {
 		userId: {
 			type: "string",
 			example: "1234567890",
+		},
+		fromWallet: {
+			type: "string",
+			enum: Object.values(WalletType),
+		},
+		toWallet: {
+			type: "string",
+			enum: Object.values(WalletType),
+		},
+		fromCurrency: {
+			type: "string",
+			enum: Object.values(Currency),
+		},
+		toCurrency: {
+			type: "string",
+			enum: Object.values(Currency),
+		},
+		fromAmount: {
+			type: "number",
 		},
 	},
 };
@@ -171,6 +243,25 @@ const transferFundsBody = {
 		userId: {
 			type: "string",
 			example: "1234567890",
+		},
+		fromWallet: {
+			type: "string",
+			enum: Object.values(WalletType),
+		},
+		toWallet: {
+			type: "string",
+			enum: Object.values(WalletType),
+		},
+		fromCurrency: {
+			type: "string",
+			enum: Object.values(Currency),
+		},
+		toCurrency: {
+			type: "string",
+			enum: Object.values(Currency),
+		},
+		fromAmount: {
+			type: "number",
 		},
 	},
 };

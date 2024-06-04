@@ -29,3 +29,7 @@ export interface ITransactionInput extends BaseInput {
 export interface IWalletInput extends BaseInput {
 	res: Response;
 }
+
+export interface IAddressInput extends BaseInput {
+	res: Response;
+}

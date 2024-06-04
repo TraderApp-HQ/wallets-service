@@ -27,7 +27,6 @@ initSecrets({
 })
 	.then(async () => {
 		const PORT = process.env.PORT;
-		// initFirebase();
 		app.listen(PORT, () => {
 			logger.log(`Server listening at port ${PORT}`);
 			startServer();

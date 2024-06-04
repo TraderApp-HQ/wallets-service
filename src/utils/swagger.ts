@@ -20,6 +20,12 @@ import {
 	withdrawFunds,
 	withdrawFundsBody,
 } from "../documentation/transactions";
+import {
+	createUserNetworkAddress,
+	createUserNetworkAddressBody,
+	getNetworkAddresses,
+	getNetworkAddressParams,
+} from "../documentation/addresses";
 
 const options: swaggerJsdoc.Options = {
 	swaggerDefinition: {
@@ -46,6 +52,8 @@ const options: swaggerJsdoc.Options = {
 				convertFundsBody,
 				transferFundsBody,
 				getTransactionsParams,
+				getNetworkAddressParams,
+				createUserNetworkAddressBody,
 			},
 		},
 		security: [
@@ -61,6 +69,7 @@ const options: swaggerJsdoc.Options = {
 			[`${ROUTES.transactions}/withdrawal`]: { post: withdrawFunds },
 			[`${ROUTES.transactions}/convert`]: { post: convertFunds },
 			[`${ROUTES.transactions}/transfer`]: { post: transferFunds },
+			[`${ROUTES.addresses}`]: { post: createUserNetworkAddress, get: getNetworkAddresses },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files

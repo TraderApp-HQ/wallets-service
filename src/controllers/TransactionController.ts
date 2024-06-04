@@ -1,4 +1,10 @@
 import { Request, Response, NextFunction } from "express";
+import {
+	IConvertFundsPayload,
+	IDepositFundsPayload,
+	ITransferFundsPayload,
+	IWithdrawFundsPayload,
+} from "../schemas/transaction";
 import { TransactionService } from "../services/TransactionService";
 
 export class TransactionController {
@@ -18,36 +24,36 @@ export class TransactionController {
 	}
 
 	public async depositFunds(req: Request, res: Response, next: NextFunction) {
-		const { userId } = req.body;
+		const payload: IDepositFundsPayload = req.body;
 		try {
-			return await this.transactionService.depositFunds({ userId, res });
+			return await this.transactionService.depositFunds({ ...payload, res });
 		} catch (error) {
 			next(error);
 		}
 	}
 
 	public async withdrawFunds(req: Request, res: Response, next: NextFunction) {
-		const { userId } = req.body;
+		const payload: IWithdrawFundsPayload = req.body;
 		try {
-			return await this.transactionService.withdrawFunds({ userId, res });
+			return await this.transactionService.withdrawFunds({ ...payload, res });
 		} catch (error) {
 			next(error);
 		}
 	}
 
 	public async convertFunds(req: Request, res: Response, next: NextFunction) {
-		const { userId } = req.body;
+		const payload: IConvertFundsPayload = req.body;
 		try {
-			return await this.transactionService.convertFunds({ userId, res });
+			return await this.transactionService.convertFunds({ ...payload, res });
 		} catch (error) {
 			next(error);
 		}
 	}
 
 	public async transferFunds(req: Request, res: Response, next: NextFunction) {
-		const { userId } = req.body;
+		const payload: ITransferFundsPayload = req.body;
 		try {
-			return await this.transactionService.transferFunds({ userId, res });
+			return await this.transactionService.transferFunds({ ...payload, res });
 		} catch (error) {
 			next(error);
 		}

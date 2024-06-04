@@ -2,9 +2,12 @@ import { apiResponseHandler } from "@traderapp/shared-resources";
 import { Response } from "express";
 import { COLLECTIONS, ResponseType } from "../config/constants";
 import { db } from "../firebase";
-import { Currency } from "../schemas/currency";
 import {
+	IConvertFundsPayload,
+	IDepositFundsPayload,
 	ITransaction,
+	ITransferFundsPayload,
+	IWithdrawFundsPayload,
 	TransactionStatus,
 	TransactionType,
 	TransactionWalletType,
@@ -12,8 +15,9 @@ import {
 import { HttpStatus } from "../utils/httpStatus";
 import { WalletService } from "./WalletService";
 import { v4 as uuidv4 } from "uuid";
-import { WalletType } from "../schemas/wallet";
+import { UserWallet, WalletType } from "../schemas/wallet";
 import { BaseInput, ITransactionInput } from "../schemas";
+import { AddressService } from "./AddressService";
 
 // TODO
 // Refactor to accomodate the webhook logic
@@ -21,7 +25,10 @@ import { BaseInput, ITransactionInput } from "../schemas";
 // eg. TransactionStatus.PENDING ==> TransactionStatus.SUCCESS or TransactionStatus.FAILED
 
 export class TransactionService {
-	constructor(private readonly walletService: WalletService) {}
+	constructor(
+		private readonly walletService: WalletService,
+		private readonly addressService: AddressService
+	) {}
 
 	public async getTransactions({ userId, res }: ITransactionInput): Promise<Response> {
 		try {
@@ -47,10 +54,12 @@ export class TransactionService {
 		}
 	}
 
-	public async depositFunds({ userId, res }: ITransactionInput): Promise<Response> {
+	public async depositFunds({ res, ...payload }: IDepositFundsPayload): Promise<Response> {
 		try {
 			// Confirm user has an existing wallet
-			const wallets = await this.walletService.getUserWalletBalance({ userId });
+			const wallets: UserWallet[] | null = await this.walletService.getUserWalletBalance({
+				userId: payload.userId,
+			});
 			if (!wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
@@ -59,6 +68,7 @@ export class TransactionService {
 					})
 				);
 			}
+
 			// TODO
 			// Check external service availability & requirements
 			// Retrieve incoming funds detail and validate
@@ -67,28 +77,41 @@ export class TransactionService {
 
 			const transaction: ITransaction = {
 				transactionId,
-				transactionNetwork: "network_name",
-				userId,
-				fromCurrency: Currency.USDT,
-				toCurrency: Currency.USDT,
-				fromWalletAddress: "walletAddressReference",
-				toWalletAddress: "toWalletAddressRefence",
-				toWallet: WalletType.MAIN,
+				transactionNetwork: payload.network,
+				userId: payload.userId,
+				fromCurrency: payload.fromCurrency,
+				toCurrency: payload.toCurrency,
+				fromWalletAddress: payload.fromWalletAddress,
+				toWalletAddress: payload.toWalletAddress,
+				toWallet: payload.toWallet,
 				conversionRate: 1,
-				fromAmount: 65,
-				toAmount: 65,
+				fromAmount: payload.fromAmount,
+				toAmount: payload.fromAmount,
 				type: TransactionType.DEPOSIT,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
 				transactionWalletType: TransactionWalletType.EXTERNAL,
 			};
 
-			await db.collection(COLLECTIONS.transactions).add(transaction);
+			const wallet: UserWallet | any = wallets.find(
+				(wallet) =>
+					wallet.currency === payload.toCurrency && wallet.walletType === WalletType.MAIN
+			);
+			// updates wallet balance
+			// this step would be handled by a webhook call to update transaction status and possibly wallet balance
+			if (wallet) {
+				const newBalance = wallet.balance + payload.fromAmount;
+				await db
+					.collection(COLLECTIONS.wallets)
+					.doc(wallet.id)
+					.update({ balance: newBalance });
+				await db.collection(COLLECTIONS.transactions).add(transaction);
+			}
 
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
 					type: ResponseType.SUCCESS,
-					message: "Funds deposited successfully!",
+					message: "Deposit transaction submitted for processing!",
 					object: { transaction },
 				})
 			);
@@ -97,9 +120,11 @@ export class TransactionService {
 		}
 	}
 
-	public async withdrawFunds({ userId, res }: ITransactionInput): Promise<Response> {
+	public async withdrawFunds({ res, ...payload }: IWithdrawFundsPayload): Promise<Response> {
 		try {
-			const wallets = await this.walletService.getUserWalletBalance({ userId });
+			const wallets = await this.walletService.getUserWalletBalance({
+				userId: payload.userId,
+			});
 			if (!wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
@@ -108,6 +133,19 @@ export class TransactionService {
 					})
 				);
 			}
+			const wallet: UserWallet | any = wallets.find(
+				(wallet) =>
+					wallet.currency === payload.toCurrency && wallet.walletType === WalletType.MAIN
+			);
+			if (wallet.balance < payload.fromAmount) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: "Insufficient balance",
+					})
+				);
+			}
+
 			// TODO
 			// Check external service availability & requirements
 			// Retrieve outgoing funds detail and validate
@@ -116,28 +154,36 @@ export class TransactionService {
 
 			const transaction: ITransaction = {
 				transactionId,
-				transactionNetwork: "network_name",
-				userId,
-				fromCurrency: Currency.BTC,
-				toCurrency: Currency.BTC,
-				fromWalletAddress: "walletAddressReference",
-				toWalletAddress: "toWalletAddressRefence",
-				fromWallet: WalletType.MAIN,
+				transactionNetwork: payload.network,
+				userId: payload.userId,
+				fromCurrency: payload.fromCurrency,
+				toCurrency: payload.toCurrency,
+				fromWalletAddress: payload.fromWalletAddress,
+				toWalletAddress: payload.toWalletAddress,
 				conversionRate: 1,
-				fromAmount: 2,
-				toAmount: 2,
+				fromAmount: payload.fromAmount,
+				toAmount: payload.fromAmount,
 				type: TransactionType.WITHDRAWAL,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
 				transactionWalletType: TransactionWalletType.EXTERNAL,
 			};
 
-			await db.collection(COLLECTIONS.transactions).add(transaction);
+			// updates wallet balance
+			// this step would be handled by a webhook call to update transaction status and possibly wallet balance
+			if (wallet) {
+				const newBalance = wallet.balance - payload.fromAmount;
+				await db
+					.collection(COLLECTIONS.wallets)
+					.doc(wallet.id)
+					.update({ balance: newBalance });
+				await db.collection(COLLECTIONS.transactions).add(transaction);
+			}
 
 			return res.status(HttpStatus.OK).json(
 				apiResponseHandler({
 					type: ResponseType.SUCCESS,
-					message: "Funds withdrawal completed successfully!",
+					message: "Withdrawal transaction submitted for processing!!",
 					object: { transaction },
 				})
 			);
@@ -146,9 +192,11 @@ export class TransactionService {
 		}
 	}
 
-	public async convertFunds({ userId, res }: ITransactionInput): Promise<Response> {
+	public async convertFunds({ res, ...payload }: IConvertFundsPayload): Promise<Response> {
 		try {
-			const wallets = await this.walletService.getUserWalletBalance({ userId });
+			const wallets = await this.walletService.getUserWalletBalance({
+				userId: payload.userId,
+			});
 			if (!wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
@@ -157,27 +205,73 @@ export class TransactionService {
 					})
 				);
 			}
+			const fromWallet: UserWallet | any = wallets.find(
+				(wallet) =>
+					wallet.currency === payload.fromCurrency &&
+					wallet.walletType === WalletType.MAIN
+			);
+			if (!fromWallet) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: `${WalletType.MAIN} wallet not found`,
+					})
+				);
+			}
+			if (fromWallet.balance < payload.fromAmount) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: "Insufficient balance",
+					})
+				);
+			}
+			const toWallet: UserWallet | any = wallets.find(
+				(wallet) =>
+					wallet.currency === payload.toCurrency && wallet.walletType === WalletType.MAIN
+			);
+			if (!toWallet) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: `${payload.toWallet} wallet not found for specified ${payload.toCurrency}`,
+					})
+				);
+			}
 			// TODO
 			// Check external service availability & requirements
 			// Retrieve outgoing funds detail and validate
+			const currentExchangeRate = 1; // To be determined by rates retrieved from external rates service
 
 			const transactionId = uuidv4();
 
 			const transaction: ITransaction = {
 				transactionId,
-				transactionNetwork: "network_name",
-				userId,
-				fromCurrency: Currency.USDT,
-				toCurrency: Currency.BTC,
-				conversionRate: 0.1,
-				fromAmount: 6500,
-				toAmount: 0.1,
+				userId: payload.userId,
+				fromWallet: payload.fromWallet,
+				toWallet: payload.toWallet,
+				fromCurrency: payload.fromCurrency,
+				toCurrency: payload.toCurrency,
+				conversionRate: currentExchangeRate,
+				fromAmount: payload.fromAmount,
+				toAmount: payload.fromAmount,
 				type: TransactionType.CONVERT,
 				timestamp: new Date().toISOString(),
-				status: TransactionStatus.PENDING,
+				status: TransactionStatus.SUCCESS,
 				transactionWalletType: TransactionWalletType.INTERNAL,
 			};
 
+			const convertedFundsValue = payload.fromAmount * currentExchangeRate;
+			const newFromBalance = fromWallet.balance - payload.fromAmount;
+			const newToBalance = toWallet.balance + convertedFundsValue;
+			await db
+				.collection(COLLECTIONS.wallets)
+				.doc(fromWallet.id)
+				.update({ balance: newFromBalance });
+			await db
+				.collection(COLLECTIONS.wallets)
+				.doc(toWallet.id)
+				.update({ balance: newToBalance });
 			await db.collection(COLLECTIONS.transactions).add(transaction);
 
 			return res.status(HttpStatus.OK).json(
@@ -192,14 +286,49 @@ export class TransactionService {
 		}
 	}
 
-	public async transferFunds({ userId, res }: ITransactionInput): Promise<Response> {
+	public async transferFunds({ res, ...payload }: ITransferFundsPayload): Promise<Response> {
 		try {
-			const wallets = await this.walletService.getUserWalletBalance({ userId });
+			const wallets = await this.walletService.getUserWalletBalance({
+				userId: payload.userId,
+			});
 			if (!wallets) {
 				return res.status(HttpStatus.BAD_REQUEST).json(
 					apiResponseHandler({
 						type: ResponseType.ERROR,
 						message: "No existing wallets found",
+					})
+				);
+			}
+			const fromWallet: UserWallet | any = wallets.find(
+				(wallet) =>
+					wallet.currency === payload.fromCurrency &&
+					wallet.walletType === WalletType.MAIN
+			);
+			if (!fromWallet) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: `${WalletType.MAIN} wallet not found`,
+					})
+				);
+			}
+			if (fromWallet.balance < payload.fromAmount) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: "Insufficient balance",
+					})
+				);
+			}
+			const toWallet: UserWallet | any = wallets.find(
+				(wallet) =>
+					wallet.currency === payload.toCurrency && wallet.walletType === payload.toWallet
+			);
+			if (!toWallet) {
+				return res.status(HttpStatus.BAD_REQUEST).json(
+					apiResponseHandler({
+						type: ResponseType.ERROR,
+						message: `${payload.toWallet} wallet not found for specified ${payload.toCurrency}`,
 					})
 				);
 			}
@@ -211,23 +340,29 @@ export class TransactionService {
 
 			const transaction: ITransaction = {
 				transactionId,
-				transactionNetwork: "network_name",
-				userId,
-				fromCurrency: Currency.USDT,
-				toCurrency: Currency.USDT,
-				fromWalletAddress: "walletAddressReference",
-				toWalletAddress: "toWalletAddressRefence",
-				fromWallet: WalletType.MAIN,
-				toWallet: WalletType.FUTURES,
-				conversionRate: 1,
-				fromAmount: 50,
-				toAmount: 50,
+				userId: payload.userId,
+				fromWallet: payload.fromWallet,
+				toWallet: payload.toWallet,
+				fromCurrency: payload.fromCurrency,
+				toCurrency: payload.toCurrency,
+				fromAmount: payload.fromAmount,
+				toAmount: payload.fromAmount,
 				type: TransactionType.TRANSFER,
 				timestamp: new Date().toISOString(),
-				status: TransactionStatus.PENDING,
+				status: TransactionStatus.SUCCESS,
 				transactionWalletType: TransactionWalletType.INTERNAL,
 			};
 
+			const newFromBalance = fromWallet.balance - payload.fromAmount;
+			const newToBalance = toWallet.balance + payload.fromAmount;
+			await db
+				.collection(COLLECTIONS.wallets)
+				.doc(fromWallet.id)
+				.update({ balance: newFromBalance });
+			await db
+				.collection(COLLECTIONS.wallets)
+				.doc(toWallet.id)
+				.update({ balance: newToBalance });
 			await db.collection(COLLECTIONS.transactions).add(transaction);
 
 			return res.status(HttpStatus.OK).json(
@@ -256,7 +391,9 @@ export class TransactionService {
 			}
 
 			docs.forEach((doc) => {
-				transactions.push(doc.data() as ITransaction);
+				const data = doc.data() as ITransaction;
+				data.id = doc.id;
+				transactions.push(data);
 			});
 
 			return transactions;
