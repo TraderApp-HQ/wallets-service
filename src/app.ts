@@ -60,7 +60,7 @@ function startServer() {
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
-		res.status(200).send({ message: "pong" });
+		res.status(200).send({ message: "pong - wallets service" });
 	});
 
 	// handle errors
