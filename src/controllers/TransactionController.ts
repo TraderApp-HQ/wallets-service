@@ -1,4 +1,6 @@
+import { apiResponseHandler } from "@traderapp/shared-resources";
 import { Request, Response, NextFunction } from "express";
+import { ResponseType } from "../config/constants";
 import {
 	IConvertFundsPayload,
 	IDepositFundsPayload,
@@ -6,6 +8,7 @@ import {
 	IWithdrawFundsPayload,
 } from "../schemas/transaction";
 import { TransactionService } from "../services/TransactionService";
+import { HttpStatus } from "../utils/httpStatus";
 
 export class TransactionController {
 	private readonly transactionService: TransactionService;
@@ -17,7 +20,23 @@ export class TransactionController {
 	public async getTransactions(req: Request, res: Response, next: NextFunction) {
 		const { userId } = req.body;
 		try {
-			return await this.transactionService.getTransactions({ userId, res });
+			const transactions = await this.transactionService.getTransactions({ userId, res });
+			if (!transactions) {
+				return res.status(HttpStatus.OK).json(
+					apiResponseHandler({
+						type: ResponseType.SUCCESS,
+						message: "No transactions found!",
+					})
+				);
+			}
+
+			return res.status(HttpStatus.OK).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: "List of user transactions!",
+					object: { transactions },
+				})
+			);
 		} catch (error) {
 			next(error);
 		}

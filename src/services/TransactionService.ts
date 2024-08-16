@@ -16,8 +16,9 @@ import { HttpStatus } from "../utils/httpStatus";
 import { WalletService } from "./WalletService";
 import { v4 as uuidv4 } from "uuid";
 import { UserWallet, WalletType } from "../schemas/wallet";
-import { BaseInput, ITransactionInput } from "../schemas";
+import { ITransactionInput } from "../schemas";
 import { AddressService } from "./AddressService";
+import { DbService } from "./DbService";
 
 // TODO
 // Refactor to accomodate the webhook logic
@@ -27,28 +28,15 @@ import { AddressService } from "./AddressService";
 export class TransactionService {
 	constructor(
 		private readonly walletService: WalletService,
-		private readonly addressService: AddressService
+		private readonly addressService: AddressService,
+		private readonly dbService: DbService
 	) {}
 
-	public async getTransactions({ userId, res }: ITransactionInput): Promise<Response> {
+	public async getTransactions({ userId }: ITransactionInput): Promise<ITransaction[]> {
 		try {
-			const transactions = await this.getUserTransactions({ userId });
-			if (!transactions) {
-				return res.status(HttpStatus.OK).json(
-					apiResponseHandler({
-						type: ResponseType.SUCCESS,
-						message: "No transactions found!",
-					})
-				);
-			}
+			const transactions = await this.dbService.getUserTransactions(userId);
 
-			return res.status(HttpStatus.OK).json(
-				apiResponseHandler({
-					type: ResponseType.SUCCESS,
-					message: "List of user transactions!",
-					object: { transactions },
-				})
-			);
+			return transactions ?? [];
 		} catch (error: any) {
 			throw new Error(`Error with getting transactions: ${error.message}`);
 		}
@@ -355,6 +343,13 @@ export class TransactionService {
 
 			const newFromBalance = fromWallet.balance - payload.fromAmount;
 			const newToBalance = toWallet.balance + payload.fromAmount;
+			const fromDocRef = db.collection(COLLECTIONS.wallets).doc(fromWallet.id);
+			const toDocRef = db.collection(COLLECTIONS.wallets).doc(toWallet.id);
+			console.log(fromWallet?.id, toWallet?.id, fromDocRef, toDocRef);
+
+			if (fromWallet?.id || toWallet?.id) {
+				throw new Error("Wallet IDs are missing");
+			}
 			await db
 				.collection(COLLECTIONS.wallets)
 				.doc(fromWallet.id)
@@ -374,31 +369,6 @@ export class TransactionService {
 			);
 		} catch (error: any) {
 			throw new Error(`Error with fund transfer: ${error.message}`);
-		}
-	}
-
-	private async getUserTransactions({ userId }: BaseInput): Promise<ITransaction[] | null> {
-		try {
-			const docs = await db
-				.collection(COLLECTIONS.transactions)
-				.where("userId", "==", `${userId}`)
-				.get();
-
-			const transactions: ITransaction[] = [];
-
-			if (docs.empty) {
-				return null;
-			}
-
-			docs.forEach((doc) => {
-				const data = doc.data() as ITransaction;
-				data.id = doc.id;
-				transactions.push(data);
-			});
-
-			return transactions;
-		} catch (error: any) {
-			throw new Error(`Error with getting user transactions: ${error.message}`);
 		}
 	}
 }
