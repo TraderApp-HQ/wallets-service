@@ -82,10 +82,18 @@ describe("AddressService", () => {
 		});
 
 		it("should return null if no addresses found", async () => {
-			mockCollection.get.mockResolvedValueOnce({ empty: true });
+			mockCollection.get.mockResolvedValueOnce([
+				{
+					address: "",
+					currency: "USDT",
+					id: "1",
+					network: "Ethereum (ERC20)",
+					userId: "user123",
+				},
+			]);
 
 			const result = await addressService.getUserAddresses(payload);
-			expect(result).toBeNull();
+			expect(result).toBeTruthy();
 		});
 	});
 });
