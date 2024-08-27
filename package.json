@@ -22,6 +22,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@aws-sdk/client-sqs": "^3.637.0",
 		"@traderapp/shared-resources": "^1.0.5",
 		"axios": "^1.3.4",
 		"cors": "^2.8.5",

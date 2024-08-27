@@ -11,6 +11,7 @@ import specs from "./utils/swagger";
 // import routes
 // import initFirebase from "./firebase";
 import { routeHandler } from "./routes";
+import { pollWalletCreationQueue } from "./utils/queues";
 
 config();
 
@@ -51,6 +52,14 @@ function startServer() {
 	app.use(express.urlencoded({ extended: true }));
 	app.use(express.json());
 
+	// poll wallet queue service
+	const startPolling = () => {
+		const interval = 60000;
+		setInterval(pollWalletCreationQueue, interval);
+		logger.log(`Polling the wallet service every: ${interval / 1000} secs`);
+	};
+
+	startPolling();
 	// documentation
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
