@@ -49,7 +49,7 @@ const mockTransaction = {
 	toAmount: 65,
 	fromWalletAddress: "walletAddressReference",
 	type: TransactionType.TRANSFER,
-	userId: 'abd95506-f14e-478f-8480-30aec4fa6ed0"',
+	userId: "abd95506-f14e-478f-8480-30aec4fa6ed0",
 	conversionRate: 1,
 	transactionWalletType: TransactionWalletType.EXTERNAL,
 	transactionId: "b33087d0-074c-4239-8c5a-bce680683548",

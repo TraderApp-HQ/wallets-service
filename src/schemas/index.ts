@@ -27,9 +27,13 @@ export interface ITransactionInput extends BaseInput {
 }
 
 export interface IWalletInput extends BaseInput {
-	res: Response;
+	userType?: string;
 }
 
 export interface IAddressInput extends BaseInput {
 	res: Response;
+}
+
+export enum UserType {
+	ADMIN = "admin",
 }
