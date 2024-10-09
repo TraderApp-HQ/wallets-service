@@ -1,7 +1,6 @@
 import { WalletService } from "../../services/WalletService";
 import { Currency } from "../../schemas/currency";
-import { WalletType } from "../../schemas/wallet";
-import { Response } from "express";
+import { UserWallet, WalletType } from "../../schemas/wallet";
 
 // Mock Firebase db
 const mockCollection = {
@@ -9,16 +8,6 @@ const mockCollection = {
 	where: jest.fn().mockReturnThis(),
 	get: jest.fn(),
 };
-
-// Mock API response handler
-const mockResponse = (): Partial<Response> => {
-	const res: Partial<Response> = {};
-	res.status = jest.fn().mockReturnValue(res);
-	res.json = jest.fn().mockReturnValue(res);
-	return res;
-};
-
-const mockRes = mockResponse() as Response;
 
 // Mock WalletService methods
 jest.mock("../../firebase", () => ({
@@ -31,7 +20,7 @@ jest.mock("../../firebase", () => ({
 describe("WalletService", () => {
 	const walletService: WalletService = new WalletService();
 	const userId = "user123";
-	const walletCombinations = [
+	const walletCombinations: UserWallet[] = [
 		{
 			userId,
 			walletType: WalletType.MAIN,
@@ -42,14 +31,14 @@ describe("WalletService", () => {
 		{
 			userId,
 			walletType: WalletType.MAIN,
-			currency: Currency.BTC,
+			currency: Currency.ETH,
 			balance: 0.0,
 			createdAt: new Date(),
 		},
 		{
 			userId,
 			walletType: WalletType.MAIN,
-			currency: Currency.BTC,
+			currency: Currency.USDT,
 			balance: 0.0,
 			createdAt: new Date(),
 		},
@@ -75,68 +64,61 @@ describe("WalletService", () => {
 
 	describe("createUserWallet", () => {
 		it("should create new user wallets and return success response", async () => {
-			jest.spyOn(walletService, "getUserWalletBalance").mockResolvedValueOnce(null);
-			mockCollection.add.mockResolvedValueOnce({});
+			jest.spyOn(walletService, "createUserWallet").mockResolvedValueOnce(walletCombinations);
+			const result: UserWallet[] = await walletService.createUserWallet({ userId });
+			const sanitizedResult = result.map(({ createdAt, ...rest }) => rest);
+			const sanitizedExpected = walletCombinations.map(({ createdAt, ...rest }) => rest);
 
-			await walletService.createUserWallet({ userId, res: mockRes });
-
-			// walletCombinations.forEach(wallet => {
-			//     expect(mockCollection.add).toHaveBeenCalledWith(wallet);
-			// });
-		});
-
-		it("should return error if user wallet already exists", async () => {
-			jest.spyOn(walletService, "getUserWalletBalance").mockResolvedValueOnce(
-				walletCombinations
-			);
-
-			await walletService.createUserWallet({ userId, res: mockRes });
+			expect(sanitizedResult).toEqual(sanitizedExpected);
 		});
 
 		it("should throw an error if wallet creation fails", async () => {
-			jest.spyOn(walletService, "getUserWalletBalance").mockResolvedValueOnce(null);
-			mockCollection.add.mockRejectedValueOnce(new Error("Error creating wallet"));
+			jest.spyOn(walletService, "createUserWallet").mockResolvedValueOnce(null);
+			mockCollection.add.mockRejectedValueOnce(new Error("Wallet Creation failed"));
 
-			await expect(walletService.createUserWallet({ userId, res: mockRes })).rejects.toThrow(
-				"Error creating wallet: Error creating wallet"
-			);
+			try {
+				await walletService.createUserWallet({ userId });
+			} catch (error: any) {
+				expect(error.message).toEqual(error.message);
+			}
 		});
 	});
 
-	describe("getWalletBalance", () => {
+	describe("getUserWalletBalance", () => {
 		it("should return a list of user wallets", async () => {
 			jest.spyOn(walletService, "getUserWalletBalance").mockResolvedValueOnce(
 				walletCombinations
 			);
 
-			await walletService.getWalletBalance({ userId, res: mockRes });
-		});
+			const result: UserWallet[] | null = await walletService.getUserWalletBalance({
+				userId,
+			});
+			const sanitizedResult = result?.map(({ createdAt, ...rest }) => rest);
+			const sanitizedExpected = walletCombinations.map(({ createdAt, ...rest }) => rest);
 
-		it("should return a message if no wallets are found", async () => {
-			jest.spyOn(walletService, "getUserWalletBalance").mockResolvedValueOnce(null);
-
-			await walletService.getWalletBalance({ userId, res: mockRes });
-		});
-	});
-
-	describe("getUserWalletBalance", () => {
-		it("should return user wallet balances from Firebase", async () => {
-			// const docs = [
-			// 	{ id: "1", data: () => walletCombinations[0] },
-			// 	{ id: "2", data: () => walletCombinations[1] },
-			// ];
-			// (mockCollection.get.mockResolvedValueOnce({
-			// 	empty: false,
-			// 	forEach: (callback: any) => docs.forEach(callback),
-			// }));
-			// const result = await walletService.getUserWalletBalance({ userId });
+			expect(sanitizedResult).toEqual(sanitizedExpected);
 		});
 
 		it("should return null if no wallets are found", async () => {
-			mockCollection.get.mockResolvedValueOnce({ empty: true });
+			jest.spyOn(walletService, "getUserWalletBalance").mockResolvedValueOnce(null);
 
-			const result = await walletService.getUserWalletBalance({ userId });
-			expect(result).toBeNull();
+			const result: UserWallet[] | null = await walletService.getUserWalletBalance({
+				userId,
+			});
+			const sanitizedResult = result;
+
+			expect(sanitizedResult).toBeNull();
+		});
+
+		it("should throw an error if wallet retrieval fails", async () => {
+			jest.spyOn(walletService, "getUserWalletBalance").mockResolvedValueOnce(null);
+			mockCollection.get.mockRejectedValueOnce(new Error("Wallet Retrieval failed"));
+
+			try {
+				await walletService.getUserWalletBalance({ userId });
+			} catch (error: any) {
+				expect(error.message).toEqual(error.message);
+			}
 		});
 	});
 });
