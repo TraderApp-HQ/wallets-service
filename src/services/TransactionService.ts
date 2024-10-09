@@ -1,6 +1,4 @@
-import { apiResponseHandler } from "@traderapp/shared-resources";
-import { Response } from "express";
-import { COLLECTIONS, ResponseType } from "../config/constants";
+import { COLLECTIONS } from "../config/constants";
 import { db } from "../firebase";
 import {
 	IConvertFundsPayload,
@@ -12,7 +10,6 @@ import {
 	TransactionType,
 	TransactionWalletType,
 } from "../schemas/transaction";
-import { HttpStatus } from "../utils/httpStatus";
 import { WalletService } from "./WalletService";
 import { v4 as uuidv4 } from "uuid";
 import { UserWallet, WalletType } from "../schemas/wallet";
@@ -42,19 +39,24 @@ export class TransactionService {
 		}
 	}
 
-	public async depositFunds({ res, ...payload }: IDepositFundsPayload): Promise<Response> {
+	public async depositFunds(payload: IDepositFundsPayload): Promise<ITransaction> {
 		try {
+			const {
+				network,
+				userId,
+				fromCurrency,
+				toCurrency,
+				fromWalletAddress,
+				toWalletAddress,
+				toWallet,
+				fromAmount,
+			} = payload;
 			// Confirm user has an existing wallet
 			const wallets: UserWallet[] | null = await this.walletService.getUserWalletBalance({
-				userId: payload.userId,
+				userId,
 			});
 			if (!wallets) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: "No existing wallets found",
-					})
-				);
+				throw new Error("No existing wallets found");
 			}
 
 			// TODO
@@ -65,16 +67,16 @@ export class TransactionService {
 
 			const transaction: ITransaction = {
 				transactionId,
-				transactionNetwork: payload.network,
-				userId: payload.userId,
-				fromCurrency: payload.fromCurrency,
-				toCurrency: payload.toCurrency,
-				fromWalletAddress: payload.fromWalletAddress,
-				toWalletAddress: payload.toWalletAddress,
-				toWallet: payload.toWallet,
+				transactionNetwork: network,
+				userId,
+				fromCurrency,
+				toCurrency,
+				fromWalletAddress,
+				toWalletAddress,
+				toWallet,
 				conversionRate: 1,
-				fromAmount: payload.fromAmount,
-				toAmount: payload.fromAmount,
+				fromAmount,
+				toAmount: fromAmount,
 				type: TransactionType.DEPOSIT,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
@@ -82,56 +84,51 @@ export class TransactionService {
 			};
 
 			const wallet: UserWallet | any = wallets.find(
-				(wallet) =>
-					wallet.currency === payload.toCurrency && wallet.walletType === WalletType.MAIN
+				(wallet) => wallet.currency === toCurrency && wallet.walletType === WalletType.MAIN
 			);
 			// updates wallet balance
 			// this step would be handled by a webhook call to update transaction status and possibly wallet balance
-			if (wallet) {
-				const newBalance = wallet.balance + payload.fromAmount;
+			if (!wallet) {
+				throw new Error("No wallet with specified currency found");
+			} else {
+				const newBalance = wallet.balance + fromAmount;
 				await db
 					.collection(COLLECTIONS.wallets)
 					.doc(wallet.id)
 					.update({ balance: newBalance });
 				await db.collection(COLLECTIONS.transactions).add(transaction);
 			}
-
-			return res.status(HttpStatus.OK).json(
-				apiResponseHandler({
-					type: ResponseType.SUCCESS,
-					message: "Deposit transaction submitted for processing!",
-					object: { transaction },
-				})
-			);
+			return transaction;
 		} catch (error: any) {
 			throw new Error(`Error with fund deposit: ${error.message}`);
 		}
 	}
 
-	public async withdrawFunds({ res, ...payload }: IWithdrawFundsPayload): Promise<Response> {
+	public async withdrawFunds(payload: IWithdrawFundsPayload): Promise<ITransaction> {
 		try {
+			const {
+				network,
+				userId,
+				fromCurrency,
+				toCurrency,
+				fromWalletAddress,
+				toWalletAddress,
+				fromAmount,
+			} = payload;
 			const wallets = await this.walletService.getUserWalletBalance({
-				userId: payload.userId,
+				userId,
 			});
 			if (!wallets) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: "No existing wallets found",
-					})
-				);
+				throw new Error("No existing wallets found");
 			}
 			const wallet: UserWallet | any = wallets.find(
-				(wallet) =>
-					wallet.currency === payload.toCurrency && wallet.walletType === WalletType.MAIN
+				(wallet) => wallet.currency === toCurrency && wallet.walletType === WalletType.MAIN
 			);
-			if (wallet.balance < payload.fromAmount) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: "Insufficient balance",
-					})
-				);
+			if (!wallet) {
+				throw new Error("No wallet with specified currency found");
+			}
+			if (wallet.balance < fromAmount) {
+				throw new Error("Insufficient balance");
 			}
 
 			// TODO
@@ -142,15 +139,15 @@ export class TransactionService {
 
 			const transaction: ITransaction = {
 				transactionId,
-				transactionNetwork: payload.network,
-				userId: payload.userId,
-				fromCurrency: payload.fromCurrency,
-				toCurrency: payload.toCurrency,
-				fromWalletAddress: payload.fromWalletAddress,
-				toWalletAddress: payload.toWalletAddress,
+				transactionNetwork: network,
+				userId,
+				fromCurrency,
+				toCurrency,
+				fromWalletAddress,
+				toWalletAddress,
 				conversionRate: 1,
-				fromAmount: payload.fromAmount,
-				toAmount: payload.fromAmount,
+				fromAmount,
+				toAmount: fromAmount,
 				type: TransactionType.WITHDRAWAL,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.PENDING,
@@ -159,72 +156,40 @@ export class TransactionService {
 
 			// updates wallet balance
 			// this step would be handled by a webhook call to update transaction status and possibly wallet balance
-			if (wallet) {
-				const newBalance = wallet.balance - payload.fromAmount;
-				await db
-					.collection(COLLECTIONS.wallets)
-					.doc(wallet.id)
-					.update({ balance: newBalance });
-				await db.collection(COLLECTIONS.transactions).add(transaction);
-			}
 
-			return res.status(HttpStatus.OK).json(
-				apiResponseHandler({
-					type: ResponseType.SUCCESS,
-					message: "Withdrawal transaction submitted for processing!!",
-					object: { transaction },
-				})
-			);
+			const newBalance = wallet.balance - fromAmount;
+			await db.collection(COLLECTIONS.wallets).doc(wallet.id).update({ balance: newBalance });
+			await db.collection(COLLECTIONS.transactions).add(transaction);
+			return transaction;
 		} catch (error: any) {
 			throw new Error(`Error with fund withdrawal: ${error.message}`);
 		}
 	}
 
-	public async convertFunds({ res, ...payload }: IConvertFundsPayload): Promise<Response> {
+	public async convertFunds(payload: IConvertFundsPayload): Promise<ITransaction> {
 		try {
+			const { userId, fromCurrency, toCurrency, fromAmount } = payload;
 			const wallets = await this.walletService.getUserWalletBalance({
-				userId: payload.userId,
+				userId,
 			});
 			if (!wallets) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: "No existing wallets found",
-					})
-				);
+				throw new Error("No existing wallets found");
 			}
 			const fromWallet: UserWallet | any = wallets.find(
 				(wallet) =>
-					wallet.currency === payload.fromCurrency &&
-					wallet.walletType === WalletType.MAIN
+					wallet.currency === fromCurrency && wallet.walletType === WalletType.MAIN
 			);
 			if (!fromWallet) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: `${WalletType.MAIN} wallet not found`,
-					})
-				);
+				throw new Error(`${WalletType.MAIN} wallet not found`);
 			}
-			if (fromWallet.balance < payload.fromAmount) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: "Insufficient balance",
-					})
-				);
+			if (fromWallet.balance < fromAmount) {
+				throw new Error("Insufficient balance");
 			}
 			const toWallet: UserWallet | any = wallets.find(
-				(wallet) =>
-					wallet.currency === payload.toCurrency && wallet.walletType === WalletType.MAIN
+				(wallet) => wallet.currency === toCurrency && wallet.walletType === WalletType.MAIN
 			);
 			if (!toWallet) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: `${payload.toWallet} wallet not found for specified ${payload.toCurrency}`,
-					})
-				);
+				throw new Error(`${toWallet} wallet not found for specified ${toCurrency}`);
 			}
 			// TODO
 			// Check external service availability & requirements
@@ -235,22 +200,22 @@ export class TransactionService {
 
 			const transaction: ITransaction = {
 				transactionId,
-				userId: payload.userId,
-				fromWallet: payload.fromWallet,
-				toWallet: payload.toWallet,
-				fromCurrency: payload.fromCurrency,
-				toCurrency: payload.toCurrency,
+				userId,
+				fromWallet,
+				toWallet,
+				fromCurrency,
+				toCurrency,
 				conversionRate: currentExchangeRate,
-				fromAmount: payload.fromAmount,
-				toAmount: payload.fromAmount,
+				fromAmount,
+				toAmount: fromAmount,
 				type: TransactionType.CONVERT,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.SUCCESS,
 				transactionWalletType: TransactionWalletType.INTERNAL,
 			};
 
-			const convertedFundsValue = payload.fromAmount * currentExchangeRate;
-			const newFromBalance = fromWallet.balance - payload.fromAmount;
+			const convertedFundsValue = fromAmount * currentExchangeRate;
+			const newFromBalance = fromWallet.balance - fromAmount;
 			const newToBalance = toWallet.balance + convertedFundsValue;
 			await db
 				.collection(COLLECTIONS.wallets)
@@ -262,63 +227,36 @@ export class TransactionService {
 				.update({ balance: newToBalance });
 			await db.collection(COLLECTIONS.transactions).add(transaction);
 
-			return res.status(HttpStatus.OK).json(
-				apiResponseHandler({
-					type: ResponseType.SUCCESS,
-					message: "Funds conversion completed successfully!",
-					object: { transaction },
-				})
-			);
+			return transaction;
 		} catch (error: any) {
 			throw new Error(`Error with fund conversion: ${error.message}`);
 		}
 	}
 
-	public async transferFunds({ res, ...payload }: ITransferFundsPayload): Promise<Response> {
+	public async transferFunds(payload: ITransferFundsPayload): Promise<ITransaction> {
 		try {
+			const { userId, fromCurrency, toCurrency, fromAmount } = payload;
 			const wallets = await this.walletService.getUserWalletBalance({
-				userId: payload.userId,
+				userId,
 			});
 			if (!wallets) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: "No existing wallets found",
-					})
-				);
+				throw new Error("No existing wallets found");
 			}
 			const fromWallet: UserWallet | any = wallets.find(
 				(wallet) =>
-					wallet.currency === payload.fromCurrency &&
-					wallet.walletType === WalletType.MAIN
+					wallet.currency === fromCurrency && wallet.walletType === WalletType.MAIN
 			);
 			if (!fromWallet) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: `${WalletType.MAIN} wallet not found`,
-					})
-				);
+				throw new Error(`${WalletType.MAIN} wallet not found`);
 			}
-			if (fromWallet.balance < payload.fromAmount) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: "Insufficient balance",
-					})
-				);
+			if (fromWallet.balance < fromAmount) {
+				throw new Error("Insufficient balance");
 			}
 			const toWallet: UserWallet | any = wallets.find(
-				(wallet) =>
-					wallet.currency === payload.toCurrency && wallet.walletType === payload.toWallet
+				(wallet) => wallet.currency === toCurrency && wallet.walletType === WalletType.MAIN
 			);
 			if (!toWallet) {
-				return res.status(HttpStatus.BAD_REQUEST).json(
-					apiResponseHandler({
-						type: ResponseType.ERROR,
-						message: `${payload.toWallet} wallet not found for specified ${payload.toCurrency}`,
-					})
-				);
+				throw new Error(`${toWallet} wallet not found for specified ${toCurrency}`);
 			}
 			// TODO
 			// Check external service availability & requirements
@@ -328,27 +266,24 @@ export class TransactionService {
 
 			const transaction: ITransaction = {
 				transactionId,
-				userId: payload.userId,
-				fromWallet: payload.fromWallet,
-				toWallet: payload.toWallet,
-				fromCurrency: payload.fromCurrency,
-				toCurrency: payload.toCurrency,
-				fromAmount: payload.fromAmount,
-				toAmount: payload.fromAmount,
+				userId,
+				fromWallet,
+				toWallet,
+				fromCurrency,
+				toCurrency,
+				fromAmount,
+				toAmount: fromAmount,
 				type: TransactionType.TRANSFER,
 				timestamp: new Date().toISOString(),
 				status: TransactionStatus.SUCCESS,
 				transactionWalletType: TransactionWalletType.INTERNAL,
 			};
 
-			const newFromBalance = fromWallet.balance - payload.fromAmount;
-			const newToBalance = toWallet.balance + payload.fromAmount;
-			const fromDocRef = db.collection(COLLECTIONS.wallets).doc(fromWallet.id);
-			const toDocRef = db.collection(COLLECTIONS.wallets).doc(toWallet.id);
-			console.log(fromWallet?.id, toWallet?.id, fromDocRef, toDocRef);
+			const newFromBalance = fromWallet.balance - fromAmount;
+			const newToBalance = toWallet.balance + fromAmount;
 
-			if (fromWallet?.id || toWallet?.id) {
-				throw new Error("Wallet IDs are missing");
+			if (fromWallet?.id === toWallet?.id) {
+				throw new Error("Funds transfer from and to same wallet is not permitted");
 			}
 			await db
 				.collection(COLLECTIONS.wallets)
@@ -360,13 +295,7 @@ export class TransactionService {
 				.update({ balance: newToBalance });
 			await db.collection(COLLECTIONS.transactions).add(transaction);
 
-			return res.status(HttpStatus.OK).json(
-				apiResponseHandler({
-					type: ResponseType.SUCCESS,
-					message: "Funds transfer completed successfully!",
-					object: { transaction },
-				})
-			);
+			return transaction;
 		} catch (error: any) {
 			throw new Error(`Error with fund transfer: ${error.message}`);
 		}

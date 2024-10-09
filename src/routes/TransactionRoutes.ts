@@ -12,7 +12,7 @@ const router = async () => {
 	const addressService = new AddressService();
 	const dbService = new DbService(db);
 	const transactionService = new TransactionService(walletService, addressService, dbService);
-	const transactionController = new TransactionController(transactionService);
+	const transactionController = new TransactionController(transactionService, walletService);
 	const routerInit = Router();
 
 	routerInit.get(
