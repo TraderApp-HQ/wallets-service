@@ -23,7 +23,7 @@ export class TransactionController {
 	public async getTransactions(req: Request, res: Response, next: NextFunction) {
 		const { userId } = req.body;
 		try {
-			const transactions = await this.transactionService.getTransactions({ userId, res });
+			const transactions = await this.transactionService.getTransactions({ userId });
 			if (!transactions) {
 				return res.status(HttpStatus.OK).json(
 					apiResponseHandler({
