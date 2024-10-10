@@ -1,76 +1,43 @@
-import { apiResponseHandler } from "@traderapp/shared-resources";
-import { COLLECTIONS, ResponseType } from "../config/constants";
+import { COLLECTIONS } from "../config/constants";
 import { db } from "../firebase";
-import {
-	INetworkAddressInput,
-	INetworkAddressPayload,
-	UserNetworkAddress,
-} from "../schemas/network";
-import { HttpStatus } from "../utils/httpStatus";
+import { IAddressInput } from "../schemas";
+import { INetworkAddressPayload, UserNetworkAddress } from "../schemas/network";
 
 export class AddressService {
-	public async createUserNetworkAddress({
-		res,
-		...payload
-	}: INetworkAddressPayload): Promise<any> {
+	public async createUserNetworkAddress(payload: INetworkAddressPayload): Promise<any> {
 		try {
+			const { userId, currency, network } = payload;
 			// generate randomNetworkAddress
-			payload.address = `${payload.network}-${payload.currency}:${payload.userId}`;
-			await db.collection(COLLECTIONS.addresses).add(payload);
-			return res.status(HttpStatus.OK).json(
-				apiResponseHandler({
-					type: ResponseType.SUCCESS,
-					message: "User network address created successfully!",
-					object: { payload },
-				})
-			);
+			payload.address = `${network}-${currency}:${userId}`;
+			const networkAddress = payload;
+			await db.collection(COLLECTIONS.addresses).add(networkAddress);
+			return networkAddress;
 		} catch (error: any) {
 			throw new Error(`Error creating network address: ${error.message}`);
 		}
 	}
 
-	public async getAddresses({ res, ...payload }: INetworkAddressPayload): Promise<any> {
+	public async getUserAddresses(payload: IAddressInput): Promise<UserNetworkAddress[] | null> {
 		try {
-			const addresses = await this.getUserAddresses({ ...payload });
-			if (!addresses) {
-				return res.status(200).json(
-					apiResponseHandler({
-						type: ResponseType.SUCCESS,
-						message: "No existing network address found!",
-					})
-				);
-			}
-
-			return res.status(200).json(
-				apiResponseHandler({
-					type: ResponseType.SUCCESS,
-					message: "List of user network addresses!",
-					object: { addresses },
-				})
-			);
-		} catch (error: any) {
-			throw new Error(error.message);
-		}
-	}
-
-	public async getUserAddresses(
-		payload: INetworkAddressInput
-	): Promise<UserNetworkAddress[] | null> {
-		try {
+			const { userId, currency, network, userType } = payload;
 			let query: any = db.collection(COLLECTIONS.addresses);
-			query = query.where("userId", "==", payload.userId);
-			if (payload.currency) {
-				query = query.where("currency", "==", payload.currency);
+			// Check if userType is provided
+			if (!userType) {
+				query = query.where("userId", "==", `${userId}`);
 			}
-			if (payload.network) {
-				query = query.where("network", "==", payload.network);
+			query = query.where("userId", "==", userId);
+			if (currency) {
+				query = query.where("currency", "==", currency);
+			}
+			if (network) {
+				query = query.where("network", "==", network);
 			}
 			const docs = await query.get();
 
 			const addresses: UserNetworkAddress[] = [];
 
 			if (docs.empty) {
-				return null;
+				return [];
 			}
 
 			docs.forEach((doc: any) => {

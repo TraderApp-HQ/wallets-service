@@ -22,9 +22,9 @@ export interface UserNetworkAddress {
 
 export interface INetworkAddressPayload extends IAddressInput {
 	userId: string;
-	network?: Network;
-	currency?: Currency;
-	address?: string;
+	network: Network;
+	currency: Currency;
+	address: string;
 }
 
 export interface INetworkAddressInput {

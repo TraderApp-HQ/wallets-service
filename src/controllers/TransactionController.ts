@@ -1,4 +1,6 @@
+import { apiResponseHandler } from "@traderapp/shared-resources";
 import { Request, Response, NextFunction } from "express";
+import { ResponseType } from "../config/constants";
 import {
 	IConvertFundsPayload,
 	IDepositFundsPayload,
@@ -6,18 +8,38 @@ import {
 	IWithdrawFundsPayload,
 } from "../schemas/transaction";
 import { TransactionService } from "../services/TransactionService";
+import { WalletService } from "../services/WalletService";
+import { HttpStatus } from "../utils/httpStatus";
 
 export class TransactionController {
 	private readonly transactionService: TransactionService;
+	private readonly walletService: WalletService;
 
-	constructor(transactionService: TransactionService) {
+	constructor(transactionService: TransactionService, walletService: WalletService) {
 		this.transactionService = transactionService;
+		this.walletService = walletService;
 	}
 
 	public async getTransactions(req: Request, res: Response, next: NextFunction) {
 		const { userId } = req.body;
 		try {
-			return await this.transactionService.getTransactions({ userId, res });
+			const transactions = await this.transactionService.getTransactions({ userId });
+			if (!transactions) {
+				return res.status(HttpStatus.OK).json(
+					apiResponseHandler({
+						type: ResponseType.SUCCESS,
+						message: "No transactions found!",
+					})
+				);
+			}
+
+			return res.status(HttpStatus.OK).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: "List of user transactions!",
+					object: { transactions },
+				})
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -26,7 +48,14 @@ export class TransactionController {
 	public async depositFunds(req: Request, res: Response, next: NextFunction) {
 		const payload: IDepositFundsPayload = req.body;
 		try {
-			return await this.transactionService.depositFunds({ ...payload, res });
+			const transaction = await this.transactionService.depositFunds(payload);
+			return res.status(HttpStatus.OK).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: "Deposit transaction submitted for processing!",
+					object: { transaction },
+				})
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -35,7 +64,14 @@ export class TransactionController {
 	public async withdrawFunds(req: Request, res: Response, next: NextFunction) {
 		const payload: IWithdrawFundsPayload = req.body;
 		try {
-			return await this.transactionService.withdrawFunds({ ...payload, res });
+			const transaction = await this.transactionService.withdrawFunds(payload);
+			return res.status(HttpStatus.OK).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: "Withdrawal transaction submitted for processing!!",
+					object: { transaction },
+				})
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -44,7 +80,15 @@ export class TransactionController {
 	public async convertFunds(req: Request, res: Response, next: NextFunction) {
 		const payload: IConvertFundsPayload = req.body;
 		try {
-			return await this.transactionService.convertFunds({ ...payload, res });
+			const transaction = await this.transactionService.convertFunds(payload);
+
+			return res.status(HttpStatus.OK).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: "Funds conversion completed successfully!",
+					object: { transaction },
+				})
+			);
 		} catch (error) {
 			next(error);
 		}
@@ -53,7 +97,14 @@ export class TransactionController {
 	public async transferFunds(req: Request, res: Response, next: NextFunction) {
 		const payload: ITransferFundsPayload = req.body;
 		try {
-			return await this.transactionService.transferFunds({ ...payload, res });
+			const transaction = await this.transactionService.transferFunds(payload);
+			return res.status(HttpStatus.OK).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: "Funds transfer completed successfully!",
+					object: { transaction },
+				})
+			);
 		} catch (error) {
 			next(error);
 		}
