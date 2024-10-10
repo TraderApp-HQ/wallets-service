@@ -3,7 +3,6 @@
 import { TransactionService } from "../../services/TransactionService";
 import { WalletService } from "../../services/WalletService";
 import { AddressService } from "../../services/AddressService";
-import { Response } from "express";
 import {
 	ITransaction,
 	TransactionStatus,
@@ -25,7 +24,6 @@ const mockWalletService: WalletService = {
 
 const mockAddressService: AddressService = {
 	createUserNetworkAddress: jest.fn(),
-	getAddresses: jest.fn(),
 	getUserAddresses: jest.fn(),
 };
 
@@ -34,14 +32,6 @@ let mockDbService: Partial<DbService> = {
 		.fn()
 		.mockResolvedValue([{ id: "1", userId: "user1234" } as ITransaction]),
 };
-
-const mockResponse = (): Response<any, Record<string, any>> => {
-	const res = {} as Response<any, Record<string, any>>;
-	res.status = jest.fn().mockReturnValue(res);
-	res.json = jest.fn().mockReturnValue(res);
-	return res as Response;
-};
-const mockRes = mockResponse() as Response;
 
 const mockTransaction = {
 	id: "0a3XLhKCrit8kn4jsvCk",
@@ -91,7 +81,7 @@ describe("TransactionService", () => {
 			(mockDbService.getUserTransactions as jest.Mock).mockResolvedValueOnce(
 				expectedTransactions
 			);
-			const result = await transactionService.getTransactions({ userId, res: mockRes });
+			const result = await transactionService.getTransactions({ userId });
 
 			expect(mockDbService.getUserTransactions).toHaveBeenCalledWith(userId);
 			expect(result).toEqual(expectedTransactions);
@@ -100,7 +90,7 @@ describe("TransactionService", () => {
 		it("should return an empty array if no transactions are found", async () => {
 			const userId = "user123";
 			(mockDbService.getUserTransactions as jest.Mock).mockResolvedValueOnce([]);
-			const result = await transactionService.getTransactions({ userId, res: mockRes });
+			const result = await transactionService.getTransactions({ userId });
 
 			expect(mockDbService.getUserTransactions).toHaveBeenCalledWith(userId);
 			expect(result).toEqual([]);
@@ -111,9 +101,9 @@ describe("TransactionService", () => {
 			(mockDbService.getUserTransactions as jest.Mock).mockRejectedValueOnce(
 				new Error("Error fetching transactions")
 			);
-			await expect(
-				transactionService.getTransactions({ userId, res: mockRes })
-			).rejects.toThrow("Error fetching transactions");
+			await expect(transactionService.getTransactions({ userId })).rejects.toThrow(
+				"Error fetching transactions"
+			);
 			expect(mockDbService.getUserTransactions).toHaveBeenCalledWith(userId);
 		});
 	});
