@@ -1,5 +1,15 @@
-import { Currency } from "./currency";
-import { WalletType } from "./wallet";
+import { UserRoles } from "./enums";
+
+export interface IAccessToken {
+	id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	isPhoneVerified: boolean;
+	isEmailVerified: boolean;
+	isIdVerified: boolean;
+	role: UserRoles[];
+}
 
 export enum TransactionType {
 	DEPOSIT = "DEPOSIT",
@@ -8,7 +18,7 @@ export enum TransactionType {
 	CONVERT = "CONVERT",
 }
 
-export enum TransactionWalletType {
+export enum TransactionSource {
 	INTERNAL = "INTERNAL",
 	EXTERNAL = "EXTERNAL",
 }
@@ -35,7 +45,7 @@ export interface ITransaction {
 	fromWalletAddress?: string;
 	toWalletAddress?: string;
 	status: TransactionStatus;
-	transactionWalletType: TransactionWalletType;
+	transactionSource: TransactionSource;
 }
 
 export interface IDepositFundsPayload {
@@ -54,4 +64,35 @@ export interface IWithdrawFundsPayload {
 	fromCurrency: Currency;
 	toCurrency: Currency;
 	fromAmount: number;
+}
+
+export enum WalletType {
+	MAIN = "MAIN",
+	SPOT = "SPOT",
+	FUTURES = "FUTURES",
+}
+
+export enum Currency {
+	USDT = "USDT",
+	// BTC = "BTC",
+	// ETH = "ETH",
+}
+
+export interface IPaymentMethodResponse {
+	paymentMethodId: string;
+	paymentMethodName: string;
+	logoUrl: string;
+	symbol: string;
+	categoryId: string;
+	categoryName: string;
+	providerId: string;
+	providerName: string;
+	isDepositSupported: boolean;
+	isWithdrawalSupported: boolean;
+	isDefault: boolean;
+	supportNetworks?: Array<{
+		slug: string;
+		name: string;
+		precision: number;
+	}>;
 }
