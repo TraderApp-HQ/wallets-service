@@ -83,7 +83,7 @@ const createUserWalletBody = {
 };
 
 const createUserWallet = {
-	tags: ["Wallets"],
+	tags: [RESPONSE_TAGS.wallets],
 	description: "Create a new user wallet",
 	requestBody: {
 		content: {

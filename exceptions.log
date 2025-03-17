@@ -4602,3 +4602,627 @@ TSError: ⨯ Unable to compile TypeScript:
     at Module.load (node:internal/modules/cjs/loader:1288:32)
     at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
     at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T09:32:31.314Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:04:37
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:04:37.987Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:05:23
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:05:23.803Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:06:09
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:06:09.421Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:07:47
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:07:47.292Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:08:02
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:08:02.834Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:09:47
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:09:47.601Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/i/Documents/TraderApp codes/wallets-service/src/schemas/wallet.ts' is not a module.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/i/Documents/TraderApp codes/wallets-service/src/schemas/wallet.ts' is not a module.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:10:22
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/i/Documents/TraderApp codes/wallets-service/src/schemas/wallet.ts' is not a module.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/i/Documents/TraderApp codes/wallets-service/src/schemas/wallet.ts' is not a module.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:10:22.932Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:11:10
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:11:10.424Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:12:00
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:12:00.976Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:12:39
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:12:39.968Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:14:09
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:14:09.516Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:14:46
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:14:46.191Z

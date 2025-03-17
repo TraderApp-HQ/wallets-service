@@ -15,6 +15,7 @@ export const RESPONSE_TAGS = {
 	processOrder: "processOrder",
 	wallets: "Wallets",
 	transactions: "Transactions",
+	addresses: "Network Addresses",
 };
 
 export const RESPONSE_FLAGS = {
@@ -42,9 +43,11 @@ export const ROUTES = {
 	processOrder: "/process",
 	getWallets: "/wallets",
 	transactions: "/transactions",
+	addresses: "/addresses",
 };
 
 export const COLLECTIONS = {
 	wallets: "wallets",
 	transactions: "transactions",
+	addresses: "addresses",
 };
