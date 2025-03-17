@@ -1,44 +1,19 @@
 import { Router } from "express";
-import { TransactionController } from "../controllers/TransactionController";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
-import { AddressService } from "../services/AddressService";
-import { TransactionService } from "../services/TransactionService";
-import { WalletService } from "../services/WalletService";
+import {
+	getTransactions,
+	depositFunds,
+	withdrawFunds,
+	convertFunds,
+	transferFunds,
+} from "../controllers/TransactionController/";
 
-const router = async () => {
-	const walletService = new WalletService();
-	const addressService = new AddressService();
-	const transactionService = new TransactionService(walletService, addressService);
-	const transactionController = new TransactionController(transactionService);
-	const routerInit = Router();
+const router = Router();
 
-	routerInit.get(
-		"/",
-		AuthMiddleware,
-		transactionController.getTransactions.bind(transactionController)
-	);
-	routerInit.post(
-		"/deposit",
-		AuthMiddleware,
-		transactionController.depositFunds.bind(transactionController)
-	);
-	routerInit.post(
-		"/withdrawal",
-		AuthMiddleware,
-		transactionController.withdrawFunds.bind(transactionController)
-	);
-	routerInit.post(
-		"/convert",
-		AuthMiddleware,
-		transactionController.convertFunds.bind(transactionController)
-	);
-	routerInit.post(
-		"/transfer",
-		AuthMiddleware,
-		transactionController.transferFunds.bind(transactionController)
-	);
-
-	return routerInit;
-};
+router.get("/", AuthMiddleware, getTransactions);
+router.post("/deposit", AuthMiddleware, depositFunds);
+router.post("/withdrawal", AuthMiddleware, withdrawFunds);
+router.post("/convert", AuthMiddleware, convertFunds);
+router.post("/transfer", AuthMiddleware, transferFunds);
 
 export default router;

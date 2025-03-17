@@ -1,17 +1,31 @@
 import { Router } from "express";
-import { WalletController } from "../controllers/WalletController";
-import { AuthMiddleware } from "../middlewares/authMiddleware";
-import { WalletService } from "../services/WalletService";
+import {
+	/* createUserWallets, */
+	getUserWallets,
+	getUserWalletType,
+	getWalletPaymentCategories,
+	getWalletPaymentCategoryPaymentMethods,
+	initiateDeposit,
+} from "../controllers/WalletController/";
+import {
+	validateGetUserWalletsRequest,
+	validateGetUserWalletTypeRequest,
+	validateGetWalletCategoryPaymentMethodsRequest,
+	validateInitiateDepositRequest,
+	validateRequest,
+} from "../middlewares/WalletMiddleware";
 
-const router = async () => {
-	const walletService = new WalletService();
-	const walletController = new WalletController(walletService);
-	const routerInit = Router();
+const router = Router();
 
-	routerInit.post("/", AuthMiddleware, walletController.createUserWallet.bind(walletController));
-	routerInit.get("/", AuthMiddleware, walletController.getUserWallets.bind(walletController));
-
-	return routerInit;
-};
+// router.post("/create", AuthMiddleware, createUserWallets);
+router.get("/user-wallets", validateGetUserWalletsRequest, getUserWallets);
+router.get("/user-wallet-type", validateGetUserWalletTypeRequest, getUserWalletType);
+router.get(
+	"/payment-methods",
+	validateGetWalletCategoryPaymentMethodsRequest,
+	getWalletPaymentCategoryPaymentMethods
+);
+router.get("/payment-categories", validateRequest, getWalletPaymentCategories);
+router.post("/initiate-deposit", validateInitiateDepositRequest, initiateDeposit);
 
 export default router;

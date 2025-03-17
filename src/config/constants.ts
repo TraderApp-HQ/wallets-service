@@ -18,6 +18,13 @@ export const RESPONSE_TAGS = {
 	addresses: "Network Addresses",
 };
 
+export const RESPONSE_FLAGS = {
+	unauthorized: "Unauthorized",
+	validationError: "ValidationError",
+	forbidden: "Forbidden",
+	notfound: "NotFound",
+};
+
 export const RESPONSE_CODES = {
 	ok: "200",
 	badRequest: "400",

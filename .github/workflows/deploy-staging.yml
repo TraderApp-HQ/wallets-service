@@ -1,9 +1,9 @@
-name: wallets-service-deploy-dev
+name: wallets-service-deploy-staging
 
 on:
     push:
         branches:
-            - dev
+            - staging
     workflow_dispatch: # Allow manual runs of the pipeline.
 
 jobs:
@@ -79,7 +79,7 @@ jobs:
                   docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
                   echo "Docker Image build and push is completed."
 
-    deploy-dev:
+    deploy-staging:
         runs-on: ubuntu-latest
         needs: push-docker-image
         environment:
@@ -98,17 +98,17 @@ jobs:
 
             - name: Zip the deployment files
               run: |
-                  cd deployment/dev/dev-walletsService-appspec
-                  zip -r ../../dev-walletsService-appspec.zip .
+                  cd deployment/staging/staging-walletsService-appspec
+                  zip -r ../../staging-walletsService-appspec.zip .
 
             - name: Upload zip to S3
               run: |
-                  aws s3 cp deployment/dev-walletsService-appspec.zip s3://${{ vars.DEV_APPS_DEPLOYMENT_BUCKET }}/dev-walletsService-appspec.zip
+                  aws s3 cp deployment/staging-walletsService-appspec.zip s3://${{ vars.STAGING_APPS_DEPLOYMENT_BUCKET }}/staging-walletsService-appspec.zip
 
             - name: Trigger CodeDeploy
               run: |
                   aws deploy create-deployment \
                     --application-name ${{ vars.CODEDEPLOY_APPLICATION_NAME }} \
                     --deployment-group-name ${{ vars.CODEDEPLOY_DEPLOYMENT_GROUP_NAME }} \
-                    --s3-location bucket=${{ vars.DEV_APPS_DEPLOYMENT_BUCKET }},bundleType=zip,key=dev-walletsService-appspec.zip
+                    --s3-location bucket=${{ vars.STAGING_APPS_DEPLOYMENT_BUCKET }},bundleType=zip,key=staging-walletsService-appspec.zip
                   echo "Deployment triggered in CodeDeploy."
