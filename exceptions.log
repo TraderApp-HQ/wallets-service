@@ -5226,3 +5226,275 @@ TSError: ⨯ Unable to compile TypeScript:
     at Module.load (node:internal/modules/cjs/loader:1288:32)
     at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
     at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:14:46.191Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:21:16
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/currency' or its corresponding type declarations.
+
+[7m2[0m import { Currency } from "../../schemas/currency";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/documentation/transactions/transactions.docs.ts[0m:[93m4[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../schemas/wallet' or its corresponding type declarations.
+
+[7m4[0m import { WalletType } from "../../schemas/wallet";
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:21:16.954Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:24:41
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:24:41.790Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/transactions' or its corresponding type declarations.
+
+[7m22[0m } from "../documentation/transactions";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/transactions' or its corresponding type declarations.
+
+[7m22[0m } from "../documentation/transactions";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:25:32
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/transactions' or its corresponding type declarations.
+
+[7m22[0m } from "../documentation/transactions";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/transactions' or its corresponding type declarations.
+
+[7m22[0m } from "../documentation/transactions";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:25:32.868Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/transactions' or its corresponding type declarations.
+
+[7m22[0m } from "../documentation/transactions";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/transactions' or its corresponding type declarations.
+
+[7m22[0m } from "../documentation/transactions";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17 11:26:16
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/transactions' or its corresponding type declarations.
+
+[7m22[0m } from "../documentation/transactions";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m10[0m:[93m60[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/processOrder' or its corresponding type declarations.
+
+[7m10[0m import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
+[7m  [0m [91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/transactions' or its corresponding type declarations.
+
+[7m22[0m } from "../documentation/transactions";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m28[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../documentation/addresses' or its corresponding type declarations.
+
+[7m28[0m } from "../documentation/addresses";
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/wallets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19) [wallet-service] development 2025-03-17T10:26:16.828Z

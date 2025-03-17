@@ -7,25 +7,6 @@ import {
 	getWallets,
 	getWalletsParams,
 } from "../documentation/wallets";
-import { createProcessOrder, createProcessOrderBody } from "../documentation/processOrder";
-import {
-	convertFunds,
-	convertFundsBody,
-	depositFunds,
-	depositFundsBody,
-	getTransactions,
-	getTransactionsParams,
-	transferFunds,
-	transferFundsBody,
-	withdrawFunds,
-	withdrawFundsBody,
-} from "../documentation/transactions";
-import {
-	createUserNetworkAddress,
-	createUserNetworkAddressBody,
-	getNetworkAddresses,
-	getNetworkAddressParams,
-} from "../documentation/addresses";
 
 const options: swaggerJsdoc.Options = {
 	swaggerDefinition: {
@@ -44,16 +25,8 @@ const options: swaggerJsdoc.Options = {
 				},
 			},
 			schemas: {
-				createProcessOrderBody,
 				getWalletsParams,
 				createUserWalletBody,
-				depositFundsBody,
-				withdrawFundsBody,
-				convertFundsBody,
-				transferFundsBody,
-				getTransactionsParams,
-				getNetworkAddressParams,
-				createUserNetworkAddressBody,
 			},
 		},
 		security: [
@@ -62,14 +35,7 @@ const options: swaggerJsdoc.Options = {
 			},
 		],
 		paths: {
-			[`/balances${ROUTES.processOrder}`]: { patch: createProcessOrder },
 			[`${ROUTES.getWallets}`]: { post: createUserWallet, get: getWallets },
-			[`${ROUTES.transactions}`]: { get: getTransactions },
-			[`${ROUTES.transactions}/deposit`]: { post: depositFunds },
-			[`${ROUTES.transactions}/withdrawal`]: { post: withdrawFunds },
-			[`${ROUTES.transactions}/convert`]: { post: convertFunds },
-			[`${ROUTES.transactions}/transfer`]: { post: transferFunds },
-			[`${ROUTES.addresses}`]: { post: createUserNetworkAddress, get: getNetworkAddresses },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files
