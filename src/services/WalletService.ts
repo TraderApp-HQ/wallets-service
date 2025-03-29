@@ -11,7 +11,7 @@ import {
 import Transaction from "../models/Transaction";
 import UserWallet, { IUserWallet } from "../models/UserWallet";
 import { CryptoPayClient } from "../clients/CryptoPayClient";
-import UserWalletDepositAddress from "../models/UserWalletDepositAddress";
+import UserWalletDepositDetail from "../models/UserWalletDepositAddress";
 import {
 	AddressType,
 	PaymentCategoryName,
@@ -46,6 +46,7 @@ export interface IInitiateDepositInput {
 	paymentMethodId: string;
 	providerId: string;
 	network?: string;
+	amount?: number;
 }
 export class WalletService {
 	private readonly cryptoPayClient: CryptoPayClient;
@@ -211,13 +212,20 @@ export class WalletService {
 		paymentMethodId,
 		providerId,
 		network,
+		amount,
 	}: IInitiateDepositInput) {
-		const paymentMethod = await PaymentMethod.findOne({ _id: paymentMethodId });
+		const [paymentMethod, provider] = await Promise.all([
+			PaymentMethod.findOne({ _id: paymentMethodId }).populate({
+				path: "category",
+				select: "name",
+			}),
+			Provider.findOne({ _id: providerId }),
+		]);
+
 		if (!paymentMethod) {
 			throw new Error("Payment method not found");
 		}
 
-		const provider = await Provider.findOne({ _id: providerId });
 		if (!provider) {
 			throw new Error("No default provider found for this payment method");
 		}
@@ -227,12 +235,13 @@ export class WalletService {
 		);
 
 		// check if currency and paymentMethodName match
-		if (paymentMethod.name.toLowerCase().includes(currency.toLowerCase())) {
+		if (paymentMethod.symbol.toLowerCase() === currency.toLowerCase()) {
 			// check user wallet deposit details and see if the user already has details for the payment method and provider
-			const userDepositAddress = await UserWalletDepositAddress.findOne({
+			const userDepositAddress = await UserWalletDepositDetail.findOne({
 				userId,
 				paymentMethod: paymentMethodId,
 				provider: providerId,
+				network,
 			});
 
 			if (userDepositAddress) return userDepositAddress;
@@ -241,18 +250,27 @@ export class WalletService {
 			const depositDetails = await providerInstance.generateDepositDetails({
 				userId,
 				currency,
+				payCurrency: paymentMethod.symbol,
 				addressType: AddressType.PERMANENT,
 				network,
+				customId: uuidv4(),
 			});
 
 			// save deposit details
-			// await UserWalletDepositAddress.create({
-			// 	userId,
-			// 	networkName: network,
-			// 	walletAddress: addressResponse.address,
-			// 	hostedPageUrl: addressResponse.hostedPageUrl,
-			// 	provider: WalletProvider.CRYPTOPAY,
-			// });
+			await UserWalletDepositDetail.create({
+				userId,
+				paymentMethod: paymentMethod._id,
+				provider: provider._id,
+				network: depositDetails.network,
+				paymentMethodName: paymentMethod.name,
+				paymentProviderName: provider.name,
+				paymentUrl: depositDetails.paymentUrl,
+				paymentCategoryName: (paymentMethod.category as unknown as IPaymentCategory).name,
+				walletAddress: depositDetails.walletAddress,
+				shouldRedirect: depositDetails.shouldRedirect ?? false,
+				customWalletId: depositDetails.customWalletId,
+				externalWalletId: depositDetails.id,
+			});
 
 			return depositDetails;
 		}
@@ -260,8 +278,10 @@ export class WalletService {
 		return providerInstance.generateDepositDetails({
 			userId,
 			currency,
+			payCurrency: paymentMethod.symbol,
 			addressType: AddressType.DYNAMIC,
 			network,
+			amount,
 		});
 	}
 
@@ -300,57 +320,57 @@ export class WalletService {
 		await transaction.save();
 	}
 
-	async getUserWalletDepositDetails({
-		userId,
-		paymentMethodId,
-		providerId,
-		network,
-		currency,
-	}: {
-		userId: string;
-		paymentMethodId: string;
-		providerId: string;
-		network: string;
-		currency: string;
-	}) {
-		try {
-			// Check existing active wallet address
-			const existingWallet = await UserWalletDepositAddress.findOne({
-				userId,
-				paymentMethod: paymentMethodId,
-				provider: providerId,
-				networkName: network,
-				isActive: true,
-			});
+	// async getUserWalletDepositDetails({
+	// 	userId,
+	// 	paymentMethodId,
+	// 	providerId,
+	// 	network,
+	// 	currency,
+	// }: {
+	// 	userId: string;
+	// 	paymentMethodId: string;
+	// 	providerId: string;
+	// 	network: string;
+	// 	currency: string;
+	// }) {
+	// 	try {
+	// 		// Check existing active wallet address
+	// 		const existingWallet = await UserWalletDepositDetail.findOne({
+	// 			userId,
+	// 			paymentMethod: paymentMethodId,
+	// 			provider: providerId,
+	// 			network,
+	// 			isActive: true,
+	// 		});
 
-			if (existingWallet) {
-				return existingWallet;
-			}
+	// 		if (existingWallet) {
+	// 			return existingWallet;
+	// 		}
 
-			// Generate new address based on type
-			// const addressResponse =
-			// 	addressType === AddressType.DIRECT
-			// 		? await this.cryptoPayClient.generatePermanentAddress(currency, network)
-			// 		: await this.cryptoPayClient.generateTemporalAddress(currency, network, 3600); // 1 hour expiry
+	// 		// Generate new address based on type
+	// 		// const addressResponse =
+	// 		// 	addressType === AddressType.DIRECT
+	// 		// 		? await this.cryptoPayClient.generatePermanentAddress(currency, network)
+	// 		// 		: await this.cryptoPayClient.generateTemporalAddress(currency, network, 3600); // 1 hour expiry
 
-			// const newWalletDeposit = new UserWalletDepositAddress({
-			// 	userId,
-			// 	networkName,
-			// 	walletAddress: addressResponse.address,
-			// 	hostedPageUrl: addressResponse.hostedPageUrl,
-			// 	provider: WalletProvider.CRYPTOPAY,
-			// 	expiresAt:
-			// 		addressType === AddressType.DYNAMIC
-			// 			? new Date(Date.now() + 3600000)
-			// 			: undefined,
-			// });
+	// 		// const newWalletDeposit = new UserWalletDepositAddress({
+	// 		// 	userId,
+	// 		// 	networkName,
+	// 		// 	walletAddress: addressResponse.address,
+	// 		// 	hostedPageUrl: addressResponse.hostedPageUrl,
+	// 		// 	provider: WalletProvider.CRYPTOPAY,
+	// 		// 	expiresAt:
+	// 		// 		addressType === AddressType.DYNAMIC
+	// 		// 			? new Date(Date.now() + 3600000)
+	// 		// 			: undefined,
+	// 		// });
 
-			// await newWalletDeposit.save();
-			// return newWalletDeposit;
-		} catch (error: any) {
-			throw new Error(`Error getting wallet deposit details: ${error.message}`);
-		}
-	}
+	// 		// await newWalletDeposit.save();
+	// 		// return newWalletDeposit;
+	// 	} catch (error: any) {
+	// 		throw new Error(`Error getting wallet deposit details: ${error.message}`);
+	// 	}
+	// }
 
 	// async creditUserWallet(userId: string, currency: Currency, amount: number) {
 	// 	try {
