@@ -14,6 +14,7 @@ import { CryptoPayClient } from "../clients/CryptoPayClient";
 import UserWalletDepositDetail from "../models/UserWalletDepositAddress";
 import {
 	AddressType,
+	ErrorName,
 	PaymentCategoryName,
 	PaymentOperation,
 	WalletProvider,
@@ -25,6 +26,7 @@ import WalletTypeModel from "../models/WalletType";
 import Currency from "../models/Currency";
 import ProviderPaymentMethod from "../models/ProviderPaymentMethod";
 import PaymentCategory, { IPaymentCategory } from "../models/PaymentCategory";
+import { ApplicationError } from "../config/helpers";
 
 interface IWalletInput {
 	userId: string;
@@ -214,20 +216,38 @@ export class WalletService {
 		network,
 		amount,
 	}: IInitiateDepositInput) {
-		const [paymentMethod, provider] = await Promise.all([
+		const [paymentMethod, provider, providerPaymentMethod] = await Promise.all([
 			PaymentMethod.findOne({ _id: paymentMethodId }).populate({
 				path: "category",
 				select: "name",
 			}),
 			Provider.findOne({ _id: providerId }),
+			ProviderPaymentMethod.findOne({ paymentMethod: paymentMethodId, provider: providerId }),
 		]);
 
 		if (!paymentMethod) {
-			throw new Error("Payment method not found");
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Payment method not found",
+			});
 		}
 
 		if (!provider) {
-			throw new Error("No default provider found for this payment method");
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "No default provider found for this payment method",
+			});
+		}
+
+		// check if network is passed and validate it against the networks supported by the provider payment method
+		if (
+			network &&
+			!providerPaymentMethod?.supportedNetworks?.some((sn) => sn.slug === network)
+		) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "The network passed is not supported",
+			});
 		}
 
 		const providerInstance = WalletProviderFactory.createProvider(

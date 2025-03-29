@@ -7,7 +7,7 @@ import {
 } from "../factories/interfaces";
 import CryptoJS from "crypto-js";
 import { AddressType, ErrorName } from "../config/enums";
-import { throwApplicationError } from "../config/helpers";
+import { ApplicationError } from "../config/helpers";
 
 interface ICreateChannelResponse {
 	id: string;
@@ -191,7 +191,7 @@ export class CryptoPayClient {
 		});
 
 		if (!network) {
-			throwApplicationError({
+			throw ApplicationError({
 				name: ErrorName.VALIDATION,
 				message: "No network was passed to generate address",
 			});
@@ -200,7 +200,7 @@ export class CryptoPayClient {
 		let resObject: IFactoryPaymentProviderDepositResponse = { id: "", currency, network };
 		if (addressType === AddressType.PERMANENT) {
 			if (!customId) {
-				throwApplicationError({
+				throw ApplicationError({
 					name: ErrorName.VALIDATION,
 					message: "No customId was passed to generate address",
 				});
