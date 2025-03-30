@@ -88,7 +88,12 @@ function startServer() {
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
-		res.status(200).send({ message: "pong" });
+		res.status(200).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: `Wallet service is running on ${env}`,
+			})
+		);
 	});
 
 	// handle errors

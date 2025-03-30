@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
 import {
+	IGetWalletResponse,
 	IPaymentMethodResponse,
 	// Currency,
 	// TransactionStatus,
@@ -11,9 +12,10 @@ import {
 import Transaction from "../models/Transaction";
 import UserWallet, { IUserWallet } from "../models/UserWallet";
 import { CryptoPayClient } from "../clients/CryptoPayClient";
-import UserWalletDepositAddress from "../models/UserWalletDepositAddress";
+import UserWalletDepositDetail from "../models/UserWalletDepositAddress";
 import {
 	AddressType,
+	ErrorName,
 	PaymentCategoryName,
 	PaymentOperation,
 	WalletProvider,
@@ -25,6 +27,9 @@ import WalletTypeModel from "../models/WalletType";
 import Currency from "../models/Currency";
 import ProviderPaymentMethod from "../models/ProviderPaymentMethod";
 import PaymentCategory, { IPaymentCategory } from "../models/PaymentCategory";
+import { ApplicationError } from "../config/helpers";
+import ExchangeRate, { IExchangeRate } from "../models/ExchangeRate";
+import { ConversionCurrencies } from "../config/constants";
 
 interface IWalletInput {
 	userId: string;
@@ -46,6 +51,7 @@ export interface IInitiateDepositInput {
 	paymentMethodId: string;
 	providerId: string;
 	network?: string;
+	amount?: number;
 }
 export class WalletService {
 	private readonly cryptoPayClient: CryptoPayClient;
@@ -59,27 +65,94 @@ export class WalletService {
 		return UserWallet.insertMany(walletCombinations);
 	}
 
+	private async getTotalConvertedBalance({
+		wallets,
+	}: {
+		wallets: IUserWallet[];
+	}): Promise<IGetWalletResponse> {
+		const targetCurrencies = ConversionCurrencies; // Use the predefined conversion currencies
+
+		// Create pairs for all wallet currencies against the target currencies
+		const walletCurrencyPairs = wallets.flatMap((wallet) =>
+			targetCurrencies.map((targetCurrency) => `${wallet.currencySymbol}/${targetCurrency}`)
+		);
+
+		const exchangeRates = await ExchangeRate.find({
+			pair: { $in: walletCurrencyPairs },
+		}).lean();
+		const rateMap = exchangeRates.reduce<Record<string, number>>((acc, rate) => {
+			acc[rate.pair] = rate.rate;
+			return acc;
+		}, {});
+
+		const totalBalances: Record<string, number> = {};
+
+		for (const wallet of wallets) {
+			const currency = wallet.currencySymbol;
+			const balance = wallet.availableBalance;
+
+			for (const targetCurrency of targetCurrencies) {
+				const pair = `${currency}/${targetCurrency}`;
+				if (rateMap[pair]) {
+					if (!totalBalances[targetCurrency]) {
+						totalBalances[targetCurrency] = 0;
+					}
+					totalBalances[targetCurrency] += balance * rateMap[pair];
+				}
+			}
+		}
+
+		const exchangeRateTotalBalances = Object.entries(totalBalances).map(
+			([currency, balance]) => ({
+				balance,
+				currency,
+			})
+		);
+
+		return {
+			wallets,
+			exchangeRates: exchangeRates.map((ex) => ({
+				pair: ex.pair,
+				rate: ex.rate,
+			})) as IExchangeRate[],
+			exchangeRateTotalBalances,
+		};
+	}
+
 	public async getUserWalletBalances({ userId }: IWalletInput): Promise<IUserWallet[]> {
 		const existingWallets = await UserWallet.find({ userId }).lean();
-		if (existingWallets.length) return existingWallets;
-		return this.createUserWallet({ userId });
+		if (existingWallets.length) {
+			return existingWallets.map((wallet) => ({
+				...wallet,
+				availableBalance: parseFloat(wallet.availableBalance.toString()),
+				lockedBalance: parseFloat(wallet.lockedBalance.toString()),
+				id: (wallet._id as mongoose.Types.ObjectId).toString(),
+			}));
+		}
+		const createdWallet = await this.createUserWallet({ userId });
+		return createdWallet.map((wallet) => ({
+			...wallet.toObject(),
+			availableBalance: parseFloat(wallet.availableBalance.toString()),
+			lockedBalance: parseFloat(wallet.lockedBalance.toString()),
+			id: (wallet._id as mongoose.Types.ObjectId).toString(),
+		})) as IUserWallet[];
 	}
 
 	public async getUserWalletTypeBalances({
 		userId,
 		walletTypeName,
-	}: IGetWalletTypeInput): Promise<IUserWallet[]> {
+	}: IGetWalletTypeInput): Promise<IGetWalletResponse> {
 		const wallets = await this.getUserWalletBalances({ userId });
 		const walletTypeBalances = wallets.filter(
 			(wallet) => wallet.walletTypeName === walletTypeName
 		);
+
 		if (!walletTypeBalances.length) {
 			const error = new Error("No wallet type balances found");
 			error.name = "NotFound";
 			throw error;
 		}
-
-		return walletTypeBalances;
+		return this.getTotalConvertedBalance({ wallets: walletTypeBalances });
 	}
 
 	public async getWalletPaymentCategories(): Promise<IPaymentCategory[]> {
@@ -186,8 +259,14 @@ export class WalletService {
 								(curr._id as mongoose.Types.ObjectId).toString() ===
 								currency._id.toString()
 						)?.name ?? "",
-					availableBalance: 0.0,
-					lockedBalance: 0.0,
+					currencySymbol:
+						currencies.find(
+							(curr) =>
+								(curr._id as mongoose.Types.ObjectId).toString() ===
+								currency._id.toString()
+						)?.symbol ?? "",
+					availableBalance: mongoose.Types.Decimal128.fromString("0"),
+					lockedBalance: mongoose.Types.Decimal128.fromString("0"),
 				});
 				walletCombinations.push(newWallet);
 			});
@@ -211,15 +290,40 @@ export class WalletService {
 		paymentMethodId,
 		providerId,
 		network,
+		amount,
 	}: IInitiateDepositInput) {
-		const paymentMethod = await PaymentMethod.findOne({ _id: paymentMethodId });
+		const [paymentMethod, provider, providerPaymentMethod] = await Promise.all([
+			PaymentMethod.findOne({ _id: paymentMethodId }).populate({
+				path: "category",
+				select: "name",
+			}),
+			Provider.findOne({ _id: providerId }),
+			ProviderPaymentMethod.findOne({ paymentMethod: paymentMethodId, provider: providerId }),
+		]);
+
 		if (!paymentMethod) {
-			throw new Error("Payment method not found");
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Payment method not found",
+			});
 		}
 
-		const provider = await Provider.findOne({ _id: providerId });
 		if (!provider) {
-			throw new Error("No default provider found for this payment method");
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "No default provider found for this payment method",
+			});
+		}
+
+		// check if network is passed and validate it against the networks supported by the provider payment method
+		if (
+			network &&
+			!providerPaymentMethod?.supportedNetworks?.some((sn) => sn.slug === network)
+		) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "The network passed is not supported",
+			});
 		}
 
 		const providerInstance = WalletProviderFactory.createProvider(
@@ -227,12 +331,13 @@ export class WalletService {
 		);
 
 		// check if currency and paymentMethodName match
-		if (paymentMethod.name.toLowerCase().includes(currency.toLowerCase())) {
+		if (paymentMethod.symbol.toLowerCase() === currency.toLowerCase()) {
 			// check user wallet deposit details and see if the user already has details for the payment method and provider
-			const userDepositAddress = await UserWalletDepositAddress.findOne({
+			const userDepositAddress = await UserWalletDepositDetail.findOne({
 				userId,
 				paymentMethod: paymentMethodId,
 				provider: providerId,
+				network,
 			});
 
 			if (userDepositAddress) return userDepositAddress;
@@ -241,18 +346,27 @@ export class WalletService {
 			const depositDetails = await providerInstance.generateDepositDetails({
 				userId,
 				currency,
+				payCurrency: paymentMethod.symbol,
 				addressType: AddressType.PERMANENT,
 				network,
+				customId: uuidv4(),
 			});
 
 			// save deposit details
-			// await UserWalletDepositAddress.create({
-			// 	userId,
-			// 	networkName: network,
-			// 	walletAddress: addressResponse.address,
-			// 	hostedPageUrl: addressResponse.hostedPageUrl,
-			// 	provider: WalletProvider.CRYPTOPAY,
-			// });
+			await UserWalletDepositDetail.create({
+				userId,
+				paymentMethod: paymentMethod._id,
+				provider: provider._id,
+				network: depositDetails.network,
+				paymentMethodName: paymentMethod.name,
+				paymentProviderName: provider.name,
+				paymentUrl: depositDetails.paymentUrl,
+				paymentCategoryName: (paymentMethod.category as unknown as IPaymentCategory).name,
+				walletAddress: depositDetails.walletAddress,
+				shouldRedirect: depositDetails.shouldRedirect ?? false,
+				customWalletId: depositDetails.customWalletId,
+				externalWalletId: depositDetails.id,
+			});
 
 			return depositDetails;
 		}
@@ -260,8 +374,10 @@ export class WalletService {
 		return providerInstance.generateDepositDetails({
 			userId,
 			currency,
+			payCurrency: paymentMethod.symbol,
 			addressType: AddressType.DYNAMIC,
 			network,
+			amount,
 		});
 	}
 
@@ -300,57 +416,57 @@ export class WalletService {
 		await transaction.save();
 	}
 
-	async getUserWalletDepositDetails({
-		userId,
-		paymentMethodId,
-		providerId,
-		network,
-		currency,
-	}: {
-		userId: string;
-		paymentMethodId: string;
-		providerId: string;
-		network: string;
-		currency: string;
-	}) {
-		try {
-			// Check existing active wallet address
-			const existingWallet = await UserWalletDepositAddress.findOne({
-				userId,
-				paymentMethod: paymentMethodId,
-				provider: providerId,
-				networkName: network,
-				isActive: true,
-			});
+	// async getUserWalletDepositDetails({
+	// 	userId,
+	// 	paymentMethodId,
+	// 	providerId,
+	// 	network,
+	// 	currency,
+	// }: {
+	// 	userId: string;
+	// 	paymentMethodId: string;
+	// 	providerId: string;
+	// 	network: string;
+	// 	currency: string;
+	// }) {
+	// 	try {
+	// 		// Check existing active wallet address
+	// 		const existingWallet = await UserWalletDepositDetail.findOne({
+	// 			userId,
+	// 			paymentMethod: paymentMethodId,
+	// 			provider: providerId,
+	// 			network,
+	// 			isActive: true,
+	// 		});
 
-			if (existingWallet) {
-				return existingWallet;
-			}
+	// 		if (existingWallet) {
+	// 			return existingWallet;
+	// 		}
 
-			// Generate new address based on type
-			// const addressResponse =
-			// 	addressType === AddressType.DIRECT
-			// 		? await this.cryptoPayClient.generatePermanentAddress(currency, network)
-			// 		: await this.cryptoPayClient.generateTemporalAddress(currency, network, 3600); // 1 hour expiry
+	// 		// Generate new address based on type
+	// 		// const addressResponse =
+	// 		// 	addressType === AddressType.DIRECT
+	// 		// 		? await this.cryptoPayClient.generatePermanentAddress(currency, network)
+	// 		// 		: await this.cryptoPayClient.generateTemporalAddress(currency, network, 3600); // 1 hour expiry
 
-			// const newWalletDeposit = new UserWalletDepositAddress({
-			// 	userId,
-			// 	networkName,
-			// 	walletAddress: addressResponse.address,
-			// 	hostedPageUrl: addressResponse.hostedPageUrl,
-			// 	provider: WalletProvider.CRYPTOPAY,
-			// 	expiresAt:
-			// 		addressType === AddressType.DYNAMIC
-			// 			? new Date(Date.now() + 3600000)
-			// 			: undefined,
-			// });
+	// 		// const newWalletDeposit = new UserWalletDepositAddress({
+	// 		// 	userId,
+	// 		// 	networkName,
+	// 		// 	walletAddress: addressResponse.address,
+	// 		// 	hostedPageUrl: addressResponse.hostedPageUrl,
+	// 		// 	provider: WalletProvider.CRYPTOPAY,
+	// 		// 	expiresAt:
+	// 		// 		addressType === AddressType.DYNAMIC
+	// 		// 			? new Date(Date.now() + 3600000)
+	// 		// 			: undefined,
+	// 		// });
 
-			// await newWalletDeposit.save();
-			// return newWalletDeposit;
-		} catch (error: any) {
-			throw new Error(`Error getting wallet deposit details: ${error.message}`);
-		}
-	}
+	// 		// await newWalletDeposit.save();
+	// 		// return newWalletDeposit;
+	// 	} catch (error: any) {
+	// 		throw new Error(`Error getting wallet deposit details: ${error.message}`);
+	// 	}
+	// }
 
 	// async creditUserWallet(userId: string, currency: Currency, amount: number) {
 	// 	try {

@@ -7,6 +7,7 @@ export interface IUserWallet extends Document {
 	walletType: mongoose.Types.ObjectId;
 	walletTypeName: WalletType;
 	currencyName: string;
+	currencySymbol: string;
 	currency: mongoose.Types.ObjectId;
 	availableBalance: number;
 	lockedBalance: number;
@@ -19,10 +20,26 @@ const userWalletSchema = new Schema<IUserWallet>(
 		walletTypeName: { type: String, enum: Object.values(WalletType), required: true },
 		currency: { type: Schema.Types.ObjectId, ref: "Currency", required: true },
 		currencyName: String,
-		availableBalance: { type: Number, required: true, default: 0 },
-		lockedBalance: { type: Number, required: true, default: 0 },
+		currencySymbol: String,
+		availableBalance: {
+			type: Schema.Types.Decimal128,
+			required: true,
+			default: mongoose.Types.Decimal128.fromString("0"),
+			get: (v: mongoose.Types.Decimal128) => (v ? parseFloat(v.toString()) : 0),
+		} as any,
+		lockedBalance: {
+			type: Schema.Types.Decimal128,
+			required: true,
+			default: mongoose.Types.Decimal128.fromString("0"),
+			get: (v: mongoose.Types.Decimal128) => (v ? parseFloat(v.toString()) : 0),
+		} as any,
 	},
-	{ timestamps: true, versionKey: false }
+	{
+		timestamps: true,
+		versionKey: false,
+		toJSON: { getters: true },
+		toObject: { getters: true },
+	}
 );
 
 // Create a unique compound index to ensure each user can only have one wallet per type and currency
@@ -44,6 +61,15 @@ userWalletSchema.set("toJSON", {
 		ret.id = ret._id; // Map _id to id
 		delete ret._id; // Remove _id from the response
 		delete ret.__v; // Optionally remove __v
+
+		// Ensure balance fields are numbers
+		if (ret.availableBalance && typeof ret.availableBalance !== "number") {
+			ret.availableBalance = parseFloat(ret.availableBalance.toString());
+		}
+		if (ret.lockedBalance && typeof ret.lockedBalance !== "number") {
+			ret.lockedBalance = parseFloat(ret.lockedBalance.toString());
+		}
+
 		return ret;
 	},
 });

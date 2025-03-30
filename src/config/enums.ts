@@ -22,3 +22,10 @@ export enum AddressType {
 	PERMANENT = "Permanent",
 	DYNAMIC = "Dynamic",
 }
+
+export enum ErrorName {
+	VALIDATION = "ValidationError",
+	UNAUTHORIZED = "Unauthorized",
+	FORBIDDEN = "Forbidden",
+	NOT_FOUND = "NotFound",
+}

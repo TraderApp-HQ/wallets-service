@@ -50,6 +50,7 @@ export async function checkAdmin(req: Request) {
 		error.name = "Forbidden";
 		throw error;
 	}
+	return user;
 }
 
 export async function checkSuperAdmin(req: Request) {
@@ -61,6 +62,7 @@ export async function checkSuperAdmin(req: Request) {
 		error.name = "Forbidden";
 		throw error;
 	}
+	return user;
 }
 
 //  check if user exist

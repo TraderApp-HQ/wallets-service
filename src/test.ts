@@ -18,11 +18,10 @@ export async function createCryptoPayChannel() {
 	// Request data
 	const requestData = JSON.stringify({
 		pay_currency: "USDT",
-		network: "bnb_smart_chain",
+		network: "tron",
 		receiver_currency: "USDT",
-		name: "channel name",
-		custom_id: "123",
-		customer_id: "123456",
+		name: "Dike Ajah",
+		custom_id: "123893893822",
 	});
 
 	// Create signature components
@@ -66,8 +65,8 @@ export async function createCryptoPayInvoice() {
 		price_currency: "USDT",
 		pay_currency: "BTC",
 		network: "bitcoin",
-		custom_id: "PAYMENT-1234",
-		customer_id: "2095847324",
+		custom_id: "PAYMENT-1234112244411223322",
+		// customer_id: "2095847324222335544334433",
 		name: "John Doe",
 		description: "Test payment",
 		// metadata: {
@@ -106,7 +105,7 @@ export async function createCryptoPayInvoice() {
 			},
 		});
 
-		return response.data;
+		return response.data.data;
 	} catch (error: any) {
 		console.error("Error creating invoice:", error.message);
 		throw error;
@@ -195,13 +194,13 @@ export async function generateUserWalletCombinations(userId: string): Promise<IU
 // 	});
 
 // Usage
-// createCryptoPayInvoice()
-// 	.then((result) => {
-// 		console.log("Invoice:", result);
-// 	})
-// 	.catch((error) => {
-// 		console.error("Error:", error.message);
-// 	});
+createCryptoPayInvoice()
+	.then((result) => {
+		console.log("Invoice:", result);
+	})
+	.catch((error) => {
+		console.error("Error:", error.message);
+	});
 
 // generateUserWalletCombinations("user-12345")
 // 	.then((result) => {

@@ -45,13 +45,13 @@ export const getUserWalletType = async (req: Request, res: Response, next: NextF
 	try {
 		const userId = req.query.userId as string;
 		const walletTypeName = req.query.type as WalletType;
-		const wallet = await walletService.getUserWalletTypeBalances({ userId, walletTypeName });
+		const wallets = await walletService.getUserWalletTypeBalances({ userId, walletTypeName });
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
 				message: "Wallet retrieved successfully",
-				object: wallet,
+				object: wallets,
 			})
 		);
 	} catch (error: any) {
@@ -87,7 +87,6 @@ export const getWalletPaymentCategoryPaymentMethods = async (
 	try {
 		const category = req.query.category as PaymentCategoryName;
 		const operation = req.query.operation as PaymentOperation;
-		console.log("varables sent over: ", category, operation);
 		const paymentMethods = await walletService.getWalletPaymentCategoryPaymentMethods({
 			category,
 			operation,
@@ -107,7 +106,7 @@ export const getWalletPaymentCategoryPaymentMethods = async (
 
 export const initiateDeposit = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const { userId, currency, network, providerId, paymentMethodId } = req.body;
+		const { userId, currency, network, providerId, paymentMethodId, amount } = req.body;
 		const walletService = new WalletService();
 
 		const depositDetails = await walletService.initiateDeposit({
@@ -116,12 +115,13 @@ export const initiateDeposit = async (req: Request, res: Response, next: NextFun
 			network,
 			providerId,
 			paymentMethodId,
+			amount,
 		});
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
-				message: "Deposit address generated successfully",
+				message: "Deposit details generated successfully",
 				object: depositDetails,
 			})
 		);

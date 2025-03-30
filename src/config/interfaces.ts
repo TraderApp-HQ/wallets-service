@@ -1,3 +1,5 @@
+import { IExchangeRate } from "../models/ExchangeRate";
+import { IUserWallet } from "../models/UserWallet";
 import { UserRoles } from "./enums";
 
 export interface IAccessToken {
@@ -95,4 +97,15 @@ export interface IPaymentMethodResponse {
 		name: string;
 		precision: number;
 	}>;
+}
+
+export interface IGetWalletResponse {
+	wallets: IUserWallet[];
+	exchangeRates: IExchangeRate[];
+	exchangeRateTotalBalances: IGetWalletResponseRate[];
+}
+
+interface IGetWalletResponseRate {
+	balance: number;
+	currency: string;
 }

@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface IUserWalletDepositAddress extends Document {
+export interface IUserWalletDepositDetail extends Document {
 	id: string;
 	userId: string;
 	paymentMethod: mongoose.Types.ObjectId;
@@ -10,40 +10,44 @@ export interface IUserWalletDepositAddress extends Document {
 	paymentProviderName: string;
 	isActive: boolean;
 	walletAddress?: string;
-	networkName?: string;
-	networkSlug?: string;
+	network?: string;
 	paymentUrl?: string;
 	shouldRedirect: boolean;
+	customWalletId?: string;
+	externalWalletId?: string;
 }
 
-const userWalletDepositAddressSchema = new Schema<IUserWalletDepositAddress>(
+const userWalletDepositDetailSchema = new Schema<IUserWalletDepositDetail>(
 	{
 		userId: { type: String, required: true },
 		paymentMethod: { type: Schema.Types.ObjectId, ref: "payment-method", required: true },
 		provider: { type: Schema.Types.ObjectId, ref: "payment-provider", required: true },
 		walletAddress: { type: String },
-		networkName: { type: String },
+		network: { type: String },
 		paymentUrl: { type: String },
 		isActive: { type: Boolean, default: true },
 		shouldRedirect: { type: Boolean, default: false },
 		paymentCategoryName: { type: String },
 		paymentMethodName: { type: String },
 		paymentProviderName: { type: String },
+		customWalletId: { type: String },
+		externalWalletId: { type: String },
 	},
-	{ timestamps: true }
+	{ timestamps: true, versionKey: false }
 );
 
-userWalletDepositAddressSchema.index(
-	{ userId: 1, paymentMethod: 1, provider: 1 },
+userWalletDepositDetailSchema.index(
+	{ userId: 1, paymentMethod: 1, provider: 1, network: 1 },
 	{ unique: true }
 );
-userWalletDepositAddressSchema.index({ userId: 1, paymentMethod: 1, provider: 1, networkName: 1 });
-userWalletDepositAddressSchema.index({ paymentMethodName: 1 });
-userWalletDepositAddressSchema.index({ paymentProviderName: 1 });
-userWalletDepositAddressSchema.index({ walletAddress: 1 });
+userWalletDepositDetailSchema.index({ paymentMethodName: 1 });
+userWalletDepositDetailSchema.index({ paymentProviderName: 1 });
+userWalletDepositDetailSchema.index({ walletAddress: 1 });
+userWalletDepositDetailSchema.index({ customWalletId: 1 });
+userWalletDepositDetailSchema.index({ externalWalletId: 1 });
 
 // Override the toJSON method to map _id to id
-userWalletDepositAddressSchema.set("toJSON", {
+userWalletDepositDetailSchema.set("toJSON", {
 	transform: (doc, ret) => {
 		ret.id = ret._id; // Map _id to id
 		delete ret._id; // Remove _id from the response
@@ -52,7 +56,7 @@ userWalletDepositAddressSchema.set("toJSON", {
 	},
 });
 
-export default mongoose.model<IUserWalletDepositAddress>(
-	"user-wallet-deposit-address",
-	userWalletDepositAddressSchema
+export default mongoose.model<IUserWalletDepositDetail>(
+	"user-wallet-deposit-detail",
+	userWalletDepositDetailSchema
 );

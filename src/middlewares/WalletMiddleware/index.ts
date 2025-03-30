@@ -112,6 +112,7 @@ export const validateInitiateDepositRequest = async (
 		paymentMethodId: Joi.string().required().label("Payment Method Id"),
 		providerId: Joi.string().required().label("Provider Id"),
 		network: Joi.string().label("Network"),
+		amount: Joi.number().label("Amount"),
 	});
 
 	const { error } = schema.validate({ userId, currency, paymentMethodId, providerId, network });
@@ -124,6 +125,8 @@ export const validateInitiateDepositRequest = async (
 
 	try {
 		// await checkUser(req);
+		const id = (await checkUser(req)).id;
+		req.body.userId = userId || id;
 		next();
 	} catch (err) {
 		next(err);
