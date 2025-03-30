@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
 import {
+	IGetWalletResponse,
 	IPaymentMethodResponse,
 	// Currency,
 	// TransactionStatus,
@@ -27,6 +28,8 @@ import Currency from "../models/Currency";
 import ProviderPaymentMethod from "../models/ProviderPaymentMethod";
 import PaymentCategory, { IPaymentCategory } from "../models/PaymentCategory";
 import { ApplicationError } from "../config/helpers";
+import ExchangeRate, { IExchangeRate } from "../models/ExchangeRate";
+import { ConversionCurrencies } from "../config/constants";
 
 interface IWalletInput {
 	userId: string;
@@ -62,27 +65,94 @@ export class WalletService {
 		return UserWallet.insertMany(walletCombinations);
 	}
 
+	private async getTotalConvertedBalance({
+		wallets,
+	}: {
+		wallets: IUserWallet[];
+	}): Promise<IGetWalletResponse> {
+		const targetCurrencies = ConversionCurrencies; // Use the predefined conversion currencies
+
+		// Create pairs for all wallet currencies against the target currencies
+		const walletCurrencyPairs = wallets.flatMap((wallet) =>
+			targetCurrencies.map((targetCurrency) => `${wallet.currencySymbol}/${targetCurrency}`)
+		);
+
+		const exchangeRates = await ExchangeRate.find({
+			pair: { $in: walletCurrencyPairs },
+		}).lean();
+		const rateMap = exchangeRates.reduce<Record<string, number>>((acc, rate) => {
+			acc[rate.pair] = rate.rate;
+			return acc;
+		}, {});
+
+		const totalBalances: Record<string, number> = {};
+
+		for (const wallet of wallets) {
+			const currency = wallet.currencySymbol;
+			const balance = wallet.availableBalance;
+
+			for (const targetCurrency of targetCurrencies) {
+				const pair = `${currency}/${targetCurrency}`;
+				if (rateMap[pair]) {
+					if (!totalBalances[targetCurrency]) {
+						totalBalances[targetCurrency] = 0;
+					}
+					totalBalances[targetCurrency] += balance * rateMap[pair];
+				}
+			}
+		}
+
+		const exchangeRateTotalBalances = Object.entries(totalBalances).map(
+			([currency, balance]) => ({
+				balance,
+				currency,
+			})
+		);
+
+		return {
+			wallets,
+			exchangeRates: exchangeRates.map((ex) => ({
+				pair: ex.pair,
+				rate: ex.rate,
+			})) as IExchangeRate[],
+			exchangeRateTotalBalances,
+		};
+	}
+
 	public async getUserWalletBalances({ userId }: IWalletInput): Promise<IUserWallet[]> {
 		const existingWallets = await UserWallet.find({ userId }).lean();
-		if (existingWallets.length) return existingWallets;
-		return this.createUserWallet({ userId });
+		if (existingWallets.length) {
+			return existingWallets.map((wallet) => ({
+				...wallet,
+				availableBalance: parseFloat(wallet.availableBalance.toString()),
+				lockedBalance: parseFloat(wallet.lockedBalance.toString()),
+				id: (wallet._id as mongoose.Types.ObjectId).toString(),
+			}));
+		}
+		const createdWallet = await this.createUserWallet({ userId });
+		return createdWallet.map((wallet) => ({
+			...wallet.toObject(),
+			availableBalance: parseFloat(wallet.availableBalance.toString()),
+			lockedBalance: parseFloat(wallet.lockedBalance.toString()),
+			id: (wallet._id as mongoose.Types.ObjectId).toString(),
+		})) as IUserWallet[];
 	}
 
 	public async getUserWalletTypeBalances({
 		userId,
 		walletTypeName,
-	}: IGetWalletTypeInput): Promise<IUserWallet[]> {
+	}: IGetWalletTypeInput): Promise<IGetWalletResponse> {
 		const wallets = await this.getUserWalletBalances({ userId });
 		const walletTypeBalances = wallets.filter(
 			(wallet) => wallet.walletTypeName === walletTypeName
 		);
+
 		if (!walletTypeBalances.length) {
 			const error = new Error("No wallet type balances found");
 			error.name = "NotFound";
 			throw error;
 		}
-
-		return walletTypeBalances;
+		return this.getTotalConvertedBalance({ wallets: walletTypeBalances });
 	}
 
 	public async getWalletPaymentCategories(): Promise<IPaymentCategory[]> {
@@ -189,8 +259,14 @@ export class WalletService {
 								(curr._id as mongoose.Types.ObjectId).toString() ===
 								currency._id.toString()
 						)?.name ?? "",
-					availableBalance: 0.0,
-					lockedBalance: 0.0,
+					currencySymbol:
+						currencies.find(
+							(curr) =>
+								(curr._id as mongoose.Types.ObjectId).toString() ===
+								currency._id.toString()
+						)?.symbol ?? "",
+					availableBalance: mongoose.Types.Decimal128.fromString("0"),
+					lockedBalance: mongoose.Types.Decimal128.fromString("0"),
 				});
 				walletCombinations.push(newWallet);
 			});
