@@ -45,13 +45,13 @@ export const getUserWalletType = async (req: Request, res: Response, next: NextF
 	try {
 		const userId = req.query.userId as string;
 		const walletTypeName = req.query.type as WalletType;
-		const wallet = await walletService.getUserWalletTypeBalances({ userId, walletTypeName });
+		const wallets = await walletService.getUserWalletTypeBalances({ userId, walletTypeName });
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
 				message: "Wallet retrieved successfully",
-				object: wallet,
+				object: wallets,
 			})
 		);
 	} catch (error: any) {

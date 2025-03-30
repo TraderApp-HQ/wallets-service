@@ -51,3 +51,5 @@ export const COLLECTIONS = {
 	transactions: "transactions",
 	addresses: "addresses",
 };
+
+export const ConversionCurrencies = ["USD", "NGN"];
