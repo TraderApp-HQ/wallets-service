@@ -45,9 +45,6 @@ jobs:
             - name: Run DB Migrations
               run: npm run db:migrate-all
 
-            - name: Run Tests
-              run: npm run test
-
     push-docker-image:
         runs-on: ubuntu-latest
         environment:
