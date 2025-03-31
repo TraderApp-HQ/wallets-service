@@ -42,7 +42,7 @@ export interface ICreateInvoiceResponse {
 	fee: string;
 	fee_currency: string;
 	paid_amount: string;
-	exchange: {
+	exchange?: {
 		pair: string;
 		rate: string;
 		fee: string;
@@ -57,6 +57,15 @@ export interface ICreateInvoiceResponse {
 	hosted_page_url: string;
 	created_at: string;
 	expires_at: string;
+}
+
+export interface IGenerateAddressInput {
+	currency: string;
+	network: string;
+	userId: string;
+	customId: string;
+	payCurrency: string;
+	amount?: number;
 }
 
 export class CryptoPayClient {
@@ -95,13 +104,7 @@ export class CryptoPayClient {
 		userId,
 		customId,
 		payCurrency,
-	}: {
-		currency: string;
-		network: string;
-		userId: string;
-		customId: string;
-		payCurrency: string;
-	}): Promise<ICreateChannelResponse> {
+	}: IGenerateAddressInput): Promise<ICreateChannelResponse> {
 		const CHANNELS_ENDPOINT = "/api/channels";
 
 		if (!this.validateCredentials()) {
@@ -137,7 +140,14 @@ export class CryptoPayClient {
 		}
 	}
 
-	private async generateTemporalAddress(currency: string, network: string) {
+	private async generateTemporalAddress({
+		currency,
+		network,
+		userId,
+		customId,
+		payCurrency,
+		amount,
+	}: IGenerateAddressInput): Promise<ICreateInvoiceResponse> {
 		const INVOICES_ENDPOINT = "/api/invoices";
 
 		if (!this.validateCredentials()) {
@@ -146,10 +156,21 @@ export class CryptoPayClient {
 
 		// Request data
 		const requestData = JSON.stringify({
-			currency,
+			price_amount: amount,
+			price_currency: currency,
+			pay_currency: payCurrency,
 			network,
-			name: "John Doe", // Example name, adjust as necessary
-			description: "Test payment", // Example description, adjust as necessary
+			custom_id: customId,
+			// customer_id: "2095847324222335544334433",
+			name: userId,
+			description: userId,
+			// metadata: {
+			// 	property1: "string",
+			// 	property2: "string",
+			// },
+			// success_redirect_url: "https://web-dashboard-dev.traderapp.finance/account/wallets/main",
+			// unsuccess_redirect_url: "https://web-dashboard-dev.traderapp.finance/account/wallets/main",
+			// payer_email: "string",
 		});
 
 		// Generate signature
@@ -167,7 +188,7 @@ export class CryptoPayClient {
 					Authorization: `HMAC ${this.apiKey}:${signature}`,
 				},
 			});
-			return response.data; // Adjust return type as necessary
+			return response.data.data as ICreateInvoiceResponse;
 		} catch (error: any) {
 			throw new Error(`Error generating temporal address from cryptopay: ${error.message}`);
 		}
@@ -180,6 +201,7 @@ export class CryptoPayClient {
 		addressType,
 		network,
 		customId,
+		amount,
 	}: IFactoryPaymentProviderDepositInput): Promise<IFactoryPaymentProviderDepositResponse> {
 		console.log("Generate deposit details Input: ", {
 			userId,
@@ -188,6 +210,7 @@ export class CryptoPayClient {
 			addressType,
 			network,
 			customId,
+			amount,
 		});
 
 		if (!network) {
@@ -219,13 +242,98 @@ export class CryptoPayClient {
 				id: permAddress.id,
 				walletAddress: permAddress.address,
 				paymentUrl: permAddress.hosted_page_url,
+				paymentUri: permAddress.uri,
 				customWalletId: permAddress.custom_id,
 				externalWalletId: permAddress.id,
 				currency: permAddress.receiver_currency,
 				payCurrency: permAddress.pay_currency,
+				shouldRedirect: false,
 			};
 		} else {
-			console.log("No implementation for the address type");
+			// validate that an amount was passed
+			if (!amount || amount <= 0) {
+				throw ApplicationError({
+					name: ErrorName.VALIDATION,
+					message: "Amount must be a valid number greater than zero",
+				});
+			}
+
+			const tempAddress = await this.generateTemporalAddress({
+				currency,
+				network: network ?? "",
+				payCurrency,
+				userId,
+				customId: customId ?? "",
+				amount,
+			});
+			console.log("temporal invoice details:################", tempAddress);
+
+			resObject = {
+				...resObject,
+				id: tempAddress.id,
+				walletAddress: tempAddress.address,
+				paymentUrl: tempAddress.hosted_page_url,
+				paymentUri: tempAddress.uri,
+				customWalletId: tempAddress.custom_id,
+				externalWalletId: tempAddress.id,
+				amount: Number(tempAddress.price_amount),
+				currency: tempAddress.price_currency,
+				payAmount: Number(tempAddress.pay_amount),
+				payCurrency: tempAddress.pay_currency,
+				shouldRedirect: false,
+				exchangePair: tempAddress.exchange?.pair,
+				exchangeRate: Number(tempAddress.exchange?.rate),
+				createdAt: tempAddress.created_at,
+				expiresAt: tempAddress.expires_at,
+
+				// amount?: number;
+				// description?: string;
+				// metadata?: any;
+				// successRedirectUrl?: string;
+				// failureRedirectUrl?: string;
+				// createdAt?: string;
+				// expiresAt?: string;
+				// payCurrency?: string; // the currency in which the payment will be made
+				// payAmount?: number; // the amount that will be paid using the payCurrency
+				// fee?: number;
+				// feeCurrency?: string; // the currency in which the fee will be paid
+				// exchangePair?: string;
+				// exchangeRate?: number;
+				// exchangeFee?: number;
+				// exchangeFeeCurrency?: string;
+
+				// id: string;
+				// custom_id: string;
+				// customer_id: string | null;
+				// subscription_id: string | null;
+				// status: string;
+				// status_context: string | null;
+				// address: string;
+				// network: string;
+				// uri: string;
+				// price_amount: string;
+				// price_currency: string;
+				// pay_amount: string;
+				// pay_currency: string;
+				// fee: string;
+				// fee_currency: string;
+				// paid_amount: string;
+				// exchange: {
+				// 	pair: string;
+				// 	rate: string;
+				// 	fee: string;
+				// 	fee_currency: string;
+				// };
+				// transactions: any[]; // Adjust the type as necessary based on the structure of transactions
+				// name: string;
+				// description: string;
+				// metadata: any | null; // Adjust the type as necessary based on the structure of metadata
+				// success_redirect_url: string | null;
+				// unsuccess_redirect_url: string | null;
+				// hosted_page_url: string;
+				// created_at: string;
+				// expires_at: string;
+			};
 		}
 		// return {
 		// 	id: "",

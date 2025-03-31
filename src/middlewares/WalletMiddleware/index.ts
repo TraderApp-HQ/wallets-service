@@ -105,17 +105,17 @@ export const validateInitiateDepositRequest = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const { userId, currency, paymentMethodId, providerId, network } = req.body;
+	const { userId, currencyId, paymentMethodId, providerId, network } = req.body;
 	const schema = Joi.object({
 		userId: Joi.string().label("userId"),
-		currency: Joi.string().required().label("Currency"),
+		currencyId: Joi.string().required().label("Currency Id"),
 		paymentMethodId: Joi.string().required().label("Payment Method Id"),
 		providerId: Joi.string().required().label("Provider Id"),
 		network: Joi.string().label("Network"),
 		amount: Joi.number().label("Amount"),
 	});
 
-	const { error } = schema.validate({ userId, currency, paymentMethodId, providerId, network });
+	const { error } = schema.validate({ userId, currencyId, paymentMethodId, providerId, network });
 
 	if (error) {
 		error.message = error.message.replace(/\"/g, "");

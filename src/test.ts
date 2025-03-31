@@ -65,10 +65,10 @@ export async function createCryptoPayInvoice() {
 		price_currency: "USDT",
 		pay_currency: "BTC",
 		network: "bitcoin",
-		custom_id: "PAYMENT-1234112244411223322",
+		custom_id: "PAYMENT-123411224441122332288888777666",
 		// customer_id: "2095847324222335544334433",
 		name: "John Doe",
-		description: "Test payment",
+		description: "Another Test payment",
 		// metadata: {
 		// 	property1: "string",
 		// 	property2: "string",
