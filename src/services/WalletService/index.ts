@@ -8,28 +8,28 @@ import {
 	// TransactionType,
 	// TransactionSource,
 	WalletType,
-} from "../config/interfaces";
-import Transaction from "../models/Transaction";
-import UserWallet, { IUserWallet } from "../models/UserWallet";
-import { CryptoPayClient } from "../clients/CryptoPayClient";
-import UserWalletDepositDetail from "../models/UserWalletDepositAddress";
+} from "../../config/interfaces";
+import Transaction from "../../models/Transaction";
+import UserWallet, { IUserWallet } from "../../models/UserWallet";
+import { CryptoPayClient } from "../../clients/CryptoPayClient";
+import UserWalletDepositDetail from "../../models/UserWalletDepositAddress";
 import {
 	AddressType,
 	ErrorName,
 	PaymentCategoryName,
 	PaymentOperation,
 	WalletProvider,
-} from "../config/enums";
-import PaymentMethod, { IPaymentMethod } from "../models/PaymentMethod";
-import Provider, { IPaymentProvider } from "../models/PaymentProvider";
-import { WalletProviderFactory } from "../factories/WalletProviderFactory";
-import WalletTypeModel from "../models/WalletType";
-import Currency from "../models/Currency";
-import ProviderPaymentMethod from "../models/ProviderPaymentMethod";
-import PaymentCategory, { IPaymentCategory } from "../models/PaymentCategory";
-import { ApplicationError } from "../config/helpers";
-import ExchangeRate, { IExchangeRate } from "../models/ExchangeRate";
-import { ConversionCurrencies } from "../config/constants";
+} from "../../config/enums";
+import PaymentMethod, { IPaymentMethod } from "../../models/PaymentMethod";
+import Provider, { IPaymentProvider } from "../../models/PaymentProvider";
+import { WalletProviderFactory } from "../../factories/WalletProviderFactory";
+import WalletTypeModel from "../../models/WalletType";
+import Currency from "../../models/Currency";
+import ProviderPaymentMethod from "../../models/ProviderPaymentMethod";
+import PaymentCategory, { IPaymentCategory } from "../../models/PaymentCategory";
+import { ApplicationError } from "../../config/helpers";
+import ExchangeRate, { IExchangeRate } from "../../models/ExchangeRate";
+import { ConversionCurrencies } from "../../config/constants";
 
 interface IWalletInput {
 	userId: string;
@@ -47,7 +47,7 @@ export interface IGetPaymentMethods {
 
 export interface IInitiateDepositInput {
 	userId: string;
-	currency: string;
+	currencyId: string;
 	paymentMethodId: string;
 	providerId: string;
 	network?: string;
@@ -286,19 +286,20 @@ export class WalletService {
 
 	public async initiateDeposit({
 		userId,
-		currency,
+		currencyId,
 		paymentMethodId,
 		providerId,
 		network,
 		amount,
 	}: IInitiateDepositInput) {
-		const [paymentMethod, provider, providerPaymentMethod] = await Promise.all([
+		const [paymentMethod, provider, providerPaymentMethod, currency] = await Promise.all([
 			PaymentMethod.findOne({ _id: paymentMethodId }).populate({
 				path: "category",
 				select: "name",
 			}),
 			Provider.findOne({ _id: providerId }),
 			ProviderPaymentMethod.findOne({ paymentMethod: paymentMethodId, provider: providerId }),
+			Currency.findOne({ _id: currencyId }),
 		]);
 
 		if (!paymentMethod) {
@@ -312,6 +313,13 @@ export class WalletService {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
 				message: "No default provider found for this payment method",
+			});
+		}
+
+		if (!currency) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Currency not found or supported",
 			});
 		}
 
@@ -331,7 +339,7 @@ export class WalletService {
 		);
 
 		// check if currency and paymentMethodName match
-		if (paymentMethod.symbol.toLowerCase() === currency.toLowerCase()) {
+		if (paymentMethod.symbol.toLowerCase() === currency.symbol.toLowerCase()) {
 			// check user wallet deposit details and see if the user already has details for the payment method and provider
 			const userDepositAddress = await UserWalletDepositDetail.findOne({
 				userId,
@@ -345,7 +353,7 @@ export class WalletService {
 			// call provider instance to generate a permanent wallet address
 			const depositDetails = await providerInstance.generateDepositDetails({
 				userId,
-				currency,
+				currency: currency.symbol,
 				payCurrency: paymentMethod.symbol,
 				addressType: AddressType.PERMANENT,
 				network,
@@ -373,132 +381,47 @@ export class WalletService {
 
 		return providerInstance.generateDepositDetails({
 			userId,
-			currency,
+			currency: currency.symbol,
 			payCurrency: paymentMethod.symbol,
 			addressType: AddressType.DYNAMIC,
 			network,
 			amount,
+			customId: uuidv4(),
 		});
 	}
 
-	public async withdrawFunds(
-		userId: string,
-		currency: string,
-		amount: number,
-		paymentMethodName: string
-	) {
-		const paymentMethod = await PaymentMethod.findOne({ name: paymentMethodName });
-		if (!paymentMethod) {
-			throw new Error("Payment method not found");
-		}
-
-		const provider = await Provider.findOne({
-			paymentMethods: paymentMethod._id,
-			default: true,
-		});
-		if (!provider) {
-			throw new Error("No default provider found for this payment method");
-		}
-
-		// const providerInstance = WalletProviderFactory.createProvider(provider.name as WalletProvider);
-		// await providerInstance.processWithdrawal(userId, currency, amount);
-
-		const transaction = new Transaction({
-			transactionId: uuidv4(),
-			userId,
-			currency,
-			amount,
-			paymentMethod: paymentMethodName,
-			provider: provider.name,
-			status: "completed",
-		});
-
-		await transaction.save();
-	}
-
-	// async getUserWalletDepositDetails({
-	// 	userId,
-	// 	paymentMethodId,
-	// 	providerId,
-	// 	network,
-	// 	currency,
-	// }: {
-	// 	userId: string;
-	// 	paymentMethodId: string;
-	// 	providerId: string;
-	// 	network: string;
-	// 	currency: string;
-	// }) {
-	// 	try {
-	// 		// Check existing active wallet address
-	// 		const existingWallet = await UserWalletDepositDetail.findOne({
-	// 			userId,
-	// 			paymentMethod: paymentMethodId,
-	// 			provider: providerId,
-	// 			network,
-	// 			isActive: true,
-	// 		});
-
-	// 		if (existingWallet) {
-	// 			return existingWallet;
-	// 		}
-
-	// 		// Generate new address based on type
-	// 		// const addressResponse =
-	// 		// 	addressType === AddressType.DIRECT
-	// 		// 		? await this.cryptoPayClient.generatePermanentAddress(currency, network)
-	// 		// 		: await this.cryptoPayClient.generateTemporalAddress(currency, network, 3600); // 1 hour expiry
-
-	// 		// const newWalletDeposit = new UserWalletDepositAddress({
-	// 		// 	userId,
-	// 		// 	networkName,
-	// 		// 	walletAddress: addressResponse.address,
-	// 		// 	hostedPageUrl: addressResponse.hostedPageUrl,
-	// 		// 	provider: WalletProvider.CRYPTOPAY,
-	// 		// 	expiresAt:
-	// 		// 		addressType === AddressType.DYNAMIC
-	// 		// 			? new Date(Date.now() + 3600000)
-	// 		// 			: undefined,
-	// 		// });
-
-	// 		// await newWalletDeposit.save();
-	// 		// return newWalletDeposit;
-	// 	} catch (error: any) {
-	// 		throw new Error(`Error getting wallet deposit details: ${error.message}`);
+	// public async withdrawFunds(
+	// 	userId: string,
+	// 	currency: string,
+	// 	amount: number,
+	// 	paymentMethodName: string
+	// ) {
+	// 	const paymentMethod = await PaymentMethod.findOne({ name: paymentMethodName });
+	// 	if (!paymentMethod) {
+	// 		throw new Error("Payment method not found");
 	// 	}
-	// }
 
-	// async creditUserWallet(userId: string, currency: Currency, amount: number) {
-	// 	try {
-	// 		const wallet = await Wallet.findOne({ userId, currency });
-	// 		if (!wallet) {
-	// 			throw new Error("Wallet not found");
-	// 		}
-
-	// 		wallet.balance += amount;
-	// 		await wallet.save();
-	// 		return wallet;
-	// 	} catch (error: any) {
-	// 		throw new Error(`Error crediting wallet: ${error.message}`);
+	// 	const provider = await Provider.findOne({
+	// 		paymentMethods: paymentMethod._id,
+	// 		default: true,
+	// 	});
+	// 	if (!provider) {
+	// 		throw new Error("No default provider found for this payment method");
 	// 	}
-	// }
 
-	// async debitUserWallet(userId: string, currency: Currency, amount: number) {
-	// 	try {
-	// 		const wallet = await Wallet.findOne({ userId, currency });
-	// 		if (!wallet) {
-	// 			throw new Error("Wallet not found");
-	// 		}
+	// 	// const providerInstance = WalletProviderFactory.createProvider(provider.name as WalletProvider);
+	// 	// await providerInstance.processWithdrawal(userId, currency, amount);
 
-	// 		if (wallet.balance < amount) {
-	// 			throw new Error("Insufficient balance");
-	// 		}
+	// 	const transaction = new Transaction({
+	// 		transactionId: uuidv4(),
+	// 		userId,
+	// 		currency,
+	// 		amount,
+	// 		paymentMethod: paymentMethodName,
+	// 		provider: provider.name,
+	// 		status: "completed",
+	// 	});
 
-	// 		wallet.balance -= amount;
-	// 		await wallet.save();
-	// 		return wallet;
-	// 	} catch (error: any) {
-	// 		throw new Error(`Error debiting wallet: ${error.message}`);
-	// 	}
+	// 	await transaction.save();
 	// }
 }

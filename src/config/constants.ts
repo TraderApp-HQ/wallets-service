@@ -2,6 +2,7 @@ import { apiDocumentationResponseObject } from "@traderapp/shared-resources";
 
 export const ENVIRONMENTS: Record<string, string> = Object.freeze({
 	development: "dev",
+	test: "dev",
 	staging: "staging",
 	production: "prod",
 });

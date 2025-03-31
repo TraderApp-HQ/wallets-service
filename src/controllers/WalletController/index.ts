@@ -106,12 +106,12 @@ export const getWalletPaymentCategoryPaymentMethods = async (
 
 export const initiateDeposit = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const { userId, currency, network, providerId, paymentMethodId, amount } = req.body;
+		const { userId, currencyId, network, providerId, paymentMethodId, amount } = req.body;
 		const walletService = new WalletService();
 
 		const depositDetails = await walletService.initiateDeposit({
 			userId,
-			currency,
+			currencyId,
 			network,
 			providerId,
 			paymentMethodId,
