@@ -285,66 +285,8 @@ export class CryptoPayClient {
 				exchangeRate: Number(tempAddress.exchange?.rate),
 				createdAt: tempAddress.created_at,
 				expiresAt: tempAddress.expires_at,
-
-				// amount?: number;
-				// description?: string;
-				// metadata?: any;
-				// successRedirectUrl?: string;
-				// failureRedirectUrl?: string;
-				// createdAt?: string;
-				// expiresAt?: string;
-				// payCurrency?: string; // the currency in which the payment will be made
-				// payAmount?: number; // the amount that will be paid using the payCurrency
-				// fee?: number;
-				// feeCurrency?: string; // the currency in which the fee will be paid
-				// exchangePair?: string;
-				// exchangeRate?: number;
-				// exchangeFee?: number;
-				// exchangeFeeCurrency?: string;
-
-				// id: string;
-				// custom_id: string;
-				// customer_id: string | null;
-				// subscription_id: string | null;
-				// status: string;
-				// status_context: string | null;
-				// address: string;
-				// network: string;
-				// uri: string;
-				// price_amount: string;
-				// price_currency: string;
-				// pay_amount: string;
-				// pay_currency: string;
-				// fee: string;
-				// fee_currency: string;
-				// paid_amount: string;
-				// exchange: {
-				// 	pair: string;
-				// 	rate: string;
-				// 	fee: string;
-				// 	fee_currency: string;
-				// };
-				// transactions: any[]; // Adjust the type as necessary based on the structure of transactions
-				// name: string;
-				// description: string;
-				// metadata: any | null; // Adjust the type as necessary based on the structure of metadata
-				// success_redirect_url: string | null;
-				// unsuccess_redirect_url: string | null;
-				// hosted_page_url: string;
-				// created_at: string;
-				// expires_at: string;
 			};
 		}
-		// return {
-		// 	id: "",
-		// 	currency,
-		// 	walletAddress: "",
-		// 	network: "",
-		// 	paymentUrl: "",
-		// 	shouldRedirect: false,
-		// 	customWalletId: "",
-		// 	externalWalletId: "",
-		// };
 
 		return resObject;
 	}
