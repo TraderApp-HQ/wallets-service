@@ -150,3 +150,23 @@ export const initiateWithdrawal = async (req: Request, res: Response, next: Next
 		next(error);
 	}
 };
+
+export const getWalletSupportedCurrencies = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const supportedCurrencies = await walletService.getWalletSupportedCurrencies();
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Wallet supported currencies retrieved successfully",
+				object: supportedCurrencies,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};

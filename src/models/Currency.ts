@@ -1,15 +1,17 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-interface ICurrencyModel extends Document {
+export interface ICurrencyModel extends Document {
 	id: string;
 	name: string;
 	symbol: string;
+	logoUrl: string;
 }
 
 const currencySchema = new Schema<ICurrencyModel>(
 	{
 		name: { type: String, required: true },
 		symbol: { type: String, required: true, unique: true },
+		logoUrl: { type: String, required: true },
 	},
 	{ timestamps: true, versionKey: false }
 );
