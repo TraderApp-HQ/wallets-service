@@ -24,7 +24,7 @@ import PaymentMethod, { IPaymentMethod } from "../../models/PaymentMethod";
 import Provider, { IPaymentProvider } from "../../models/PaymentProvider";
 import { WalletProviderFactory } from "../../factories/WalletProviderFactory";
 import WalletTypeModel from "../../models/WalletType";
-import Currency from "../../models/Currency";
+import Currency, { ICurrencyModel } from "../../models/Currency";
 import ProviderPaymentMethod from "../../models/ProviderPaymentMethod";
 import PaymentCategory, { IPaymentCategory } from "../../models/PaymentCategory";
 import { ApplicationError } from "../../config/helpers";
@@ -388,6 +388,15 @@ export class WalletService {
 			amount,
 			customId: uuidv4(),
 		});
+	}
+
+	public async getWalletSupportedCurrencies(): Promise<ICurrencyModel[]> {
+		try {
+			const supportedCurrencies = await Currency.find({});
+			return supportedCurrencies;
+		} catch (error: any) {
+			throw new Error(`Error with getting transactions: ${error.message}`);
+		}
 	}
 
 	// public async withdrawFunds(
