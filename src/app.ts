@@ -26,8 +26,8 @@ const secretNames = ["common-secrets", "wallets-service-secrets"];
 		secretNames,
 		secretsJson,
 	});
-	// const port = process.env.PORT;
-	const port = 8083;
+	const port = process.env.PORT;
+	// const port = 8083;
 	const dbUrl = process.env.WALLET_SERVICE_DB_URL ?? "";
 	mongoose
 		.connect(dbUrl)

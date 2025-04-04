@@ -19,7 +19,7 @@ import {
 const router = Router();
 
 // router.post("/create", AuthMiddleware, createUserWallets);
-router.get("/supported-currencies", validateGetUserWalletsRequest, getWalletSupportedCurrencies);
+router.get("/supported-currencies", validateRequest, getWalletSupportedCurrencies);
 router.get("/user-wallets", validateGetUserWalletsRequest, getUserWallets);
 router.get("/user-wallet-type", validateGetUserWalletTypeRequest, getUserWalletType);
 router.get(
