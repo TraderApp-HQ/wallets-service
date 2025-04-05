@@ -29,6 +29,7 @@ export enum TransactionStatus {
 	PENDING = "PENDING",
 	SUCCESS = "SUCCESS",
 	FAILED = "FAILED",
+	BLOCKED = "BLOCKED",
 }
 
 export interface ITransaction {

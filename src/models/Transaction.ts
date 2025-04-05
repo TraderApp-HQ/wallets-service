@@ -28,6 +28,8 @@ export interface ITransaction extends Document {
 	paymentCategoryName: string;
 	paymentMethodName: string;
 	paymentProviderName: string;
+	externalTransactionId: string;
+	transactionHash?: string;
 }
 
 const transactionSchema = new Schema<ITransaction>(
@@ -60,13 +62,16 @@ const transactionSchema = new Schema<ITransaction>(
 		paymentCategoryName: { type: String, required: true },
 		paymentMethodName: { type: String, required: true },
 		paymentProviderName: { type: String, required: true },
+		externalTransactionId: { type: String, required: true },
+		transactionHash: { type: String },
 	},
 	{ timestamps: true }
 );
 
 // Add indexes for commonly queried fields
 transactionSchema.index({
-	transactionId: 1,
+	externalTransactionId: 1,
+	transactionHash: 1,
 	userId: 1,
 	type: 1,
 	status: 1,

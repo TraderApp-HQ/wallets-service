@@ -68,15 +68,62 @@ export interface IGenerateAddressInput {
 	amount?: number;
 }
 
+export enum CryptopayWebhookEventStatus {
+	pending = "pending",
+	completed = "completed",
+	onHold = "on_hold",
+	refunded = "refunded",
+	cancelled = "cancelled",
+	new = "new",
+	unresolved = "unresolved",
+	processing = "processing",
+}
+
+export interface ICryptopayWebhookEvent {
+	type: "ChannelPayment" | "Invoice" | "CoinWithdrawal";
+	event:
+		| "created"
+		| "completed"
+		| "on_hold"
+		| "refunded"
+		| "cancelled"
+		| "transaction_created"
+		| "transaction_confirmed"
+		| "status_changed";
+	data: {
+		id: string;
+		txid: string;
+		paid_amount: string;
+		paid_currency: string;
+		received_amount: string;
+		received_currency: string;
+		fee: string;
+		fee_currency: string;
+		status: CryptopayWebhookEventStatus;
+		status_context: string | null;
+		channel_id: string;
+		address: string;
+		network: string;
+		custom_id: string;
+		customer_id: string | null;
+		risk: any | null;
+		refund_address: string | null;
+		coin_withdrawal_id: string | null;
+		created_at: string;
+	};
+}
+
 export class CryptoPayClient {
 	private readonly baseUrl: string;
 	private readonly apiKey: string;
 	private readonly apiSecret: string;
+	private readonly webhooksSharedSecret: string;
 
 	constructor() {
 		this.baseUrl = process.env.CRYPTOPAY_BASE_URL ?? "";
 		this.apiKey = process.env.CRYPTOPAY_DEPOSITS_API_KEY ?? "";
 		this.apiSecret = process.env.CRYPTOPAY_DEPOSITS_API_SECRET ?? "";
+		this.webhooksSharedSecret = process.env.CRYPTOPAY_WEBHOOK_SHARED_SECRET ?? "";
 	}
 
 	private validateCredentials() {
@@ -291,26 +338,13 @@ export class CryptoPayClient {
 		return resObject;
 	}
 
-	async verifyPayment(paymentId: string) {
-		if (!this.validateCredentials()) {
-			throw new Error("Missing required CRYPTOPAY environment variables");
-		}
-		try {
-			const response = await axios.get(`${this.baseUrl}/v1/payments/${paymentId}`, {
-				headers: this.getHeaders(),
-			});
-			return response.data;
-		} catch (error: any) {
-			throw new Error(`Error verifying payment: ${error.message}`);
-		}
-	}
-
 	verifyWebhookSignature(payload: any, signature: string): boolean {
-		if (!this.apiSecret) {
-			throw new Error("Missing CRYPTOPAY_DEPOSITS_API_SECRET environment variable");
+		if (!this.webhooksSharedSecret) {
+			console.log("cryptopay shared secret#####", this.webhooksSharedSecret);
+			throw new Error("Missing CRYPTOPAY_WEBHOOK_SHARED_SECRET environment variable");
 		}
 		const computedSignature = crypto
-			.createHmac("sha256", this.apiSecret)
+			.createHmac("sha256", this.webhooksSharedSecret)
 			.update(JSON.stringify(payload))
 			.digest("hex");
 		return computedSignature === signature;

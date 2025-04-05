@@ -9,6 +9,7 @@ import specs from "./utils/swagger";
 import mongoose from "mongoose";
 import TransactionRoutes from "./routes/TransactionRoutes";
 import WalletRoutes from "./routes/WalletRoutes";
+import WebhookRoutes from "./routes/WebhookRoutes";
 
 const app: Application = express();
 
@@ -85,6 +86,7 @@ function startServer() {
 	// // api routes handler
 	app.use(`/transactions`, TransactionRoutes);
 	app.use(`/wallets`, WalletRoutes);
+	app.use(`/webhooks`, WebhookRoutes);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
