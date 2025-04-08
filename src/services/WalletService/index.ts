@@ -120,7 +120,12 @@ export class WalletService {
 	}
 
 	public async getUserWalletBalances({ userId }: IWalletInput): Promise<IUserWallet[]> {
-		const existingWallets = await UserWallet.find({ userId }).lean();
+		const existingWallets = await UserWallet.find({ userId })
+			.populate({
+				path: "currency",
+				select: "name symbol logoUrl",
+			})
+			.lean();
 		if (existingWallets.length) {
 			return existingWallets.map((wallet) => ({
 				...wallet,
