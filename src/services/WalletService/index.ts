@@ -119,28 +119,31 @@ export class WalletService {
 		};
 	}
 
-	public async getUserWalletBalances({ userId }: IWalletInput): Promise<IUserWallet[]> {
+	private async queryUserWalletBalance({ userId }: IWalletInput): Promise<IUserWallet[]> {
 		const existingWallets = await UserWallet.find({ userId })
 			.populate({
 				path: "currency",
 				select: "name symbol logoUrl",
 			})
 			.lean();
-		if (existingWallets.length) {
-			return existingWallets.map((wallet) => ({
-				...wallet,
-				availableBalance: parseFloat(wallet.availableBalance.toString()),
-				lockedBalance: parseFloat(wallet.lockedBalance.toString()),
-				id: (wallet._id as mongoose.Types.ObjectId).toString(),
-			}));
-		}
-		const createdWallet = await this.createUserWallet({ userId });
-		return createdWallet.map((wallet) => ({
-			...wallet.toObject(),
+
+		return existingWallets.map((wallet) => ({
+			...wallet,
 			availableBalance: parseFloat(wallet.availableBalance.toString()),
 			lockedBalance: parseFloat(wallet.lockedBalance.toString()),
 			id: (wallet._id as mongoose.Types.ObjectId).toString(),
-		})) as IUserWallet[];
+		}));
+	}
+
+	public async getUserWalletBalances({ userId }: IWalletInput): Promise<IUserWallet[]> {
+		const existingWallets = await this.queryUserWalletBalance({ userId });
+		if (existingWallets.length) {
+			return existingWallets;
+		}
+
+		// no user wallet, create wallets for user
+		await this.createUserWallet({ userId });
+		return this.queryUserWalletBalance({ userId });
 	}
 
 	public async getUserWalletTypeBalances({
