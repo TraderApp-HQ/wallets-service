@@ -162,6 +162,7 @@ export const getWalletSupportedCurrencies = async (
 	next: NextFunction
 ) => {
 	try {
+		const walletService = new WalletService();
 		const supportedCurrencies = await walletService.getWalletSupportedCurrencies();
 
 		return res.status(HttpStatus.OK).json(

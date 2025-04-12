@@ -22,13 +22,13 @@ export async function up() {
 
 	// Store original logo URLs for rollback
 	const originalPaymentMethodLogoUrls: Array<{ symbol: string; originalLogoUrl: string }> = [];
-	// const originalCurrencyLogoUrls = [];
+	const originalCurrencyLogoUrls: Array<{ symbol: string; originalLogoUrl: string }> = [];
 
 	// Update each payment method with the new logo URL
 	// for (const { symbol, logoUrl } of cryptoLogoUrls) {
 	const promises = cryptoLogoUrls.map(async ({ symbol, logoUrl }) => {
 		// Find the payment method by symbol
-		const [paymentMethod] = await Promise.all([
+		const [paymentMethod, currency] = await Promise.all([
 			PaymentMethod.findOne({ symbol }),
 			Currency.findOne({ symbol }),
 		]);
@@ -48,20 +48,19 @@ export async function up() {
 			console.log(`Payment method with symbol ${symbol} not found`);
 		}
 
-		// if (currency) {
-		// 	// Store original logo URL for rollback
-		// 	originalCurrencyLogoUrls.push({
-		// 		symbol,
-		// 		originalLogoUrl: currency.logoUrl,
-		// 	});
+		if (currency) {
+			// Store original logo URL for rollback
+			originalCurrencyLogoUrls.push({
+				symbol,
+				originalLogoUrl: currency.logoUrl,
+			});
 
-		// 	// Update the logo URL
-		// 	await PaymentMethod.updateOne({ symbol }, { $set: { logoUrl } });
-
-		// 	console.log(`Updated logo URL for ${symbol} to ${logoUrl}`);
-		// } else {
-		// 	console.log(`Payment method with symbol ${symbol} not found`);
-		// }
+			// Update the logo URL
+			await Currency.updateOne({ symbol }, { $set: { logoUrl } });
+			console.log(`Updated currency logo URL for ${symbol} to ${logoUrl}`);
+		} else {
+			console.log(`Currency with symbol ${symbol} not found`);
+		}
 	});
 	// }
 
@@ -71,10 +70,21 @@ export async function up() {
 	if (originalPaymentMethodLogoUrls.length > 0) {
 		// Create a temporary collection to store original values
 		const db = PaymentMethod.db;
-		const collection = db.collection("migration_20250405T020724_backup");
+		const collection = db.collection("migration_20250405T020724_payment-methods-backup");
 		await collection.insertMany(originalPaymentMethodLogoUrls);
 		console.log(
-			`Stored ${originalPaymentMethodLogoUrls.length} original logo URLs for potential rollback`
+			`Stored ${originalPaymentMethodLogoUrls.length} original payment method logo URLs for potential rollback`
+		);
+	}
+
+	// Store the original URLs in a separate collection for rollback
+	if (originalCurrencyLogoUrls.length > 0) {
+		// Create a temporary collection to store original values
+		const db = Currency.db;
+		const collection = db.collection("migration_20250405T020724_currencies-backup");
+		await collection.insertMany(originalCurrencyLogoUrls);
+		console.log(
+			`Stored ${originalCurrencyLogoUrls.length} original currency logo URLs for potential rollback`
 		);
 	}
 
@@ -84,24 +94,46 @@ export async function up() {
 export async function down() {
 	console.log("Rolling back migration: 20250405T020724_update-crypto-logo-urls.ts");
 
-	// Retrieve the original logo URLs from the backup collection
-	const db = PaymentMethod.db;
-	const collection = db.collection("migration_20250405T020724_backup");
-	const backup = await collection.findOne({});
+	// Retrieve the original payment method logo URLs from the backup collection
+	const paymentMethodDb = PaymentMethod.db;
+	const paymentMethodCollection = paymentMethodDb.collection(
+		"migration_20250405T020724_payment-methods-backup"
+	);
+	const paymentMethodBackups = await paymentMethodCollection.find({}).toArray();
 
-	if (backup && backup.originalLogoUrls) {
+	if (paymentMethodBackups && paymentMethodBackups.length > 0) {
 		// Restore each payment method's original logo URL
-		for (const { symbol, originalLogoUrl } of backup.originalLogoUrls) {
+		for (const { symbol, originalLogoUrl } of paymentMethodBackups) {
 			await PaymentMethod.updateOne({ symbol }, { $set: { logoUrl: originalLogoUrl } });
-
-			console.log(`Restored original logo URL for ${symbol}: ${originalLogoUrl}`);
+			console.log(
+				`Restored original payment method logo URL for ${symbol}: ${originalLogoUrl}`
+			);
 		}
 
 		// Remove the backup collection
-		await collection.drop();
-		console.log("Removed backup collection");
+		await paymentMethodCollection.drop();
+		console.log("Removed payment method backup collection");
 	} else {
-		console.log("No backup data found, unable to rollback");
+		console.log("No payment method backup data found, unable to rollback payment methods");
+	}
+
+	// Retrieve the original currency logo URLs from the backup collection
+	const currencyDb = Currency.db;
+	const currencyCollection = currencyDb.collection("migration_20250405T020724_currencies-backup");
+	const currencyBackups = await currencyCollection.find({}).toArray();
+
+	if (currencyBackups && currencyBackups.length > 0) {
+		// Restore each currency's original logo URL
+		for (const { symbol, originalLogoUrl } of currencyBackups) {
+			await Currency.updateOne({ symbol }, { $set: { logoUrl: originalLogoUrl } });
+			console.log(`Restored original currency logo URL for ${symbol}: ${originalLogoUrl}`);
+		}
+
+		// Remove the backup collection
+		await currencyCollection.drop();
+		console.log("Removed currency backup collection");
+	} else {
+		console.log("No currency backup data found, unable to rollback currencies");
 	}
 
 	console.log("Rollback completed successfully");

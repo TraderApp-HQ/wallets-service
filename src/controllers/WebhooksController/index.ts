@@ -7,6 +7,7 @@ export const processCryptopayWebhooks = async (req: Request, res: Response, next
 	try {
 		// queue cryptopay webhook
 		console.log("cryptopay webhook received##########", req.body);
+		console.log("cryptopay webhook stringyfied", JSON.stringify(req.body));
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,

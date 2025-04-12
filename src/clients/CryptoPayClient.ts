@@ -340,14 +340,52 @@ export class CryptoPayClient {
 
 	verifyWebhookSignature(payload: any, signature: string): boolean {
 		if (!this.webhooksSharedSecret) {
-			console.log("cryptopay shared secret#####", this.webhooksSharedSecret);
 			throw new Error("Missing CRYPTOPAY_WEBHOOK_SHARED_SECRET environment variable");
 		}
+
+		// Ensure the payload is properly stringified and matches the exact format
+		const stringifiedPayload = JSON.stringify(payload, null, 0);
+
 		const computedSignature = crypto
 			.createHmac("sha256", this.webhooksSharedSecret)
-			.update(JSON.stringify(payload))
+			.update(stringifiedPayload)
 			.digest("hex");
-		return computedSignature === signature;
+
+		console.log("Payload received:", stringifiedPayload);
+		console.log("Signature received:", signature);
+		console.log("Computed signature:", computedSignature);
+
+		return this.secureCompare(computedSignature, signature);
+	}
+
+	// verifyWebhookSignature(payload: any, signature: string): boolean {
+	// 	if (!this.webhooksSharedSecret) {
+	// 		throw new Error("Missing CRYPTOPAY_WEBHOOK_SHARED_SECRET environment variable");
+	// 	}
+	// 	const computedSignature = crypto
+	// 		.createHmac("sha256", this.webhooksSharedSecret)
+	// 		.update(JSON.stringify(payload))
+	// 		.digest("hex");
+
+	// 	console.log("shared secret:#####", this.webhooksSharedSecret);
+	// 	console.log("copted signatire:#####", computedSignature);
+	// 	return computedSignature === signature;
+	// }
+
+	private secureCompare(str1: string, str2: string): boolean {
+		if (!str1 || !str2 || str1.length !== str2.length) {
+			return false;
+		}
+
+		const buf1 = Buffer.from(str1);
+		const buf2 = Buffer.from(str2);
+
+		let result = 0;
+		for (let i = 0; i < buf1.length; i++) {
+			result |= buf1[i] ^ buf2[i];
+		}
+
+		return result === 0;
 	}
 
 	private getHeaders() {
