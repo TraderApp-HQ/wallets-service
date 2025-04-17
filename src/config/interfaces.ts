@@ -109,3 +109,16 @@ interface IGetWalletResponseRate {
 	balance: number;
 	currency: string;
 }
+
+export interface IPaginatedResult<T> {
+	docs: T[];
+	totalDocs: number;
+	limit: number;
+	page: number;
+	nextPage: number;
+	prevPage?: number;
+	totalPages: number;
+	pagingCounter: number;
+	hasNextPage: boolean;
+	hasPrevPage: boolean;
+}

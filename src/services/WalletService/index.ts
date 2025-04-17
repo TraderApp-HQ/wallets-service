@@ -2,14 +2,13 @@ import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
 import {
 	IGetWalletResponse,
+	IPaginatedResult,
 	IPaymentMethodResponse,
-	// Currency,
-	// TransactionStatus,
-	// TransactionType,
-	// TransactionSource,
+	TransactionStatus,
+	TransactionType,
 	WalletType,
 } from "../../config/interfaces";
-import Transaction from "../../models/Transaction";
+import Transaction, { ITransaction } from "../../models/Transaction";
 import UserWallet, { IUserWallet } from "../../models/UserWallet";
 import { CryptoPayClient } from "../../clients/CryptoPayClient";
 import UserWalletDepositDetail from "../../models/UserWalletDepositAddress";
@@ -52,6 +51,32 @@ export interface IInitiateDepositInput {
 	providerId: string;
 	network?: string;
 	amount?: number;
+}
+
+interface IGetTransactions {
+	userId: string;
+	page: number;
+	limit: number;
+}
+
+interface IAsset {
+	name: string;
+	symbol: string;
+	logoUrl: string;
+}
+export interface ITransactionsHistory {
+	id: string;
+	userId: string;
+	assetLogo: IAsset;
+	transactionType: TransactionType;
+	amount: number;
+	currency: string;
+	status: TransactionStatus;
+	createdAt: string;
+}
+
+interface ITransactionData extends ITransaction {
+	assetLogo: IAsset;
 }
 export class WalletService {
 	private readonly cryptoPayClient: CryptoPayClient;
@@ -283,10 +308,87 @@ export class WalletService {
 		return walletCombinations;
 	}
 
-	public async getTransactions({ userId }: IWalletInput) {
+	public async getTransactions({
+		userId,
+		page,
+		limit,
+	}: IGetTransactions): Promise<IPaginatedResult<ITransactionsHistory>> {
 		try {
-			const transactions = await Transaction.find({ userId });
-			return transactions;
+			const transactions = await Transaction.paginate({ userId }, { page, limit });
+			let assetLogo: IAsset[];
+
+			// Get currency logo symbol and url
+			if (transactions.totalDocs > 0) {
+				const result = (
+					await ProviderPaymentMethod.find()
+						.populate({
+							path: "paymentMethod",
+							select: "name symbol logoUrl -_id", // Select the fields you need from PaymentMethod
+						})
+						.select("paymentMethod -_id")
+				).map((res) => res.paymentMethod);
+
+				assetLogo = result as unknown as IAsset[];
+			}
+
+			// Modified Transaction History Data
+			const newDocs = transactions.docs.map((doc) => {
+				const transaction = doc.toObject(); // Convert to plain object
+				const transactionAmount = transaction.fromAmount ?? transaction.amount;
+				const transactionCurrency =
+					transaction.fromCurrencyName ?? transaction.currencyName;
+
+				return {
+					id: transaction._id,
+					userId: transaction.userId,
+					amount: transactionAmount,
+					currency: transactionCurrency,
+					transactionType: transaction.transactionType,
+					status: transaction.status,
+					createdAt: transaction.createdAt,
+					assetLogo: assetLogo.find((asset) => asset.symbol === transactionCurrency),
+				};
+			}) as ITransactionsHistory[];
+
+			const recentTransactionsData = {
+				...transactions,
+				docs: newDocs,
+			};
+
+			return recentTransactionsData as IPaginatedResult<ITransactionsHistory>;
+		} catch (error: any) {
+			throw new Error(`Error with getting transactions: ${error.message}`);
+		}
+	}
+
+	public async getTransaction(id: string): Promise<ITransactionData> {
+		try {
+			const transaction = await Transaction.findById(id);
+			let assetLogo: IAsset = { name: "", symbol: "", logoUrl: "" };
+
+			// Get currency logo symbol and url
+			if (transaction) {
+				const result = (
+					await ProviderPaymentMethod.find()
+						.populate({
+							path: "paymentMethod",
+							select: "name symbol logoUrl -_id", // Select the fields you need from PaymentMethod
+						})
+						.select("paymentMethod -_id")
+				).find(
+					(res) =>
+						(res.paymentMethod as unknown as IAsset)?.symbol ===
+						(transaction.fromCurrencyName ?? transaction.currencyName)
+				)?.paymentMethod;
+
+				assetLogo = result as unknown as IAsset;
+			}
+			const transactionData = {
+				...(transaction?.toObject() as ITransaction),
+				assetLogo,
+			} as unknown as ITransactionData;
+
+			return transactionData;
 		} catch (error: any) {
 			throw new Error(`Error with getting transactions: ${error.message}`);
 		}
