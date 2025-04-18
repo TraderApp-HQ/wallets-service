@@ -142,3 +142,29 @@ export const validateRequest = async (req: Request, res: Response, next: NextFun
 		next(err);
 	}
 };
+
+export const validateGetTransactionRequest = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const transactionId = req.query.transactionId as string;
+	const schema = Joi.object({
+		transactionId: Joi.string().label("transactionId"),
+	});
+
+	const { error } = schema.validate({ transactionId });
+
+	if (error) {
+		error.message = error.message.replace(/\"/g, "");
+		next(error);
+	}
+
+	try {
+		const userId = (await checkUser(req)).id;
+		req.query.userId = userId;
+		next();
+	} catch (err) {
+		next(err);
+	}
+};

@@ -31,16 +31,9 @@ export const getTransactions = async (req: Request, res: Response, next: NextFun
 
 export const getTransaction = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const { id } = req.query;
-		if (typeof id !== "string") {
-			return res.status(HttpStatus.BAD_REQUEST).json(
-				apiResponseHandler({
-					type: ResponseType.ERROR,
-					message: "Invalid transaction ID",
-				})
-			);
-		}
-		const transaction = await walletService.getTransaction(id);
+		const transactionId = req.query.transactionId as string;
+
+		const transaction = await walletService.getTransaction(transactionId);
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({

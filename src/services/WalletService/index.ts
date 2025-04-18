@@ -319,34 +319,24 @@ export class WalletService {
 
 			// Get currency logo symbol and url
 			if (transactions.totalDocs > 0) {
-				const result = (
-					await ProviderPaymentMethod.find()
-						.populate({
-							path: "paymentMethod",
-							select: "name symbol logoUrl -_id", // Select the fields you need from PaymentMethod
-						})
-						.select("paymentMethod -_id")
-				).map((res) => res.paymentMethod);
+				const currencies = await Currency.find().select("name symbol logoUrl -_id"); // Get all supported currencies for their logo url
 
-				assetLogo = result as unknown as IAsset[];
+				assetLogo = currencies as unknown as IAsset[];
 			}
 
 			// Modified Transaction History Data
 			const newDocs = transactions.docs.map((doc) => {
 				const transaction = doc.toObject(); // Convert to plain object
-				const transactionAmount = transaction.fromAmount ?? transaction.amount;
-				const transactionCurrency =
-					transaction.fromCurrencyName ?? transaction.currencyName;
 
 				return {
 					id: transaction._id,
 					userId: transaction.userId,
-					amount: transactionAmount,
-					currency: transactionCurrency,
+					amount: transaction.amount,
+					currency: transaction.currencyName,
 					transactionType: transaction.transactionType,
 					status: transaction.status,
 					createdAt: transaction.createdAt,
-					assetLogo: assetLogo.find((asset) => asset.symbol === transactionCurrency),
+					assetLogo: assetLogo.find((asset) => asset.symbol === transaction.currencyName),
 				};
 			}) as ITransactionsHistory[];
 
@@ -361,27 +351,25 @@ export class WalletService {
 		}
 	}
 
-	public async getTransaction(id: string): Promise<ITransactionData> {
+	public async getTransaction(transactionId: string): Promise<ITransactionData> {
 		try {
-			const transaction = await Transaction.findById(id);
+			const transaction = await Transaction.findById(transactionId);
 			let assetLogo: IAsset = { name: "", symbol: "", logoUrl: "" };
 
 			// Get currency logo symbol and url
 			if (transaction) {
-				const result = (
-					await ProviderPaymentMethod.find()
-						.populate({
-							path: "paymentMethod",
-							select: "name symbol logoUrl -_id", // Select the fields you need from PaymentMethod
-						})
-						.select("paymentMethod -_id")
-				).find(
-					(res) =>
-						(res.paymentMethod as unknown as IAsset)?.symbol ===
-						(transaction.fromCurrencyName ?? transaction.currencyName)
-				)?.paymentMethod;
+				const currencies = (await Currency.find().select(
+					"name symbol logoUrl -_id"
+				)) as unknown as IAsset[];
 
-				assetLogo = result as unknown as IAsset;
+				const asset = currencies.find(
+					(cur: IAsset) => cur.symbol === transaction.currencyName
+				);
+
+				// Only resets assetLogo if matching asset is found
+				if (asset) {
+					assetLogo = asset;
+				}
 			}
 			const transactionData = {
 				...(transaction?.toObject() as ITransaction),
