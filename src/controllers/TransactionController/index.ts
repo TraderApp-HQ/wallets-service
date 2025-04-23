@@ -32,8 +32,9 @@ export const getTransactions = async (req: Request, res: Response, next: NextFun
 export const getTransaction = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const transactionId = req.query.transactionId as string;
+		const userId = req.query.userId as string;
 
-		const transaction = await walletService.getTransaction(transactionId);
+		const transaction = await walletService.getTransaction({ transactionId, userId });
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({

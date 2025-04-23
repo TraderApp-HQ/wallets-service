@@ -351,9 +351,15 @@ export class WalletService {
 		}
 	}
 
-	public async getTransaction(transactionId: string): Promise<ITransactionData> {
+	public async getTransaction({
+		transactionId,
+		userId,
+	}: {
+		transactionId: string;
+		userId: string;
+	}): Promise<ITransactionData> {
 		try {
-			const transaction = await Transaction.findById(transactionId);
+			const transaction = await Transaction.findOne({ _id: transactionId, userId });
 			let assetLogo: IAsset = { name: "", symbol: "", logoUrl: "" };
 
 			// Get currency logo symbol and url
