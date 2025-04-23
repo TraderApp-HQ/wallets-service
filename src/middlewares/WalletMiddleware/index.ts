@@ -149,20 +149,29 @@ export const validateGetTransactionRequest = async (
 	next: NextFunction
 ) => {
 	const transactionId = req.query.transactionId as string;
+	const userId = req.query.userId as string;
 	const schema = Joi.object({
-		transactionId: Joi.string().label("transactionId"),
+		transactionId: Joi.string().label("transactionId").required(),
+		userId: Joi.string().label("userId").optional(),
 	});
 
-	const { error } = schema.validate({ transactionId });
+	const { error } = schema.validate({ transactionId, userId });
 
 	if (error) {
 		error.message = error.message.replace(/\"/g, "");
 		next(error);
+		return;
 	}
 
 	try {
-		const userId = (await checkUser(req)).id;
-		req.query.userId = userId;
+		let id = userId;
+		if (userId) {
+			await checkAdmin(req);
+		} else {
+			id = (await checkUser(req)).id;
+		}
+
+		req.query.userId = id;
 		next();
 	} catch (err) {
 		next(err);
