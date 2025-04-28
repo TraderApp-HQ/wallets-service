@@ -32,24 +32,24 @@ export enum TransactionStatus {
 	BLOCKED = "BLOCKED",
 }
 
-export interface ITransaction {
-	transactionId: string;
-	transactionNetwork: string;
-	userId: string;
-	fromWallet?: WalletType;
-	toWallet?: WalletType;
-	fromCurrency: Currency;
-	toCurrency?: Currency;
-	conversionRate?: number;
-	fromAmount: number;
-	toAmount?: number;
-	type: TransactionType;
-	timestamp: string;
-	fromWalletAddress?: string;
-	toWalletAddress?: string;
-	status: TransactionStatus;
-	transactionSource: TransactionSource;
-}
+// export interface ITransaction {
+// 	transactionId: string;
+// 	transactionNetwork: string;
+// 	userId: string;
+// 	fromWallet?: WalletType;
+// 	toWallet?: WalletType;
+// 	fromCurrency: Currency;
+// 	toCurrency?: Currency;
+// 	conversionRate?: number;
+// 	fromAmount: number;
+// 	toAmount?: number;
+// 	type: TransactionType;
+// 	timestamp: string;
+// 	fromWalletAddress?: string;
+// 	toWalletAddress?: string;
+// 	status: TransactionStatus;
+// 	transactionSource: TransactionSource;
+// }
 
 export interface IDepositFundsPayload {
 	userId: string;

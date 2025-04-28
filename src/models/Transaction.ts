@@ -30,6 +30,8 @@ export interface ITransaction extends Document {
 	paymentProviderName: string;
 	externalTransactionId: string;
 	transactionHash?: string;
+	createdAt: string;
+	updatedAt: string;
 }
 
 const transactionSchema = new Schema<ITransaction>(
