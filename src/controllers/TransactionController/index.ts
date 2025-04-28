@@ -1,22 +1,46 @@
 import { NextFunction, Request, Response } from "express";
 import { apiResponseHandler } from "@traderapp/shared-resources";
-import { ResponseType } from "../../config/constants";
-// import { WalletService } from "../../services/WalletService";
+import { PAGINATION, ResponseType } from "../../config/constants";
+import { WalletService } from "../../services/WalletService";
 import { HttpStatus } from "../../utils/httpStatus";
 
-// const walletService = new WalletService();
+const walletService = new WalletService();
 
 export const getTransactions = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		// const { userId } = req.body;
-		// const transactions = await walletService.getTransactions({ userId });
-		console.log("request came in");
+		const { userId } = req.body;
+		const { page, limit } = req.query;
+		const options = {
+			userId,
+			page: Number((page as string) ?? PAGINATION.PAGE),
+			limit: Number((limit as string) ?? PAGINATION.LIMIT),
+		};
+		const transactions = await walletService.getTransactions(options);
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
 				message: "Transactions retrieved successfully",
-				object: [],
+				object: transactions,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const getTransaction = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const transactionId = req.query.transactionId as string;
+		const userId = req.query.userId as string;
+
+		const transaction = await walletService.getTransaction({ transactionId, userId });
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Transaction retrieved successfully",
+				object: transaction,
 			})
 		);
 	} catch (error: any) {

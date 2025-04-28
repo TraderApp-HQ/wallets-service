@@ -1,5 +1,6 @@
 // src/models/Transaction.ts
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Model, PaginateOptions, PaginateResult } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 import {
 	TransactionType,
 	TransactionStatus,
@@ -34,7 +35,11 @@ export interface ITransaction extends Document {
 	updatedAt: string;
 }
 
-const transactionSchema = new Schema<ITransaction>(
+interface ITransactionModel extends Model<ITransaction> {
+	paginate: (query?: object, options?: PaginateOptions) => Promise<PaginateResult<ITransaction>>;
+}
+
+const transactionSchema = new Schema(
 	{
 		transactionNetwork: { type: String, required: true },
 		userId: { type: String, required: true },
@@ -70,6 +75,8 @@ const transactionSchema = new Schema<ITransaction>(
 	{ timestamps: true }
 );
 
+transactionSchema.plugin(mongoosePaginate); // Pagination plugin
+
 // Add indexes for commonly queried fields
 transactionSchema.index({
 	externalTransactionId: 1,
@@ -102,4 +109,4 @@ transactionSchema.set("toJSON", {
 	},
 });
 
-export default mongoose.model<ITransaction>("Transaction", transactionSchema);
+export default mongoose.model<ITransaction, ITransactionModel>("Transaction", transactionSchema);

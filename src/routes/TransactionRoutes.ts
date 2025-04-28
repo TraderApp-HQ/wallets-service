@@ -6,11 +6,14 @@ import {
 	withdrawFunds,
 	convertFunds,
 	transferFunds,
+	getTransaction,
 } from "../controllers/TransactionController/";
+import { validateGetTransactionRequest, validateRequest } from "../middlewares/WalletMiddleware";
 
 const router = Router();
 
-router.get("/", AuthMiddleware, getTransactions);
+router.get("/", validateRequest, getTransactions);
+router.get("/get-transaction", validateGetTransactionRequest, getTransaction);
 router.post("/deposit", AuthMiddleware, depositFunds);
 router.post("/withdrawal", AuthMiddleware, withdrawFunds);
 router.post("/convert", AuthMiddleware, convertFunds);
