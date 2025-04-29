@@ -29,6 +29,10 @@ export interface ITransaction extends Document {
 	paymentCategoryName: string;
 	paymentMethodName: string;
 	paymentProviderName: string;
+	externalTransactionId: string;
+	transactionHash?: string;
+	createdAt: string;
+	updatedAt: string;
 }
 
 interface ITransactionModel extends Model<ITransaction> {
@@ -65,6 +69,8 @@ const transactionSchema = new Schema(
 		paymentCategoryName: { type: String, required: true },
 		paymentMethodName: { type: String, required: true },
 		paymentProviderName: { type: String, required: true },
+		externalTransactionId: { type: String, required: true },
+		transactionHash: { type: String },
 	},
 	{ timestamps: true }
 );
@@ -73,7 +79,8 @@ transactionSchema.plugin(mongoosePaginate); // Pagination plugin
 
 // Add indexes for commonly queried fields
 transactionSchema.index({
-	transactionId: 1,
+	externalTransactionId: 1,
+	transactionHash: 1,
 	userId: 1,
 	type: 1,
 	status: 1,

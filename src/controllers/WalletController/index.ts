@@ -6,11 +6,10 @@ import { HttpStatus } from "../../utils/httpStatus";
 import { WalletType } from "../../config/interfaces";
 import { PaymentCategoryName, PaymentOperation } from "../../config/enums";
 
-const walletService = new WalletService();
-
 export const createUserWallets = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		// const { userId } = req.body;
+		// const walletService = new WalletService();
 		// const wallet = await walletService.createUserWallet({ userId });
 
 		return res.status(HttpStatus.CREATED).json(
@@ -27,6 +26,7 @@ export const createUserWallets = async (req: Request, res: Response, next: NextF
 export const getUserWallets = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const userId = req.query.userId as string;
+		const walletService = new WalletService();
 		const wallet = await walletService.getUserWalletBalances({ userId });
 
 		return res.status(HttpStatus.OK).json(
@@ -45,6 +45,8 @@ export const getUserWalletType = async (req: Request, res: Response, next: NextF
 	try {
 		const userId = req.query.userId as string;
 		const walletTypeName = req.query.type as WalletType;
+
+		const walletService = new WalletService();
 		const wallets = await walletService.getUserWalletTypeBalances({ userId, walletTypeName });
 
 		return res.status(HttpStatus.OK).json(
@@ -65,6 +67,7 @@ export const getWalletPaymentCategories = async (
 	next: NextFunction
 ) => {
 	try {
+		const walletService = new WalletService();
 		const paymentCategories = await walletService.getWalletPaymentCategories();
 
 		return res.status(HttpStatus.OK).json(
@@ -87,6 +90,8 @@ export const getWalletPaymentCategoryPaymentMethods = async (
 	try {
 		const category = req.query.category as PaymentCategoryName;
 		const operation = req.query.operation as PaymentOperation;
+
+		const walletService = new WalletService();
 		const paymentMethods = await walletService.getWalletPaymentCategoryPaymentMethods({
 			category,
 			operation,
@@ -157,6 +162,7 @@ export const getWalletSupportedCurrencies = async (
 	next: NextFunction
 ) => {
 	try {
+		const walletService = new WalletService();
 		const supportedCurrencies = await walletService.getWalletSupportedCurrencies();
 
 		return res.status(HttpStatus.OK).json(

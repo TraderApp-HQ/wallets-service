@@ -21,7 +21,7 @@ export async function createCryptoPayChannel() {
 		network: "tron",
 		receiver_currency: "USDT",
 		name: "Dike Ajah",
-		custom_id: "123893893822",
+		custom_id: "123893893822232sfslkn",
 	});
 
 	// Create signature components
@@ -185,22 +185,22 @@ export async function generateUserWalletCombinations(userId: string): Promise<IU
 // getSupportedCoins();
 
 // Usage
-// createCryptoPayChannel()
-// 	.then((result) => {
-// 		console.log("Channel:", result);
-// 	})
-// 	.catch((error) => {
-// 		console.error("Error:", error.message);
-// 	});
-
-// Usage
-createCryptoPayInvoice()
+createCryptoPayChannel()
 	.then((result) => {
-		console.log("Invoice:", result);
+		console.log("Channel:", result);
 	})
 	.catch((error) => {
 		console.error("Error:", error.message);
 	});
+
+// Usage
+// createCryptoPayInvoice()
+// 	.then((result) => {
+// 		console.log("Invoice:", result);
+// 	})
+// 	.catch((error) => {
+// 		console.error("Error:", error.message);
+// 	});
 
 // generateUserWalletCombinations("user-12345")
 // 	.then((result) => {
