@@ -11,7 +11,7 @@ const currencySchema = new Schema<ICurrencyModel>(
 	{
 		name: { type: String, required: true },
 		symbol: { type: String, required: true, unique: true },
-		logoUrl: { type: String, required: true },
+		logoUrl: { type: String },
 	},
 	{ timestamps: true, versionKey: false }
 );
