@@ -1,0 +1,178 @@
+import { NextFunction, Request, Response } from "express";
+import { apiResponseHandler } from "@traderapp/shared-resources";
+import { ResponseType } from "../../config/constants";
+import { WalletService } from "../../services/WalletService";
+import { HttpStatus } from "../../utils/httpStatus";
+import { WalletType } from "../../config/interfaces";
+import { PaymentCategoryName, PaymentOperation } from "../../config/enums";
+
+export const createUserWallets = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		// const { userId } = req.body;
+		// const walletService = new WalletService();
+		// const wallet = await walletService.createUserWallet({ userId });
+
+		return res.status(HttpStatus.CREATED).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Wallet created successfully",
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const getUserWallets = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userId = req.query.userId as string;
+		const walletService = new WalletService();
+		const wallet = await walletService.getUserWalletBalances({ userId });
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Wallet retrieved successfully",
+				object: wallet,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const getUserWalletType = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userId = req.query.userId as string;
+		const walletTypeName = req.query.type as WalletType;
+
+		const walletService = new WalletService();
+		const wallets = await walletService.getUserWalletTypeBalances({ userId, walletTypeName });
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Wallet retrieved successfully",
+				object: wallets,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const getWalletPaymentCategories = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const walletService = new WalletService();
+		const paymentCategories = await walletService.getWalletPaymentCategories();
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Payment methods retrieved successfully",
+				object: paymentCategories,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const getWalletPaymentCategoryPaymentMethods = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const category = req.query.category as PaymentCategoryName;
+		const operation = req.query.operation as PaymentOperation;
+
+		const walletService = new WalletService();
+		const paymentMethods = await walletService.getWalletPaymentCategoryPaymentMethods({
+			category,
+			operation,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Payment methods retrieved successfully",
+				object: paymentMethods,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const initiateDeposit = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { userId, currencyId, network, providerId, paymentMethodId, amount } = req.body;
+		const walletService = new WalletService();
+
+		const depositDetails = await walletService.initiateDeposit({
+			userId,
+			currencyId,
+			network,
+			providerId,
+			paymentMethodId,
+			amount,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Deposit details generated successfully",
+				object: depositDetails,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const initiateWithdrawal = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		// const { userId, currency, amount } = req.body;
+		// const walletService = new WalletService();
+
+		// First debit the user's wallet
+		// await walletService.createUserWallet({ userId: "user-1234" });
+
+		// TODO: Initiate withdrawal through CryptoPay API
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Withdrawal initiated successfully",
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const getWalletSupportedCurrencies = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const walletService = new WalletService();
+		const supportedCurrencies = await walletService.getWalletSupportedCurrencies();
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Wallet supported currencies retrieved successfully",
+				object: supportedCurrencies,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};

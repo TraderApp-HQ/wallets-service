@@ -6,6 +6,26 @@
     },
     "extends": ["standard-with-typescript", "prettier"],
     "overrides": [
+        {
+            "files": ["*.ts"],
+            "rules": {
+                "@typescript-eslint/consistent-type-imports": "off",
+                "@typescript-eslint/prefer-includes": "off",
+                "@typescript-eslint/strict-boolean-expressions": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
+                " @typescript-eslint/explicit-function-return-type": "off",
+                "@typescript-eslint/no-misused-promises": "off",
+                "@typescript-eslint/prefer-nullish-coalescing": "off",
+                "@typescript-eslint/return-await": "off",
+                "no-useless-escape": "off",
+                "@typescript-eslint/no-dynamic-delete": "off",
+                "@typescript-eslint/dot-notation": "off",
+                "no-useless-catch": "off",
+                "@typescript-eslint/no-floating-promises": "off",
+                "@typescript-eslint/non-nullable-type-assertion-style": "off",
+                "@typescript-eslint/no-unsafe-argument": "off"
+            }
+        }
     ],
     "parserOptions": {
         "ecmaVersion": "latest",

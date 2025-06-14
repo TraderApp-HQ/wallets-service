@@ -1,48 +1,111 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
-import { config } from "dotenv";
-
-//import routes
-import { BalanceRoutes } from "./routes";
-
-config();
+import "dotenv/config";
+import { logger, initSecrets, apiResponseHandler } from "@traderapp/shared-resources";
+import { ENVIRONMENTS, ResponseType } from "./config/constants";
+import secretsJson from "./env.json";
+import swaggerUi from "swagger-ui-express";
+import specs from "./utils/swagger";
+import mongoose from "mongoose";
+import TransactionRoutes from "./routes/TransactionRoutes";
+import WalletRoutes from "./routes/WalletRoutes";
+import WebhookRoutes from "./routes/WebhookRoutes";
 
 const app: Application = express();
-const baseUri = "api/v1";
 
-const PORT = process.env.PORT || 8001;
+const env = process.env.NODE_ENV;
+if (!env) {
+	logger.error("Error: Environment variable not set");
+	process.exit(1);
+}
+const suffix = ENVIRONMENTS[env];
+const secretNames = ["common-secrets", "wallets-service-secrets"];
 
-app.listen(PORT, () => {
-	console.log(`Server listening at port ${PORT}`);
-	startServer();
-});
+(async function () {
+	await initSecrets({
+		env: suffix,
+		secretNames,
+		secretsJson,
+	});
+	const port = process.env.PORT;
+	// const port = 8083;
+	const dbUrl = process.env.WALLET_SERVICE_DB_URL ?? "";
+	mongoose
+		.connect(dbUrl)
+		.then(() => {
+			app.listen(port, () => {
+				startServer();
+				logger.log(`Server listening at port ${port}`);
+				logger.log(`Docs available at http://localhost:${port}/api-docs`);
+			});
+		})
+		.catch((err) => {
+			logger.error(`Unable to connect to mongodb. Error === ${JSON.stringify(err)}`);
+		});
+})();
 
 function startServer() {
-	//cors
-	app.use(
-		cors({
-			origin: "http://localhost:3000",
-			methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-		})
-	);
+	// Define an array of allowed origins
+	const allowedOrigins = [
+		"http://localhost:3000",
+		"https://web-dashboard-dev.traderapp.finance",
+		"https://www.web-dashboard-dev.traderapp.finance",
+		"https://web-dashboard-staging.traderapp.finance",
+		"https://www.web-dashboard-staging.traderapp.finance",
+		"https://web-dashboard-hotfix.traderapp.finance",
+		"https://www.web-dashboard-hotfix.traderapp.finance",
+		"https://dashboard.traderapp.finance",
+		"https://www.dashboard.traderapp.finance",
+	];
 
-	//parse incoming requests
+	const corsOptions = {
+		origin: (
+			origin: string | undefined,
+			callback: (error: Error | null, allow?: boolean) => void
+		) => {
+			// Allow requests with no origin (like mobile apps or curl requests)
+			if (!origin) {
+				callback(null, true);
+				return;
+			}
+			if (allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error(`Not allowed by CORS: ${origin}`));
+			}
+		},
+		methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+		credentials: true, // Allow credentials
+	};
+	// cors
+	app.use(cors(corsOptions));
+
+	// parse incoming requests
 	app.use(express.urlencoded({ extended: true }));
 	app.use(express.json());
 
-	//api routes
-	app.use(`/${baseUri}/balances`, BalanceRoutes);
+	// documentation
+	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-	//health check
-	app.get(`/${baseUri}/ping`, (_req, res) => {
-		res.status(200).send({ message: "pong" });
+	// // api routes handler
+	app.use(`/transactions`, TransactionRoutes);
+	app.use(`/wallets`, WalletRoutes);
+	app.use(`/webhooks`, WebhookRoutes);
+
+	// health check
+	app.get(`/ping`, (_req, res) => {
+		res.status(200).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: `Wallet service is running on ${env}`,
+			})
+		);
 	});
 
-	//handle errors
+	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-		const status = "ERROR";
-		let error = err.name;
-		let error_message = err.message;
+		let errorName = err.name;
+		let errorMessage = err.message;
 		let statusCode;
 
 		if (err.name === "ValidationError") statusCode = 400;
@@ -51,11 +114,17 @@ function startServer() {
 		else if (err.name === "NotFound") statusCode = 404;
 		else {
 			statusCode = 500;
-			error = "InternalServerError";
-			error_message = "Something went wrong. Please try again after a while.";
-			console.log("Error name: ", err.name, "Error message: ", err.message);
+			errorName = "InternalServerError";
+			errorMessage = "Something went wrong. Please try again after a while.";
+			console.log("Error name: ", errorName, "Error message: ", err.message, err);
 		}
 
-		res.status(statusCode).json({ status, error, error_message });
+		res.status(statusCode).json(
+			apiResponseHandler({
+				type: ResponseType.ERROR,
+				message: errorMessage,
+				object: err,
+			})
+		);
 	});
 }
