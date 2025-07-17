@@ -29,7 +29,6 @@ import ProviderPaymentMethod from "../../models/ProviderPaymentMethod";
 import PaymentCategory, { IPaymentCategory } from "../../models/PaymentCategory";
 import { ApplicationError } from "../../config/helpers";
 import ExchangeRate, { IExchangeRate } from "../../models/ExchangeRate";
-import { ConversionCurrencies } from "../../config/constants";
 import { ExchangeRateClient } from "../../clients/ExchangeRateClient";
 
 interface IWalletInput {
@@ -97,7 +96,10 @@ export class WalletService {
 	}: {
 		wallets: IUserWallet[];
 	}): Promise<IGetWalletResponse> {
-		const targetCurrencies = ConversionCurrencies; // Use the predefined conversion currencies
+		const supportedCurrencies = await this.getWalletSupportedCurrencies({
+			category: CurrencyCategory.FIAT,
+		});
+		const targetCurrencies = supportedCurrencies.map((currency) => currency.symbol); // Use the predefined conversion currencies
 
 		// Create pairs for all wallet currencies against the target currencies
 		const walletCurrencyPairs = wallets.flatMap((wallet) =>
