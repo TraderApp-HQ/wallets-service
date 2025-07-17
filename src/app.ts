@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 import TransactionRoutes from "./routes/TransactionRoutes";
 import WalletRoutes from "./routes/WalletRoutes";
 import WebhookRoutes from "./routes/WebhookRoutes";
+import runAllJobs from "./jobs";
 
 const app: Application = express();
 
@@ -127,4 +128,7 @@ function startServer() {
 			})
 		);
 	});
+
+	// Start all jobs when the application starts
+	runAllJobs();
 }
