@@ -29,3 +29,8 @@ export enum ErrorName {
 	FORBIDDEN = "Forbidden",
 	NOT_FOUND = "NotFound",
 }
+
+export enum CurrencyCategory {
+	CRYPTO = "Crypto",
+	FIAT = "Fiat",
+}

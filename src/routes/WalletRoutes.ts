@@ -12,6 +12,7 @@ import {
 	validateGetUserWalletsRequest,
 	validateGetUserWalletTypeRequest,
 	validateGetWalletCategoryPaymentMethodsRequest,
+	validateGetWalletSupportedCurrencies,
 	validateInitiateDepositRequest,
 	validateRequest,
 } from "../middlewares/WalletMiddleware";
@@ -19,7 +20,11 @@ import {
 const router = Router();
 
 // router.post("/create", AuthMiddleware, createUserWallets);
-router.get("/supported-currencies", validateRequest, getWalletSupportedCurrencies);
+router.get(
+	"/supported-currencies",
+	validateGetWalletSupportedCurrencies,
+	getWalletSupportedCurrencies
+);
 router.get("/user-wallets", validateGetUserWalletsRequest, getUserWallets);
 router.get("/user-wallet-type", validateGetUserWalletTypeRequest, getUserWalletType);
 router.get(

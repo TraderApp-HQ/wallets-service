@@ -4,7 +4,7 @@ import { ResponseType } from "../../config/constants";
 import { WalletService } from "../../services/WalletService";
 import { HttpStatus } from "../../utils/httpStatus";
 import { WalletType } from "../../config/interfaces";
-import { PaymentCategoryName, PaymentOperation } from "../../config/enums";
+import { CurrencyCategory, PaymentCategoryName, PaymentOperation } from "../../config/enums";
 
 export const createUserWallets = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -162,8 +162,9 @@ export const getWalletSupportedCurrencies = async (
 	next: NextFunction
 ) => {
 	try {
+		const category = req.query.category as CurrencyCategory;
 		const walletService = new WalletService();
-		const supportedCurrencies = await walletService.getWalletSupportedCurrencies();
+		const supportedCurrencies = await walletService.getWalletSupportedCurrencies({ category });
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
