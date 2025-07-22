@@ -30,6 +30,7 @@ import PaymentCategory, { IPaymentCategory } from "../../models/PaymentCategory"
 import { ApplicationError } from "../../config/helpers";
 import ExchangeRate, { IExchangeRate } from "../../models/ExchangeRate";
 import { ExchangeRateClient } from "../../clients/ExchangeRateClient";
+import { FeatureFlagManager } from "../../clients/SplitIOClient";
 
 interface IWalletInput {
 	userId: string;
@@ -43,6 +44,7 @@ export interface IGetWalletTypeInput {
 export interface IGetPaymentMethods {
 	category: PaymentCategoryName;
 	operation?: PaymentOperation;
+	userId: string;
 }
 
 export interface IInitiateDepositInput {
@@ -199,6 +201,7 @@ export class WalletService {
 	public async getWalletPaymentCategoryPaymentMethods({
 		category,
 		operation,
+		userId,
 	}: IGetPaymentMethods): Promise<IPaymentMethodResponse[]> {
 		// Fetch provider payment methods based on category and filter
 		const query: any = {
@@ -257,6 +260,17 @@ export class WalletService {
 						other.isDefault
 				)
 		);
+
+		// Add feature flag
+		const featureFlags = new FeatureFlagManager();
+		const isMultiCryptoPaymentMethodEnabled = await featureFlags.checkToggleFlag(
+			"release-multi-crypto-payment-methods",
+			userId
+		);
+
+		if (!isMultiCryptoPaymentMethodEnabled && category === PaymentCategoryName.CRYPTO) {
+			return filteredResults.filter((item) => item.symbol === "USDT");
+		}
 
 		return filteredResults;
 	}

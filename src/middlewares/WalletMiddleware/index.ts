@@ -93,7 +93,8 @@ export const validateGetWalletCategoryPaymentMethodsRequest = async (
 	}
 
 	try {
-		await checkUser(req);
+		const id = (await checkUser(req)).id;
+		req.query.userId = id;
 		next();
 	} catch (err) {
 		next(err);
