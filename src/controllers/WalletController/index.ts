@@ -90,11 +90,13 @@ export const getWalletPaymentCategoryPaymentMethods = async (
 	try {
 		const category = req.query.category as PaymentCategoryName;
 		const operation = req.query.operation as PaymentOperation;
+		const userId = req.query.userId as string;
 
 		const walletService = new WalletService();
 		const paymentMethods = await walletService.getWalletPaymentCategoryPaymentMethods({
 			category,
 			operation,
+			userId,
 		});
 
 		return res.status(HttpStatus.OK).json(
