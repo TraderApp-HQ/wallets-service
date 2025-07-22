@@ -8,6 +8,9 @@ export enum SecretLocation {
 export interface IWalletsServiceSecrets {
 	WALLET_SERVICE_DB_URL: string;
 }
+export interface ICommonSecrets {
+	SPLIT_IO_CLIENT_KEY: string;
+}
 
 const client = new SecretsManagerClient({
 	region: process.env.AWS_REGION || "eu-west-1",
