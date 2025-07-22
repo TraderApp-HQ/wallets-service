@@ -136,6 +136,7 @@ describe("Wallet Service Tests", () => {
 			const paymentMethods = await walletService.getWalletPaymentCategoryPaymentMethods({
 				category: PaymentCategoryName.CRYPTO,
 				operation: PaymentOperation.DEPOSIT,
+				userId: testUserId,
 			});
 
 			expect(paymentMethods).toBeDefined();
