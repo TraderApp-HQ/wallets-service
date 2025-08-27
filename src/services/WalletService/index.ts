@@ -14,6 +14,7 @@ import { CryptoPayClient } from "../../clients/CryptoPayClient";
 import UserWalletDepositDetail from "../../models/UserWalletDepositAddress";
 import {
 	AddressType,
+	CurrencyCategory,
 	ErrorName,
 	PaymentCategoryName,
 	PaymentOperation,
@@ -28,7 +29,8 @@ import ProviderPaymentMethod from "../../models/ProviderPaymentMethod";
 import PaymentCategory, { IPaymentCategory } from "../../models/PaymentCategory";
 import { ApplicationError } from "../../config/helpers";
 import ExchangeRate, { IExchangeRate } from "../../models/ExchangeRate";
-import { ConversionCurrencies } from "../../config/constants";
+import { ExchangeRateClient } from "../../clients/ExchangeRateClient";
+import { FeatureFlagManager } from "../../clients/SplitIOClient";
 
 interface IWalletInput {
 	userId: string;
@@ -42,6 +44,7 @@ export interface IGetWalletTypeInput {
 export interface IGetPaymentMethods {
 	category: PaymentCategoryName;
 	operation?: PaymentOperation;
+	userId: string;
 }
 
 export interface IInitiateDepositInput {
@@ -95,7 +98,10 @@ export class WalletService {
 	}: {
 		wallets: IUserWallet[];
 	}): Promise<IGetWalletResponse> {
-		const targetCurrencies = ConversionCurrencies; // Use the predefined conversion currencies
+		const supportedCurrencies = await this.getWalletSupportedCurrencies({
+			category: CurrencyCategory.FIAT,
+		});
+		const targetCurrencies = supportedCurrencies.map((currency) => currency.symbol); // Use the predefined conversion currencies
 
 		// Create pairs for all wallet currencies against the target currencies
 		const walletCurrencyPairs = wallets.flatMap((wallet) =>
@@ -195,6 +201,7 @@ export class WalletService {
 	public async getWalletPaymentCategoryPaymentMethods({
 		category,
 		operation,
+		userId,
 	}: IGetPaymentMethods): Promise<IPaymentMethodResponse[]> {
 		// Fetch provider payment methods based on category and filter
 		const query: any = {
@@ -254,6 +261,17 @@ export class WalletService {
 				)
 		);
 
+		// Add feature flag
+		const featureFlags = new FeatureFlagManager();
+		const isMultiCryptoPaymentMethodEnabled = await featureFlags.checkToggleFlag(
+			"release-multi-crypto-payment-methods",
+			userId
+		);
+
+		if (!isMultiCryptoPaymentMethodEnabled && category === PaymentCategoryName.CRYPTO) {
+			return filteredResults.filter((item) => item.symbol === "USDT");
+		}
+
 		return filteredResults;
 	}
 
@@ -276,7 +294,10 @@ export class WalletService {
 		const currencyIdsArray = Array.from(uniqueCurrencyIds); // Convert Set to Array
 
 		// Fetch all currencies in a single batch request
-		const currencies = await Currency.find({ _id: { $in: currencyIdsArray } });
+		const currencies = await Currency.find({
+			_id: { $in: currencyIdsArray },
+			category: CurrencyCategory.CRYPTO, // Ensure only crypto supported currencies are fetched
+		});
 
 		// Iterate through each wallet type and its supported currencies and create a new wallet for each combination
 		walletTypes.forEach((walletType) => {
@@ -319,7 +340,9 @@ export class WalletService {
 
 			// Get currency logo symbol and url
 			if (transactions.totalDocs > 0) {
-				const currencies = await Currency.find().select("name symbol logoUrl -_id"); // Get all supported currencies for their logo url
+				const currencies = await Currency.find({
+					category: CurrencyCategory.CRYPTO,
+				}).select("name symbol logoUrl -_id"); // Get all crypto supported currencies for their logo url
 
 				assetLogo = currencies as unknown as IAsset[];
 			}
@@ -364,9 +387,9 @@ export class WalletService {
 
 			// Get currency logo symbol and url
 			if (transaction) {
-				const currencies = (await Currency.find().select(
-					"name symbol logoUrl -_id"
-				)) as unknown as IAsset[];
+				const currencies = (await Currency.find({
+					category: CurrencyCategory.CRYPTO,
+				}).select("name symbol logoUrl -_id")) as unknown as IAsset[];
 
 				const asset = currencies.find(
 					(cur: IAsset) => cur.symbol === transaction.currencyName
@@ -494,12 +517,48 @@ export class WalletService {
 		});
 	}
 
-	public async getWalletSupportedCurrencies(): Promise<ICurrencyModel[]> {
+	public async getWalletSupportedCurrencies({
+		category,
+	}: {
+		category: CurrencyCategory;
+	}): Promise<ICurrencyModel[]> {
 		try {
-			const supportedCurrencies = await Currency.find({});
+			const supportedCurrencies = await Currency.find({ category });
 			return supportedCurrencies;
 		} catch (error: any) {
 			throw new Error(`Error with getting transactions: ${error.message}`);
+		}
+	}
+
+	public async updateCurrenciesExchangeRateInDB() {
+		const exchangeRateClient = new ExchangeRateClient();
+
+		try {
+			// Get exchange rates and supported currencies
+			const [exchangeRates, supportedCurrencies] = await Promise.all([
+				exchangeRateClient.getExchangeRates(),
+				this.getWalletSupportedCurrencies({
+					category: CurrencyCategory.FIAT,
+				}),
+			]);
+
+			const bulkExchangeRateUpdate = supportedCurrencies.map((currency) => {
+				const pair = `USDT/${currency.symbol}`;
+				const rate = exchangeRates[currency.symbol];
+				return {
+					updateOne: {
+						filter: { pair },
+						update: {
+							$set: { rate },
+						},
+					},
+				};
+			});
+
+			// Update exchange rate record
+			await ExchangeRate.bulkWrite(bulkExchangeRateUpdate);
+		} catch (err) {
+			console.log("Error updating currency exchange rates - ", err);
 		}
 	}
 

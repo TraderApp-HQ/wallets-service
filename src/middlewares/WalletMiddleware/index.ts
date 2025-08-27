@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { checkAdmin, checkUser } from "../helpers";
 import Joi from "joi";
 import { WalletType } from "../../config/interfaces";
-import { PaymentCategoryName, PaymentOperation } from "../../config/enums";
+import { CurrencyCategory, PaymentCategoryName, PaymentOperation } from "../../config/enums";
 
 export const validateGetUserWalletsRequest = async (
 	req: Request,
@@ -93,7 +93,8 @@ export const validateGetWalletCategoryPaymentMethodsRequest = async (
 	}
 
 	try {
-		await checkUser(req);
+		const id = (await checkUser(req)).id;
+		req.query.userId = id;
 		next();
 	} catch (err) {
 		next(err);
@@ -137,6 +138,35 @@ export const validateRequest = async (req: Request, res: Response, next: NextFun
 	try {
 		const id = (await checkUser(req)).id;
 		req.body.userId = id;
+		next();
+	} catch (err) {
+		next(err);
+	}
+};
+
+export const validateGetWalletSupportedCurrencies = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const category = req.query.category as CurrencyCategory;
+	const schema = Joi.object({
+		category: Joi.string()
+			.valid(...Object.values(CurrencyCategory))
+			.required()
+			.label("Currency Category"),
+	});
+
+	const { error } = schema.validate({ category });
+
+	if (error) {
+		error.message = error.message.replace(/\"/g, "");
+		next(error);
+		return;
+	}
+
+	try {
+		await checkUser(req);
 		next();
 	} catch (err) {
 		next(err);

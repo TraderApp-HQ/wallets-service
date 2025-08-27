@@ -1,17 +1,24 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { CurrencyCategory } from "../config/enums";
 
 export interface ICurrencyModel extends Document {
 	id: string;
 	name: string;
 	symbol: string;
 	logoUrl: string;
+	category: CurrencyCategory;
 }
 
 const currencySchema = new Schema<ICurrencyModel>(
 	{
 		name: { type: String, required: true },
 		symbol: { type: String, required: true, unique: true },
-		logoUrl: { type: String },
+		logoUrl: { type: String, default: "" },
+		category: {
+			type: String,
+			enum: Object.values(CurrencyCategory),
+			required: true,
+		},
 	},
 	{ timestamps: true, versionKey: false }
 );

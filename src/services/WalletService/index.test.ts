@@ -2,7 +2,12 @@ import mongoose from "mongoose";
 import { WalletService } from "./";
 import UserWallet from "../../models/UserWallet";
 import { WalletType } from "../../config/interfaces";
-import { getSecrets, IWalletsServiceSecrets, SecretLocation } from "../../config/secrets";
+import {
+	getSecrets,
+	ICommonSecrets,
+	IWalletsServiceSecrets,
+	SecretLocation,
+} from "../../config/secrets";
 import { ENVIRONMENTS } from "../../config/constants";
 import "dotenv/config";
 import { PaymentCategoryName, PaymentOperation } from "../../config/enums";
@@ -26,9 +31,13 @@ describe("Wallet Service Tests", () => {
 		// Get database URL from secrets manager
 		try {
 			console.log("Retrieving secrets...");
-			const walletsServiceSecrets = await getSecrets<IWalletsServiceSecrets>(
-				`${SecretLocation.walletsServiceSecrets}/${suffix}`
-			);
+			const [walletsServiceSecrets, commonSecrets] = await Promise.all([
+				getSecrets<IWalletsServiceSecrets>(
+					`${SecretLocation.walletsServiceSecrets}/${suffix}`
+				),
+				getSecrets<ICommonSecrets>(`${SecretLocation.commonSecrets}/${suffix}`),
+			]);
+			process.env.SPLIT_IO_CLIENT_KEY = commonSecrets.SPLIT_IO_CLIENT_KEY;
 			console.log("Secrets retrieved successfully.");
 
 			// Connect to MongoDB
@@ -136,6 +145,7 @@ describe("Wallet Service Tests", () => {
 			const paymentMethods = await walletService.getWalletPaymentCategoryPaymentMethods({
 				category: PaymentCategoryName.CRYPTO,
 				operation: PaymentOperation.DEPOSIT,
+				userId: testUserId,
 			});
 
 			expect(paymentMethods).toBeDefined();
