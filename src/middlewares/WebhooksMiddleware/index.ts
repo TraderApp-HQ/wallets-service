@@ -8,7 +8,7 @@ export const validateCryptopayWebhooksRequest = async (
 ) => {
 	// const cryptoPayClient = new CryptoPayClient();
 	const signature = req.headers["x-callback-signature"] as string;
-	console.log("signatire sent########", signature);
+	console.log("signature sent########", signature);
 
 	try {
 		// if (!cryptoPayClient.verifyWebhookSignature(req.body, signature)) {

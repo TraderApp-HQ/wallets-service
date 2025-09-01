@@ -10,10 +10,15 @@ export const processCryptopayWebhooks = async (req: Request, res: Response, next
 	try {
 		// queue cryptopay webhook
 		const data = req.body as ICryptopayWebhookEvent;
-		const queueUrl =
-			data.type === "ChannelPayment"
-				? process.env.CRYPTOPAY_CHANNELS_WEBHOOKS_QUEUE ?? ""
-				: process.env.CRYPTOPAY_INVOICE_WEBHOOKS_QUEUE ?? "";
+		let queueUrl = "";
+		if (data.type === "ChannelPayment") {
+			queueUrl = process.env.CRYPTOPAY_CHANNELS_WEBHOOKS_QUEUE ?? "";
+		} else if (data.type === "Invoice") {
+			queueUrl = process.env.CRYPTOPAY_INVOICE_WEBHOOKS_QUEUE ?? "";
+		} else {
+			queueUrl = process.env.CRYPTOPAY_WITHDRAWAL_WEBHOOKS_QUEUE ?? "";
+		}
+
 		await publishMessageToQueue({ queueUrl, message: data });
 		console.log("cryptopay webhook published to queue", { data });
 		return res.status(HttpStatus.OK).json(

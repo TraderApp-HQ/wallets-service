@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+	completeWithdrawal,
 	/* createUserWallets, */
 	getUserWallets,
 	getUserWalletType,
@@ -7,13 +8,16 @@ import {
 	getWalletPaymentCategoryPaymentMethods,
 	getWalletSupportedCurrencies,
 	initiateDeposit,
+	initiateWithdrawal,
 } from "../controllers/WalletController/";
 import {
+	validateCompleteWithdrawalRequest,
 	validateGetUserWalletsRequest,
 	validateGetUserWalletTypeRequest,
 	validateGetWalletCategoryPaymentMethodsRequest,
 	validateGetWalletSupportedCurrencies,
 	validateInitiateDepositRequest,
+	validateInitiateWithdrawalRequest,
 	validateRequest,
 } from "../middlewares/WalletMiddleware";
 
@@ -34,5 +38,7 @@ router.get(
 );
 router.get("/payment-categories", validateRequest, getWalletPaymentCategories);
 router.post("/initiate-deposit", validateInitiateDepositRequest, initiateDeposit);
+router.post("/initiate-withdrawal", validateInitiateWithdrawalRequest, initiateWithdrawal);
+router.post("/complete-withdrawal", validateCompleteWithdrawalRequest, completeWithdrawal);
 
 export default router;

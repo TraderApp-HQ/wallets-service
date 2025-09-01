@@ -139,21 +139,61 @@ export const initiateDeposit = async (req: Request, res: Response, next: NextFun
 
 export const initiateWithdrawal = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		// const { userId, currency, amount } = req.body;
-		// const walletService = new WalletService();
+		const {
+			userId,
+			currencyId,
+			paymentMethodId,
+			providerId,
+			network,
+			amount,
+			destinationAddress,
+			userEmail,
+		} = req.body;
 
-		// First debit the user's wallet
-		// await walletService.createUserWallet({ userId: "user-1234" });
+		const walletService = new WalletService();
 
-		// TODO: Initiate withdrawal through CryptoPay API
+		const result = await walletService.initiateWithdrawalRequest({
+			userId,
+			currencyId,
+			paymentMethodId,
+			providerId,
+			network,
+			amount,
+			userEmail,
+			destinationAddress,
+		});
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
 				message: "Withdrawal initiated successfully",
+				object: result,
 			})
 		);
 	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const completeWithdrawal = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { userId, otp, withdrawalRequestId } = req.body;
+
+		const walletService = new WalletService();
+		const result = await walletService.completeWithdrawal({
+			userId,
+			otp,
+			withdrawalRequestId,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Withdrawal initiated successfully",
+				object: result,
+			})
+		);
+	} catch (error) {
 		next(error);
 	}
 };
