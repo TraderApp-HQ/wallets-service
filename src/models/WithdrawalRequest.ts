@@ -9,6 +9,7 @@ export interface IWithdrawalRequest extends Document {
 	providerId: string;
 	network?: string;
 	amount: number;
+	amountToReceive: number;
 	destinationAddress: string;
 	status: string;
 	transactionId?: string;
@@ -28,6 +29,7 @@ const withdrawalRequestSchema = new Schema<IWithdrawalRequest>(
 		providerId: { type: String, required: true },
 		network: { type: String },
 		amount: { type: Number, required: true },
+		amountToReceive: { type: Number, required: true },
 		destinationAddress: { type: String, required: true },
 		status: {
 			type: String,

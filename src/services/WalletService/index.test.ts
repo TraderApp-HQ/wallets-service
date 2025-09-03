@@ -213,6 +213,8 @@ describe("Wallet Service Tests", () => {
 
 	describe("Withdrawals", () => {
 		const withdrawalAmount = 15; // > minimum (10)
+		const fees = 5;
+		const amountToReceive = withdrawalAmount - fees;
 		let withdrawalRequestId: string;
 		let completedTransactionId: string;
 
@@ -238,6 +240,7 @@ describe("Wallet Service Tests", () => {
 				providerId,
 				network: sampleNetwork,
 				amount: withdrawalAmount,
+				amountToReceive,
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
 			});
@@ -320,6 +323,7 @@ describe("Wallet Service Tests", () => {
 				providerId,
 				network: sampleNetwork,
 				amount: withdrawalAmount,
+				amountToReceive,
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
 			});
@@ -341,7 +345,8 @@ describe("Wallet Service Tests", () => {
 					paymentMethodId: usdtPaymentMethodId,
 					providerId,
 					network: sampleNetwork,
-					amount: 5, // below min 10
+					amount: 7, // below min 10
+					amountToReceive: 2,
 					userEmail: "test@example.com",
 					destinationAddress: "TDESTINATIONADDRESS1234567890",
 				})
@@ -360,6 +365,7 @@ describe("Wallet Service Tests", () => {
 					providerId,
 					network: sampleNetwork,
 					amount: 20,
+					amountToReceive: 15,
 					userEmail: "low@example.com",
 					destinationAddress: "TDESTINATIONADDRESS1234567890",
 				})

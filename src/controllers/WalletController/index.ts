@@ -146,6 +146,7 @@ export const initiateWithdrawal = async (req: Request, res: Response, next: Next
 			providerId,
 			network,
 			amount,
+			amountToReceive,
 			destinationAddress,
 			userEmail,
 		} = req.body;
@@ -159,6 +160,7 @@ export const initiateWithdrawal = async (req: Request, res: Response, next: Next
 			providerId,
 			network,
 			amount,
+			amountToReceive,
 			userEmail,
 			destinationAddress,
 		});

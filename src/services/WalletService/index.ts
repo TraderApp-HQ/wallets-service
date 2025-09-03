@@ -105,6 +105,7 @@ interface IInitiateWithdrawalInput {
 	providerId: string;
 	network?: string;
 	amount: number;
+	amountToReceive: number;
 	destinationAddress: string;
 	userEmail: string;
 }
@@ -123,10 +124,6 @@ interface IValidateWithdrawalEntitiesArgs {
 	currency: ICurrencyModel | null;
 	userWallet: IUserWallet | null;
 }
-
-// type TxDoc = mongoose.Document<unknown, Record<string, unknown>, ITransaction> &
-// 	ITransaction &
-// 	Required<{ _id: unknown }> & { __v: number };
 
 export class WalletService {
 	private readonly cryptoPayClient: CryptoPayClient;
@@ -777,6 +774,7 @@ export class WalletService {
 		providerId,
 		network,
 		amount,
+		amountToReceive,
 		userEmail,
 		destinationAddress,
 	}: IInitiateWithdrawalInput) {
@@ -830,6 +828,7 @@ export class WalletService {
 			providerId,
 			network,
 			amount,
+			amountToReceive,
 			destinationAddress,
 			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
 			expiresAt: new Date(Date.now() + WITHDRAWAL_REQUEST_TTL_SECONDS * 1000),
@@ -992,7 +991,8 @@ export class WalletService {
 			const withdrawalResult = await providerInstance.processWithdrawal({
 				userId,
 				currency: validatedCurrency.symbol,
-				amount: request.amount,
+				// Use amountToReceive here to ensure the provider processes the net amount after fees, not the original requested amount.
+				amount: request.amountToReceive,
 				destinationAddress: request.destinationAddress,
 				network: request.network ?? "",
 				customId: transaction.id,

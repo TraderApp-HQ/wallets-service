@@ -213,8 +213,16 @@ export const validateInitiateWithdrawalRequest = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const { userId, currencyId, paymentMethodId, providerId, network, amount, destinationAddress } =
-		req.body;
+	const {
+		userId,
+		currencyId,
+		paymentMethodId,
+		providerId,
+		network,
+		amount,
+		amountToReceive,
+		destinationAddress,
+	} = req.body;
 
 	const schema = Joi.object({
 		userId: Joi.string().label("User ID"),
@@ -223,6 +231,7 @@ export const validateInitiateWithdrawalRequest = async (
 		providerId: Joi.string().required().label("Provider ID"),
 		network: Joi.string().label("Network"),
 		amount: Joi.number().positive().required().label("Amount"),
+		amountToReceive: Joi.number().positive().required().label("Amount To Receive"),
 		destinationAddress: Joi.string().required().label("Destination Address"),
 	});
 
@@ -233,6 +242,7 @@ export const validateInitiateWithdrawalRequest = async (
 		providerId,
 		network,
 		amount,
+		amountToReceive,
 		destinationAddress,
 	});
 	if (error) {
