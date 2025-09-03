@@ -1,13 +1,14 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { WalletProvider } from "../config/enums";
 
 export interface IPaymentProvider extends Document {
 	id: string;
-	name: string; // e.g., "CryptoPay"
+	name: WalletProvider; // e.g., "CryptoPay"
 }
 
 const paymentProviderSchema = new Schema<IPaymentProvider>(
 	{
-		name: { type: String, required: true },
+		name: { type: String, required: true, enum: WalletProvider },
 	},
 	{ timestamps: true, versionKey: false }
 );

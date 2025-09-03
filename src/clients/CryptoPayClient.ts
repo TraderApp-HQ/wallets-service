@@ -4,6 +4,8 @@ import "dotenv/config";
 import {
 	IFactoryPaymentProviderDepositInput,
 	IFactoryPaymentProviderDepositResponse,
+	IProcessWithdrawalInput,
+	IProcessWithdrawalResponse,
 } from "../factories/interfaces";
 import CryptoJS from "crypto-js";
 import { AddressType, ErrorName } from "../config/enums";
@@ -118,12 +120,16 @@ export class CryptoPayClient {
 	private readonly apiKey: string;
 	private readonly apiSecret: string;
 	private readonly webhooksSharedSecret: string;
+	private readonly withdrawalApiKey: string;
+	private readonly withdrawalApiSecret: string;
 
 	constructor() {
 		this.baseUrl = process.env.CRYPTOPAY_BASE_URL ?? "";
 		this.apiKey = process.env.CRYPTOPAY_DEPOSITS_API_KEY ?? "";
 		this.apiSecret = process.env.CRYPTOPAY_DEPOSITS_API_SECRET ?? "";
 		this.webhooksSharedSecret = process.env.CRYPTOPAY_WEBHOOK_SHARED_SECRET ?? "";
+		this.withdrawalApiKey = process.env.CRYPTOPAY_WITHDRAWALS_API_KEY ?? "";
+		this.withdrawalApiSecret = process.env.CRYPTOPAY_WITHDRAWALS_API_SECRET ?? "";
 	}
 
 	private validateCredentials() {
@@ -133,15 +139,24 @@ export class CryptoPayClient {
 		return true;
 	}
 
-	private createSignature(method: string, endpoint: string, requestData: string): string {
+	private validateWithdrawalCredentials() {
+		return this.withdrawalApiKey && this.withdrawalApiSecret;
+	}
+
+	private createSignature(
+		method: string,
+		endpoint: string,
+		requestData: string,
+		apiSecret: string,
+		date: string = new Date(Date.now()).toUTCString()
+	): string {
 		const payloadMD5 = CryptoJS.MD5(requestData).toString();
 		const contentType = "application/json";
-		const date = new Date(Date.now()).toUTCString();
 		const stringToSign =
 			method + "\n" + payloadMD5 + "\n" + contentType + "\n" + date + "\n" + endpoint;
 
 		// Generate signature
-		const hmac = CryptoJS.HmacSHA1(stringToSign, this.apiSecret ?? "");
+		const hmac = CryptoJS.HmacSHA1(stringToSign, apiSecret ?? "");
 		return hmac.toString(CryptoJS.enc.Base64);
 	}
 
@@ -167,7 +182,12 @@ export class CryptoPayClient {
 		});
 
 		// Generate signature
-		const signature = this.createSignature("POST", CHANNELS_ENDPOINT, requestData);
+		const signature = this.createSignature(
+			"POST",
+			CHANNELS_ENDPOINT,
+			requestData,
+			this.apiSecret
+		);
 
 		try {
 			const response = await axios({
@@ -221,7 +241,12 @@ export class CryptoPayClient {
 		});
 
 		// Generate signature
-		const signature = this.createSignature("POST", INVOICES_ENDPOINT, requestData);
+		const signature = this.createSignature(
+			"POST",
+			INVOICES_ENDPOINT,
+			requestData,
+			this.apiSecret
+		);
 
 		try {
 			const response = await axios({
@@ -371,6 +396,77 @@ export class CryptoPayClient {
 	// 	console.log("copted signatire:#####", computedSignature);
 	// 	return computedSignature === signature;
 	// }
+
+	async processWithdrawal({
+		userId,
+		currency,
+		amount,
+		destinationAddress,
+		network,
+		customId,
+	}: IProcessWithdrawalInput): Promise<IProcessWithdrawalResponse> {
+		const WITHDRAWALS_ENDPOINT = "/api/coin_withdrawals";
+
+		if (!this.validateWithdrawalCredentials()) {
+			throw new Error("Missing required CRYPTOPAY withdrawal environment variables");
+		}
+
+		const requestData = JSON.stringify({
+			charged_currency: currency,
+			received_amount: amount.toString(),
+			received_currency: currency,
+			address: destinationAddress,
+			network,
+			custom_id: customId,
+			force_commit: true,
+		});
+		const date = new Date(Date.now()).toUTCString();
+		const signature = this.createSignature(
+			"POST",
+			WITHDRAWALS_ENDPOINT,
+			requestData,
+			this.withdrawalApiSecret,
+			date
+		);
+
+		try {
+			const response = await axios({
+				method: "POST",
+				url: this.baseUrl + WITHDRAWALS_ENDPOINT,
+				data: requestData,
+				headers: {
+					"Content-Type": "application/json",
+					// "Content-MD5": CryptoJS.MD5(requestData).toString(),
+					Date: date,
+					Authorization: `HMAC ${this.withdrawalApiKey}:${signature}`,
+				},
+			});
+
+			const data = response.data.data;
+			return {
+				externalId: data.id,
+				transactionHash: data.txid,
+				status: data.status,
+			};
+		} catch (error: any) {
+			if (error.response) {
+				console.error("Withdrawal error response:", {
+					status: error.response.status,
+					data: error.response.data,
+					details: error.response.data.error?.details,
+					headers: error.response.headers,
+				});
+				if (error.response.status === 403) {
+					console.error(
+						"Hint: check withdrawal API key/secret, signature algorithm, field spelling and baseUrl environment."
+					);
+				}
+			} else {
+				console.error("Withdrawal request failed before response:", error.message);
+			}
+			throw new Error(`Error processing withdrawal: ${error.message}`);
+		}
+	}
 
 	private secureCompare(str1: string, str2: string): boolean {
 		if (!str1 || !str2 || str1.length !== str2.length) {

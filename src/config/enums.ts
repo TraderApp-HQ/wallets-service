@@ -34,3 +34,9 @@ export enum CurrencyCategory {
 	CRYPTO = "Crypto",
 	FIAT = "Fiat",
 }
+
+export enum NotificationChannel {
+	EMAIL = "EMAIL",
+	SMS = "SMS",
+	WHATSAPP = "WHATSAPP",
+}
