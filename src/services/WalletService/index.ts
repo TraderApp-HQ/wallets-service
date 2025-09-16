@@ -575,7 +575,11 @@ export class WalletService {
 		limit,
 	}: IGetTransactions): Promise<IPaginatedResult<ITransactionsHistory>> {
 		try {
-			const transactions = await Transaction.paginate({ userId }, { page, limit });
+			const transactions = await Transaction.paginate(
+				{ userId },
+				// Sort transactions by creation date in descending order to show the most recent first
+				{ page, limit, sort: { createdAt: -1 } }
+			);
 			let assetLogo: IAsset[];
 
 			// Get currency logo symbol and url
