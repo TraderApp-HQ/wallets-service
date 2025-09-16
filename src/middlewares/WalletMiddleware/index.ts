@@ -252,9 +252,10 @@ export const validateInitiateWithdrawalRequest = async (
 	}
 
 	try {
-		const { id, email } = await checkUser(req);
+		const { id, email, firstName } = await checkUser(req);
 		req.body.userId = userId || id;
 		req.body.userEmail = email;
+		req.body.firstName = firstName;
 		next();
 	} catch (err) {
 		next(err);
@@ -288,6 +289,39 @@ export const validateCompleteWithdrawalRequest = async (
 	try {
 		const { id } = await checkUser(req);
 		req.body.userId = userId || id;
+		next();
+	} catch (err) {
+		next(err);
+	}
+};
+
+export const validateResendWithdrawalOTPRequest = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const { userId, withdrawalRequestId } = req.body;
+
+	const schema = Joi.object({
+		userId: Joi.string().label("User ID"),
+		withdrawalRequestId: Joi.string().required().label("Withdrawal Request ID"),
+	});
+
+	const { error } = schema.validate({
+		userId,
+		withdrawalRequestId,
+	});
+	if (error) {
+		error.message = error.message.replace(/\\"/g, "");
+		next(error);
+		return;
+	}
+
+	try {
+		const { id, email, firstName } = await checkUser(req);
+		req.body.userId = userId || id;
+		req.body.userEmail = email;
+		req.body.firstName = firstName;
 		next();
 	} catch (err) {
 		next(err);
