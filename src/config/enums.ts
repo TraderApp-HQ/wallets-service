@@ -28,6 +28,7 @@ export enum ErrorName {
 	UNAUTHORIZED = "Unauthorized",
 	FORBIDDEN = "Forbidden",
 	NOT_FOUND = "NotFound",
+	INTERNAL_ERROR = "InternalError",
 }
 
 export enum CurrencyCategory {

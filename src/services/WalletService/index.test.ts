@@ -8,7 +8,12 @@ import {
 	IWalletsServiceSecrets,
 	SecretLocation,
 } from "../../config/secrets";
-import { ENVIRONMENTS, OTP_DEFAULT_CODE } from "../../config/constants";
+import {
+	ENVIRONMENTS,
+	OTP_DEFAULT_CODE,
+	OTP_EXPIRES,
+	WITHDRAWAL_REQUEST_STATUSES,
+} from "../../config/constants";
 import "dotenv/config";
 import { PaymentCategoryName, PaymentOperation } from "../../config/enums";
 import PaymentMethod from "../../models/PaymentMethod";
@@ -243,6 +248,7 @@ describe("Wallet Service Tests", () => {
 				amountToReceive,
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
+				firstName: "Test",
 			});
 
 			expect(res).toBeDefined();
@@ -326,6 +332,7 @@ describe("Wallet Service Tests", () => {
 				amountToReceive,
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
+				firstName: "Test",
 			});
 			await expect(
 				walletService.completeWithdrawal({
@@ -349,6 +356,7 @@ describe("Wallet Service Tests", () => {
 					amountToReceive: 2,
 					userEmail: "test@example.com",
 					destinationAddress: "TDESTINATIONADDRESS1234567890",
+					firstName: "Test",
 				})
 			).rejects.toThrow(/Minimum withdrawal amount/i);
 		});
@@ -368,9 +376,120 @@ describe("Wallet Service Tests", () => {
 					amountToReceive: 15,
 					userEmail: "low@example.com",
 					destinationAddress: "TDESTINATIONADDRESS1234567890",
+					firstName: "Test",
 				})
 			).rejects.toThrow(/Insufficient funds for withdrawal/i);
 			deleteIds.push(lowUser);
+		});
+
+		test("should resend OTP for an active withdrawal by creating a new request and invalidating the old one", async () => {
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+
+			// Create initial request
+			const init = await walletService.initiateWithdrawalRequest({
+				userId: testUserId,
+				currencyId: usdtCurrencyId,
+				paymentMethodId: usdtPaymentMethodId,
+				providerId,
+				network: sampleNetwork,
+				amount: withdrawalAmount,
+				amountToReceive,
+				userEmail: "test@example.com",
+				destinationAddress: "TDESTINATIONADDRESS1234567890",
+				firstName: "Test",
+			});
+
+			const originalId = init.withdrawalRequestId;
+
+			// Resend OTP (creates a fresh request, expires original)
+			const resend = await walletService.resendWithdrawalOTP({
+				userId: testUserId,
+				withdrawalRequestId: originalId,
+				userEmail: "test@example.com",
+				firstName: "Test",
+			});
+
+			expect(resend).toBeDefined();
+			expect(resend.withdrawalRequestId).toBeDefined();
+			expect(resend.withdrawalRequestId).not.toBe(originalId);
+			expect(resend.status).toBe(WITHDRAWAL_REQUEST_STATUSES.INITIATED);
+			expect(resend.expiresInSec).toBe(OTP_EXPIRES);
+
+			// Original request should be invalidated (expiresAt <= now)
+			const original = await WithdrawalRequest.findById(originalId);
+			expect(original).toBeTruthy();
+			expect(original?.expiresAt.getTime()).toBeLessThanOrEqual(Date.now());
+
+			// New request should exist and be active
+			const fresh = await WithdrawalRequest.findById(resend.withdrawalRequestId);
+			expect(fresh).toBeTruthy();
+			expect(fresh?.status).toBe(WITHDRAWAL_REQUEST_STATUSES.INITIATED);
+			expect(fresh?.expiresAt.getTime()).toBeGreaterThan(Date.now());
+			expect(fresh?.amount).toBe(withdrawalAmount);
+		});
+
+		test("should fail to resend OTP when original request is expired", async () => {
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+
+			// Create initial request
+			const init = await walletService.initiateWithdrawalRequest({
+				userId: testUserId,
+				currencyId: usdtCurrencyId,
+				paymentMethodId: usdtPaymentMethodId,
+				providerId,
+				network: sampleNetwork,
+				amount: withdrawalAmount,
+				amountToReceive,
+				userEmail: "test@example.com",
+				destinationAddress: "TDESTINATIONADDRESS1234567890",
+				firstName: "Test",
+			});
+
+			// Force-expire it
+			await WithdrawalRequest.findByIdAndUpdate(init.withdrawalRequestId, {
+				$set: { expiresAt: new Date(Date.now() - 1000) },
+			});
+
+			await expect(
+				walletService.resendWithdrawalOTP({
+					userId: testUserId,
+					withdrawalRequestId: init.withdrawalRequestId,
+					userEmail: "test@example.com",
+					firstName: "Test",
+				})
+			).rejects.toThrow(/invalid or expired/i);
+		});
+
+		test("should fail to resend OTP when original request is already submitted", async () => {
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+
+			// Create initial request
+			const init = await walletService.initiateWithdrawalRequest({
+				userId: testUserId,
+				currencyId: usdtCurrencyId,
+				paymentMethodId: usdtPaymentMethodId,
+				providerId,
+				network: sampleNetwork,
+				amount: withdrawalAmount,
+				amountToReceive,
+				userEmail: "test@example.com",
+				destinationAddress: "TDESTINATIONADDRESS1234567890",
+				firstName: "Test",
+			});
+
+			// Mark it as SUBMITTED (no longer INITIATED)
+			await WithdrawalRequest.findByIdAndUpdate(init.withdrawalRequestId, {
+				$set: { status: WITHDRAWAL_REQUEST_STATUSES.SUBMITTED },
+			});
+
+			await expect(
+				walletService.resendWithdrawalOTP({
+					userId: testUserId,
+					withdrawalRequestId: init.withdrawalRequestId,
+					userEmail: "test@example.com",
+					firstName: "Test",
+				})
+			).rejects.toThrow(/invalid or expired/i);
 		});
 	});
 });

@@ -108,6 +108,7 @@ interface IInitiateWithdrawalInput {
 	amountToReceive: number;
 	destinationAddress: string;
 	userEmail: string;
+	firstName: string;
 }
 
 interface ICompleteWithdrawalInput {
@@ -267,18 +268,20 @@ export class WalletService {
 		}
 	}
 
-	private async sendWithdrawalOTP({
+	private async sendOTP({
 		userId,
 		withdrawalRequestId,
 		amount,
 		currencySymbol,
 		recipientEmail,
+		recipientFirstName,
 	}: {
 		userId: string;
 		withdrawalRequestId: string;
 		amount: number;
 		currencySymbol: string;
 		recipientEmail: string;
+		recipientFirstName: string;
 	}) {
 		const featureFlags = new FeatureFlagManager();
 		const isEnabled = await featureFlags.checkToggleFlag("release-send-otp", userId);
@@ -315,18 +318,49 @@ export class WalletService {
 			{ upsert: true }
 		);
 
-		const queueUrl = process.env.WITHDRAWAL_EMAIL_OTP_QUEUE ?? "";
-		if (queueUrl) {
-			const message = {
-				recipient: recipientEmail,
-				message: otp,
-				event: "WITHDRAWAL_OTP",
-				amount,
-				currency: currencySymbol,
-			};
-
-			await publishMessageToQueue({ message, queueUrl });
+		const queueUrl = process.env.EMAIL_OTP_QUEUE ?? "";
+		if (!queueUrl) {
+			console.error("EMAIL_OTP_QUEUE environment variable is not configured.");
+			throw ApplicationError({
+				name: ErrorName.INTERNAL_ERROR,
+				message: "Unable to send OTP. Please try again later or contact support.",
+			});
 		}
+
+		const message = {
+			recipients: [{ emailAddress: recipientEmail, firstName: recipientFirstName }],
+			message: otp,
+			event: "OTP",
+			amount,
+			currency: currencySymbol,
+		};
+
+		await publishMessageToQueue({ message, queueUrl });
+	}
+
+	private async sendWithdrawalOTP({
+		userId,
+		withdrawalRequestId,
+		amount,
+		currencySymbol,
+		recipientEmail,
+		recipientFirstName,
+	}: {
+		userId: string;
+		withdrawalRequestId: string;
+		amount: number;
+		currencySymbol: string;
+		recipientEmail: string;
+		recipientFirstName: string;
+	}) {
+		await this.sendOTP({
+			userId,
+			withdrawalRequestId,
+			amount,
+			currencySymbol,
+			recipientEmail,
+			recipientFirstName,
+		});
 	}
 
 	private async verifyWithdrawalOTP({
@@ -352,6 +386,7 @@ export class WalletService {
 			channel: NotificationChannel.EMAIL,
 			context: "WITHDRAWAL",
 			withdrawalRequestId,
+			createdAt: { $gte: new Date(Date.now() - OTP_EXPIRES * 1000) },
 		});
 
 		if (!record || record.otp !== otp) {
@@ -776,6 +811,7 @@ export class WalletService {
 		amount,
 		amountToReceive,
 		userEmail,
+		firstName,
 		destinationAddress,
 	}: IInitiateWithdrawalInput) {
 		const [paymentMethod, provider, currency, userWallet, providerPaymentMethod] =
@@ -840,6 +876,7 @@ export class WalletService {
 			amount,
 			currencySymbol: validatedCurrency.symbol,
 			recipientEmail: userEmail,
+			recipientFirstName: firstName,
 		});
 
 		return {
@@ -939,7 +976,6 @@ export class WalletService {
 			validatedUserWallet?.availableBalance
 		);
 
-		// const transaction = await Transaction.create({
 		const session = await mongoose.startSession();
 		let transaction: ITransaction;
 
@@ -1063,12 +1099,87 @@ export class WalletService {
 			}
 
 			throw ApplicationError({
-				name: "InternalServerError" as ErrorName,
+				name: ErrorName.INTERNAL_ERROR,
 				message: `Withdrawal processing failed${
 					error?.message ? `: ${error.message}` : ""
 				}`,
 			});
 		}
+	}
+
+	public async resendWithdrawalOTP({
+		userId,
+		withdrawalRequestId,
+		userEmail,
+		firstName,
+	}: {
+		userId: string;
+		withdrawalRequestId: string;
+		userEmail: string;
+		firstName: string;
+	}) {
+		// Validate the original request exists and is still initiatable (not expired or submitted)
+		const originalRequest = await WithdrawalRequest.findOne({
+			_id: withdrawalRequestId,
+			userId,
+			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
+			expiresAt: { $gt: new Date() },
+		});
+
+		if (!originalRequest) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message:
+					"Original withdrawal request is invalid or expired. Please initiate a new withdrawal.",
+			});
+		}
+
+		// Invalidate the original request by expiring it immediately (set expiresAt to now)
+		await WithdrawalRequest.findByIdAndUpdate(originalRequest._id, {
+			$set: { expiresAt: new Date() },
+		});
+
+		// Create a new withdrawal request with the same details but new ID and expiresAt
+		const newWithdrawalRequestId = uuidv4();
+		await WithdrawalRequest.create({
+			_id: newWithdrawalRequestId,
+			withdrawalRequestId: newWithdrawalRequestId,
+			userId: originalRequest.userId,
+			currencyId: originalRequest.currencyId,
+			paymentMethodId: originalRequest.paymentMethodId,
+			providerId: originalRequest.providerId,
+			network: originalRequest.network,
+			amount: originalRequest.amount,
+			amountToReceive: originalRequest.amountToReceive,
+			destinationAddress: originalRequest.destinationAddress,
+			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
+			expiresAt: new Date(Date.now() + WITHDRAWAL_REQUEST_TTL_SECONDS * 1000),
+		});
+
+		const currency = await Currency.findById(originalRequest.currencyId);
+		if (!currency) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message:
+					"Currency associated with withdrawal request not found. Please contact support.",
+			});
+		}
+		const currencySymbol = currency.symbol;
+
+		await this.sendOTP({
+			userId,
+			withdrawalRequestId: newWithdrawalRequestId,
+			amount: originalRequest.amount,
+			currencySymbol,
+			recipientEmail: userEmail,
+			recipientFirstName: firstName,
+		});
+
+		return {
+			withdrawalRequestId: newWithdrawalRequestId,
+			expiresInSec: OTP_EXPIRES,
+			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
+		};
 	}
 
 	// public async withdrawFunds(

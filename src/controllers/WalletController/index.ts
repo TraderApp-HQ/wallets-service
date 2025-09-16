@@ -149,6 +149,7 @@ export const initiateWithdrawal = async (req: Request, res: Response, next: Next
 			amountToReceive,
 			destinationAddress,
 			userEmail,
+			firstName,
 		} = req.body;
 
 		const walletService = new WalletService();
@@ -162,6 +163,7 @@ export const initiateWithdrawal = async (req: Request, res: Response, next: Next
 			amount,
 			amountToReceive,
 			userEmail,
+			firstName,
 			destinationAddress,
 		});
 
@@ -215,6 +217,29 @@ export const getWalletSupportedCurrencies = async (
 				type: ResponseType.SUCCESS,
 				message: "Wallet supported currencies retrieved successfully",
 				object: supportedCurrencies,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const resendWithdrawalOTP = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { userId, withdrawalRequestId, userEmail, firstName } = req.body;
+		const walletService = new WalletService();
+		const result = await walletService.resendWithdrawalOTP({
+			userId,
+			withdrawalRequestId,
+			userEmail,
+			firstName,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "OTP resent successfully",
+				object: result,
 			})
 		);
 	} catch (error: any) {

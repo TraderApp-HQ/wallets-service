@@ -20,7 +20,7 @@ if (!env) {
 	process.exit(1);
 }
 const suffix = ENVIRONMENTS[env];
-const secretNames = ["common-secrets", "wallets-service-secrets"];
+const secretNames = ["common-secrets", "wallets-service-secrets", "users-service-secrets"];
 
 (async function () {
 	await initSecrets({
