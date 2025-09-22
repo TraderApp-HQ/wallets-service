@@ -8,7 +8,7 @@ import {
 	WalletType,
 } from "../config/interfaces";
 
-export interface ITransaction extends Document {
+export interface ITransaction extends Document<mongoose.Types.ObjectId> {
 	id: string;
 	transactionNetwork: string;
 	userId: string;
@@ -31,8 +31,8 @@ export interface ITransaction extends Document {
 	paymentProviderName: string;
 	externalTransactionId: string;
 	transactionHash?: string;
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 interface ITransactionModel extends Model<ITransaction> {
