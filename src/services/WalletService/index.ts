@@ -381,29 +381,26 @@ export class WalletService {
 			}
 			return;
 		}
-		const record = await OneTimePassword.findOne({
+
+		// Atomically verify-and-consume the OTP
+		const record = await OneTimePassword.findOneAndDelete({
 			_id: userId,
 			channel: NotificationChannel.EMAIL,
 			context: "WITHDRAWAL",
 			withdrawalRequestId,
+			otp, // ensure the exact OTP matches
 			createdAt: { $gte: new Date(Date.now() - OTP_EXPIRES * 1000) },
 		});
 
-		if (!record || record.otp !== otp) {
+		if (!record) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
 				message: "Invalid or expired OTP",
 			});
 		}
 
-		await Promise.all([
-			OneTimePassword.deleteOne({
-				_id: userId,
-				channel: NotificationChannel.EMAIL,
-				context: "WITHDRAWAL",
-			}),
-			OtpRateLimit.deleteOne({ _id: userId, channel: NotificationChannel.EMAIL }),
-		]);
+		// best-effort cleanup for rate limit doc
+		await OtpRateLimit.deleteOne({ _id: userId, channel: NotificationChannel.EMAIL });
 	}
 
 	public async getUserWalletBalances({ userId }: IWalletInput): Promise<IUserWallet[]> {
@@ -895,10 +892,25 @@ export class WalletService {
 		otp,
 		withdrawalRequestId,
 	}: ICompleteWithdrawalInput) {
+		const request = await WithdrawalRequest.findOne({
+			_id: withdrawalRequestId,
+			userId,
+			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
+			expiresAt: { $gt: new Date() },
+		});
+
+		if (!request) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message:
+					"Withdrawal request is invalid or expired. Please initiate a new withdrawal.",
+			});
+		}
+
 		await this.verifyWithdrawalOTP({ userId, otp, withdrawalRequestId });
 
-		// Atomically claim the request for submission (avoid double-processing)
-		const request = await WithdrawalRequest.findOneAndUpdate(
+		// Update the withdrawal request status to SUBMITTING after OTP verification
+		await WithdrawalRequest.findOneAndUpdate(
 			{
 				_id: withdrawalRequestId,
 				userId,
@@ -908,36 +920,6 @@ export class WalletService {
 			{ $set: { status: WITHDRAWAL_REQUEST_STATUSES.SUBMITTING } },
 			{ new: true }
 		);
-
-		// If already processed or not found
-		if (!request) {
-			// Maybe already SUBMITTED -> idempotent response
-			const existing = await WithdrawalRequest.findOne({
-				_id: withdrawalRequestId,
-				userId,
-			});
-			if (
-				existing &&
-				existing.status === WITHDRAWAL_REQUEST_STATUSES.SUBMITTED &&
-				existing.transactionId
-			) {
-				const transaction = await Transaction.findById<ITransaction>(
-					existing.transactionId
-				);
-				if (transaction) {
-					return {
-						transactionId: transaction.id,
-						status: transaction.status,
-						externalTransactionId: transaction.externalTransactionId,
-						withdrawalRequestStatus: existing.status,
-					};
-				}
-			}
-			throw ApplicationError({
-				name: ErrorName.VALIDATION,
-				message: "Invalid or expired withdrawal request",
-			});
-		}
 
 		const [paymentMethod, provider, currency, userWallet, providerPaymentMethod] =
 			await Promise.all([
@@ -1134,31 +1116,9 @@ export class WalletService {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
 				message:
-					"Original withdrawal request is invalid or expired. Please initiate a new withdrawal.",
+					"Withdrawal request is invalid or expired. Please initiate a new withdrawal.",
 			});
 		}
-
-		// Invalidate the original request by expiring it immediately (set expiresAt to now)
-		await WithdrawalRequest.findByIdAndUpdate(originalRequest._id, {
-			$set: { expiresAt: new Date() },
-		});
-
-		// Create a new withdrawal request with the same details but new ID and expiresAt
-		const newWithdrawalRequestId = uuidv4();
-		await WithdrawalRequest.create({
-			_id: newWithdrawalRequestId,
-			withdrawalRequestId: newWithdrawalRequestId,
-			userId: originalRequest.userId,
-			currencyId: originalRequest.currencyId,
-			paymentMethodId: originalRequest.paymentMethodId,
-			providerId: originalRequest.providerId,
-			network: originalRequest.network,
-			amount: originalRequest.amount,
-			amountToReceive: originalRequest.amountToReceive,
-			destinationAddress: originalRequest.destinationAddress,
-			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
-			expiresAt: new Date(Date.now() + WITHDRAWAL_REQUEST_TTL_SECONDS * 1000),
-		});
 
 		const currency = await Currency.findById(originalRequest.currencyId);
 		if (!currency) {
@@ -1172,7 +1132,7 @@ export class WalletService {
 
 		await this.sendOTP({
 			userId,
-			withdrawalRequestId: newWithdrawalRequestId,
+			withdrawalRequestId,
 			amount: originalRequest.amount,
 			currencySymbol,
 			recipientEmail: userEmail,
@@ -1180,7 +1140,7 @@ export class WalletService {
 		});
 
 		return {
-			withdrawalRequestId: newWithdrawalRequestId,
+			withdrawalRequestId,
 			expiresInSec: OTP_EXPIRES,
 			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
 		};
