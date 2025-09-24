@@ -70,7 +70,7 @@ export const WITHDRAWAL_LIMIT = {
 	MAXIMUM_AMOUNTS: { USDT: 50000 },
 };
 
-export const WITHDRAWAL_REQUEST_TTL_SECONDS = 60 * 2;
+export const WITHDRAWAL_REQUEST_TTL_SECONDS = 60 * 5;
 export const WITHDRAWAL_REQUEST_STATUSES = {
 	INITIATED: "INITIATED",
 	SUBMITTING: "SUBMITTING", // transient during atomic claim
