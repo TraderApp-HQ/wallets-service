@@ -41,3 +41,19 @@ export enum NotificationChannel {
 	SMS = "SMS",
 	WHATSAPP = "WHATSAPP",
 }
+
+export enum InvoiceStatus {
+	PENDING = "PENDING", // Invoice is created but not
+	PAID = "PAID",
+	FAILED = "FAILED",
+}
+
+export enum InvoiceType {
+	TRADING_FEE = "TRADING_FEE",
+	PROFIT_SHARE = "PROFIT_SHARE",
+}
+
+export enum TradeSide {
+	LONG = "LONG",
+	SHORT = "SHORT",
+}
