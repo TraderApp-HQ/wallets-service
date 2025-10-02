@@ -37,6 +37,21 @@ export interface IFactoryPaymentProviderDepositResponse {
 	exchangeFeeCurrency?: string;
 }
 
+export interface IProcessWithdrawalInput {
+	userId: string;
+	currency: string;
+	amount: number;
+	destinationAddress: string;
+	network: string;
+	customId: string;
+}
+
+export interface IProcessWithdrawalResponse {
+	externalId: string;
+	transactionHash?: string;
+	status: string;
+}
+
 export interface IFactoryPaymentProvider {
 	generateDepositDetails: ({
 		userId,
@@ -44,5 +59,5 @@ export interface IFactoryPaymentProvider {
 		addressType,
 		network,
 	}: IFactoryPaymentProviderDepositInput) => Promise<IFactoryPaymentProviderDepositResponse>;
-	// processWithdrawal: (userId: string, currency: string, amount: number) => Promise<void>;
+	processWithdrawal: (userId: IProcessWithdrawalInput) => Promise<IProcessWithdrawalResponse>;
 }

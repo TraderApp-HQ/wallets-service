@@ -139,21 +139,65 @@ export const initiateDeposit = async (req: Request, res: Response, next: NextFun
 
 export const initiateWithdrawal = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		// const { userId, currency, amount } = req.body;
-		// const walletService = new WalletService();
+		const {
+			userId,
+			currencyId,
+			paymentMethodId,
+			providerId,
+			network,
+			amount,
+			amountToReceive,
+			destinationAddress,
+			userEmail,
+			firstName,
+		} = req.body;
 
-		// First debit the user's wallet
-		// await walletService.createUserWallet({ userId: "user-1234" });
+		const walletService = new WalletService();
 
-		// TODO: Initiate withdrawal through CryptoPay API
+		const result = await walletService.initiateWithdrawalRequest({
+			userId,
+			currencyId,
+			paymentMethodId,
+			providerId,
+			network,
+			amount,
+			amountToReceive,
+			userEmail,
+			firstName,
+			destinationAddress,
+		});
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
 				message: "Withdrawal initiated successfully",
+				object: result,
 			})
 		);
 	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const completeWithdrawal = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { userId, otp, withdrawalRequestId } = req.body;
+
+		const walletService = new WalletService();
+		const result = await walletService.completeWithdrawal({
+			userId,
+			otp,
+			withdrawalRequestId,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Withdrawal initiated successfully",
+				object: result,
+			})
+		);
+	} catch (error) {
 		next(error);
 	}
 };
@@ -173,6 +217,29 @@ export const getWalletSupportedCurrencies = async (
 				type: ResponseType.SUCCESS,
 				message: "Wallet supported currencies retrieved successfully",
 				object: supportedCurrencies,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const resendWithdrawalOTP = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { userId, withdrawalRequestId, userEmail, firstName } = req.body;
+		const walletService = new WalletService();
+		const result = await walletService.resendWithdrawalOTP({
+			userId,
+			withdrawalRequestId,
+			userEmail,
+			firstName,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "OTP resent successfully",
+				object: result,
 			})
 		);
 	} catch (error: any) {

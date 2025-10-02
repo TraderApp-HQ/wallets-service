@@ -207,3 +207,123 @@ export const validateGetTransactionRequest = async (
 		next(err);
 	}
 };
+
+export const validateInitiateWithdrawalRequest = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const {
+		userId,
+		currencyId,
+		paymentMethodId,
+		providerId,
+		network,
+		amount,
+		amountToReceive,
+		destinationAddress,
+	} = req.body;
+
+	const schema = Joi.object({
+		userId: Joi.string().label("User ID"),
+		currencyId: Joi.string().required().label("Currency ID"),
+		paymentMethodId: Joi.string().required().label("Payment Method ID"),
+		providerId: Joi.string().required().label("Provider ID"),
+		network: Joi.string().label("Network"),
+		amount: Joi.number().positive().required().label("Amount"),
+		amountToReceive: Joi.number().positive().required().label("Amount To Receive"),
+		destinationAddress: Joi.string().required().label("Destination Address"),
+	});
+
+	const { error } = schema.validate({
+		userId,
+		currencyId,
+		paymentMethodId,
+		providerId,
+		network,
+		amount,
+		amountToReceive,
+		destinationAddress,
+	});
+	if (error) {
+		error.message = error.message.replace(/\\"/g, "");
+		next(error);
+		return;
+	}
+
+	try {
+		const { id, email, firstName } = await checkUser(req);
+		req.body.userId = userId || id;
+		req.body.userEmail = email;
+		req.body.firstName = firstName;
+		next();
+	} catch (err) {
+		next(err);
+	}
+};
+
+export const validateCompleteWithdrawalRequest = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const { userId, otp, withdrawalRequestId } = req.body;
+
+	const schema = Joi.object({
+		userId: Joi.string().label("User ID"),
+		otp: Joi.string().length(6).required().label("OTP"),
+		withdrawalRequestId: Joi.string().required().label("Withdrawal Request ID"),
+	});
+
+	const { error } = schema.validate({
+		userId,
+		otp,
+		withdrawalRequestId,
+	});
+	if (error) {
+		error.message = error.message.replace(/\\"/g, "");
+		next(error);
+		return;
+	}
+
+	try {
+		const { id } = await checkUser(req);
+		req.body.userId = userId || id;
+		next();
+	} catch (err) {
+		next(err);
+	}
+};
+
+export const validateResendWithdrawalOTPRequest = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const { userId, withdrawalRequestId } = req.body;
+
+	const schema = Joi.object({
+		userId: Joi.string().label("User ID"),
+		withdrawalRequestId: Joi.string().required().label("Withdrawal Request ID"),
+	});
+
+	const { error } = schema.validate({
+		userId,
+		withdrawalRequestId,
+	});
+	if (error) {
+		error.message = error.message.replace(/\\"/g, "");
+		next(error);
+		return;
+	}
+
+	try {
+		const { id, email, firstName } = await checkUser(req);
+		req.body.userId = userId || id;
+		req.body.userEmail = email;
+		req.body.firstName = firstName;
+		next();
+	} catch (err) {
+		next(err);
+	}
+};
