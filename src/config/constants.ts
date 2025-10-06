@@ -60,7 +60,7 @@ export const PAGINATION = {
 	LIMIT: 10,
 };
 
-export const OTP_EXPIRES = 60 * 2;
+export const OTP_EXPIRES = 90;
 export const OTP_RATE_LIMIT_EXPIRES = 60 * 60;
 export const MAX_OTP_ATTEMPTS = 5;
 export const OTP_DEFAULT_CODE = "123456"; // fallback when feature flag is disabled
