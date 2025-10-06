@@ -1,4 +1,5 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Model, PaginateResult, PaginateOptions } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 import { InvoiceStatus, InvoiceType, TradeSide } from "../config/enums";
 import { Currency } from "../config/interfaces";
 
@@ -6,46 +7,56 @@ export interface IInvoice extends Document {
 	id: string;
 	userId: string;
 	invoiceType: InvoiceType;
-	currency: Currency; // Currency to be paid in
+	currency: Currency;
 	amountDue: number;
 	amountPaid: number;
-	amountOutstanding: number; // amountDue - amountPaid
+	amountOutstanding: number;
 	status: InvoiceStatus;
 	tradeId: string;
 	tradeSide: TradeSide;
-	baseAsset: string; // Asset that is being traded
-	logoUrl: string; // Logo of the baseAsset
-	quoteCurrency: string; // Currency in which the baseAsset is priced
-	createdAt: string;
-	updatedAt: string;
+	baseAsset: string;
+	logoUrl: string;
+	quoteCurrency: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
-const currencySchema = new Schema<IInvoice>(
+export interface IInvoiceModel extends Model<IInvoice> {
+	paginate: (query?: object, options?: PaginateOptions) => Promise<PaginateResult<IInvoice>>;
+}
+
+const invoiceSchema = new Schema<IInvoice>(
 	{
-		userId: { type: String, required: true },
-		invoiceType: { type: String, required: true },
-		currency: { type: String, required: true },
+		userId: { type: String, required: true, index: true },
+		invoiceType: { type: String, required: true, enum: Object.values(InvoiceType) },
+		currency: { type: String, required: true, enum: Object.values(Currency) },
 		amountDue: { type: Number, required: true },
 		amountPaid: { type: Number, required: true },
 		amountOutstanding: { type: Number, required: true },
-		status: { type: String, required: true },
+		status: { type: String, required: true, enum: Object.values(InvoiceStatus) },
 		tradeId: { type: String, required: true },
-		tradeSide: { type: String, required: true },
+		tradeSide: { type: String, required: true, enum: Object.values(TradeSide) },
 		baseAsset: { type: String, required: true },
 		logoUrl: { type: String, required: true },
 		quoteCurrency: { type: String, required: true },
 	},
-	{ timestamps: true, versionKey: false }
+	{
+		timestamps: true,
+		versionKey: false,
+		toJSON: {
+			virtuals: true,
+			transform: (_doc, ret) => {
+				delete ret._id;
+				return ret;
+			},
+		},
+	}
 );
 
-// Override the toJSON method to map _id to id
-currencySchema.set("toJSON", {
-	transform: (doc, ret) => {
-		ret.id = ret._id; // Map _id to id
-		delete ret._id; // Remove _id from the response
-		delete ret.__v; // Optionally remove __v
-		return ret;
-	},
-});
+invoiceSchema.plugin(mongoosePaginate);
 
-export default mongoose.model<IInvoice>("invoice", currencySchema);
+invoiceSchema.index({ userId: 1, createdAt: -1 });
+invoiceSchema.index({ userId: 1, status: 1 });
+invoiceSchema.index({ userId: 1, amountOutstanding: 1 });
+
+export default mongoose.model<IInvoice, IInvoiceModel>("invoice", invoiceSchema);
