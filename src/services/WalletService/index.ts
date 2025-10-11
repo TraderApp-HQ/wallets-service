@@ -27,7 +27,7 @@ import Provider, { IPaymentProvider } from "../../models/PaymentProvider";
 import { WalletProviderFactory } from "../../factories/WalletProviderFactory";
 import WalletTypeModel from "../../models/WalletType";
 import Currency, { ICurrencyModel } from "../../models/Currency";
-import ProviderPaymentMethod from "../../models/ProviderPaymentMethod";
+import ProviderPaymentMethod, { IProviderPaymentMethod } from "../../models/ProviderPaymentMethod";
 import PaymentCategory, { IPaymentCategory } from "../../models/PaymentCategory";
 import { ApplicationError } from "../../config/helpers";
 import ExchangeRate, { IExchangeRate } from "../../models/ExchangeRate";
@@ -124,6 +124,19 @@ interface IValidateWithdrawalEntitiesArgs {
 	provider: IPaymentProvider | null;
 	currency: ICurrencyModel | null;
 	userWallet: IUserWallet | null;
+}
+
+interface IProviderPaymentMethodLean {
+	_id: mongoose.Types.ObjectId;
+	symbol: string;
+	supportedNetworks?: IProviderPaymentMethod["supportedNetworks"];
+}
+
+interface ISupportedNetworkUpdateOperation {
+	updateOne: {
+		filter: { _id: mongoose.Types.ObjectId };
+		update: { $set: { supportedNetworks: IProviderPaymentMethod["supportedNetworks"] } };
+	};
 }
 
 export class WalletService {
@@ -800,6 +813,55 @@ export class WalletService {
 			await ExchangeRate.bulkWrite(bulkExchangeRateUpdate);
 		} catch (err) {
 			console.log("Error updating currency exchange rates - ", err);
+		}
+	}
+
+	public async updateNetworkFeesInDB(provider: WalletProvider) {
+		try {
+			const providerInstance = WalletProviderFactory.createProvider(provider);
+			const networkFeesByCurrency = await providerInstance.getNetworkFeesByCurrency();
+			if (!networkFeesByCurrency)
+				throw new Error(`${provider} Provider returned no fee data`);
+
+			const symbols = Object.keys(networkFeesByCurrency);
+			if (!symbols.length) return;
+
+			const providerPaymentMethods = await ProviderPaymentMethod.find({
+				providerName: provider,
+				symbol: { $in: symbols },
+			})
+				.select("symbol supportedNetworks")
+				.lean<IProviderPaymentMethodLean[]>();
+
+			if (!providerPaymentMethods.length) return;
+
+			const operations = providerPaymentMethods.reduce<ISupportedNetworkUpdateOperation[]>(
+				(acc, providerPaymentMethod) => {
+					const feesData = networkFeesByCurrency[providerPaymentMethod.symbol];
+					if (!feesData || !providerPaymentMethod.supportedNetworks?.length) return acc;
+
+					const updatedNetworks = providerPaymentMethod.supportedNetworks.map(
+						(network) => ({
+							...network,
+							fees: feesData.fees[network.slug] || {},
+						})
+					);
+
+					acc.push({
+						updateOne: {
+							filter: { _id: providerPaymentMethod._id },
+							update: { $set: { supportedNetworks: updatedNetworks } },
+						},
+					});
+					return acc;
+				},
+				[]
+			);
+
+			if (!operations.length) return;
+			await ProviderPaymentMethod.bulkWrite(operations);
+		} catch (error) {
+			console.error(`Failed to update ${provider} network fees`, error);
 		}
 	}
 

@@ -8,9 +8,15 @@ export interface IProviderPaymentMethod extends Document {
 	isDepositSupported: boolean;
 	isWithdrawalSupported: boolean;
 	isDefault: boolean;
-	supportedNetworks?: Array<{ slug: string; name: string; precision: number }>;
+	supportedNetworks?: Array<{
+		slug: string;
+		name: string;
+		precision: number;
+		fees?: { average?: string; fast?: string; slow?: string };
+	}>;
 	category: mongoose.Types.ObjectId;
 	categoryName: string;
+	symbol: string;
 }
 
 const providerPaymentMethodSchema = new Schema<IProviderPaymentMethod>(
@@ -22,9 +28,19 @@ const providerPaymentMethodSchema = new Schema<IProviderPaymentMethod>(
 		isDepositSupported: { type: Boolean, default: true },
 		isWithdrawalSupported: { type: Boolean, default: true },
 		isDefault: { type: Boolean, default: false },
-		supportedNetworks: { type: [{ slug: String, name: String, precision: Number }] },
+		supportedNetworks: {
+			type: [
+				{
+					slug: String,
+					name: String,
+					precision: Number,
+					fees: { average: String, fast: String, slow: String },
+				},
+			],
+		},
 		category: { type: Schema.Types.ObjectId, ref: "payment-category", required: true },
 		categoryName: { type: String, required: true },
+		symbol: { type: String, required: true },
 	},
 	{ timestamps: true, versionKey: false }
 );

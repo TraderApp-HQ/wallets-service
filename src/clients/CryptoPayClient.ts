@@ -2,6 +2,7 @@ import axios from "axios";
 import crypto from "crypto";
 import "dotenv/config";
 import {
+	ICurrencyNetworkFees,
 	IFactoryPaymentProviderDepositInput,
 	IFactoryPaymentProviderDepositResponse,
 	IProcessWithdrawalInput,
@@ -113,6 +114,21 @@ export interface ICryptopayWebhookEvent {
 		coin_withdrawal_id: string | null;
 		created_at: string;
 	};
+}
+
+export interface ICryptopayNetworkFee {
+	level: "slow" | "average" | "fast";
+	fee: string;
+	currency: string;
+	network: string;
+}
+
+export interface ICryptoNetworkFeeResponse {
+	data: ICryptopayNetworkFee[];
+}
+
+export interface ICryptoPayFetchFeesOptions {
+	allNetworks?: boolean;
 }
 
 export class CryptoPayClient {
@@ -266,6 +282,40 @@ export class CryptoPayClient {
 		}
 	}
 
+	private groupFeesByCurrency(data: ICryptopayNetworkFee[]): ICurrencyNetworkFees {
+		const result: ICurrencyNetworkFees = {};
+
+		for (const { currency, network, level, fee } of data) {
+			if (!result[currency]) {
+				result[currency] = { networks: [], fees: {} };
+			}
+			const entry = result[currency];
+
+			if (!entry.networks.includes(network)) {
+				entry.networks.push(network);
+			}
+			if (!entry.fees[network]) {
+				entry.fees[network] = {};
+			}
+			entry.fees[network][level] = fee; // single fee per level
+		}
+
+		// Sort networks and levels for consistency
+		for (const currency in result) {
+			result[currency].networks.sort();
+			for (const network in result[currency].fees) {
+				const levels = result[currency].fees[network];
+				const sortedLevels: Record<string, string> = {};
+				Object.keys(levels)
+					.sort()
+					.forEach((lvl) => (sortedLevels[lvl] = levels[lvl]));
+				result[currency].fees[network] = sortedLevels;
+			}
+		}
+
+		return result;
+	}
+
 	async generateDepositDetails({
 		userId,
 		currency,
@@ -396,6 +446,55 @@ export class CryptoPayClient {
 	// 	console.log("copted signatire:#####", computedSignature);
 	// 	return computedSignature === signature;
 	// }
+
+	async fetchNetworkFees({ allNetworks = true }: ICryptoPayFetchFeesOptions = {}): Promise<
+		ICryptopayNetworkFee[]
+	> {
+		const endpoint = `/api/coin_withdrawals/network_fees${
+			allNetworks ? "?all_networks=true" : ""
+		}`;
+		const requestData = JSON.stringify({});
+		const date = new Date(Date.now()).toUTCString();
+		const signature = this.createSignature(
+			"GET",
+			endpoint,
+			requestData,
+			this.withdrawalApiSecret,
+			date
+		);
+
+		try {
+			const response = await axios<ICryptoNetworkFeeResponse>({
+				method: "GET",
+				url: this.baseUrl + endpoint,
+				data: requestData,
+				headers: {
+					"Content-Type": "application/json",
+					Date: date,
+					Authorization: `HMAC ${this.withdrawalApiKey}:${signature}`,
+				},
+			});
+
+			const data = response.data.data;
+			return data;
+		} catch (error: any) {
+			if (error.response) {
+				console.error("Network fee fetch error:", {
+					status: error.response.status,
+					data: error.response.data,
+					headers: error.response.headers,
+				});
+			} else {
+				console.error("Network fee fetch failed before response:", error.message);
+			}
+			throw new Error(`Error fetching network fees: ${error.message}`);
+		}
+	}
+
+	async getNetworkFeesByCurrency() {
+		const fees = await this.fetchNetworkFees();
+		return this.groupFeesByCurrency(fees);
+	}
 
 	async processWithdrawal({
 		userId,
