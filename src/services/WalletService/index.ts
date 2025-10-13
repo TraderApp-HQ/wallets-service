@@ -495,6 +495,7 @@ export class WalletService {
 					slug: sn.slug,
 					name: sn.name,
 					precision: sn.precision,
+					fees: sn.fees,
 				})),
 			};
 		});

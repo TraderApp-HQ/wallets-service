@@ -97,6 +97,7 @@ export interface IPaymentMethodResponse {
 		slug: string;
 		name: string;
 		precision: number;
+		fees?: { average?: string; fast?: string; slow?: string };
 	}>;
 }
 
