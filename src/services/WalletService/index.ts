@@ -47,6 +47,7 @@ import { generateOTP } from "../../utils/otp";
 import OneTimePassword from "../../models/OneTimePassword";
 import { publishMessageToQueue } from "../../clients/SQSClient/helpers";
 import WithdrawalRequest from "../../models/WithdrawalRequest";
+import { roundTo } from "../../utils";
 
 interface IWalletInput {
 	userId: string;
@@ -103,7 +104,7 @@ interface IInitiateWithdrawalInput {
 	currencyId: string;
 	paymentMethodId: string;
 	providerId: string;
-	network?: string;
+	network: string;
 	amount: number;
 	amountToReceive: number;
 	destinationAddress: string;
@@ -124,6 +125,8 @@ interface IValidateWithdrawalEntitiesArgs {
 	provider: IPaymentProvider | null;
 	currency: ICurrencyModel | null;
 	userWallet: IUserWallet | null;
+	providerPaymentMethod: IProviderPaymentMethod | null;
+	network: string;
 }
 
 interface IProviderPaymentMethodLean {
@@ -229,6 +232,8 @@ export class WalletService {
 		provider,
 		currency,
 		userWallet,
+		providerPaymentMethod,
+		network,
 	}: IValidateWithdrawalEntitiesArgs) {
 		if (!paymentMethod) {
 			throw ApplicationError({
@@ -246,7 +251,22 @@ export class WalletService {
 				name: ErrorName.VALIDATION,
 				message: "User wallet not found for this currency",
 			});
-		return { paymentMethod, provider, currency, userWallet };
+		if (!providerPaymentMethod) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Provider payment method not found",
+			});
+		}
+		if (!network) {
+			throw ApplicationError({ name: ErrorName.VALIDATION, message: "Network not found" });
+		}
+		if (!providerPaymentMethod.supportedNetworks?.some((sn) => sn.slug === network)) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Network not supported for withdrawal",
+			});
+		}
+		return { paymentMethod, provider, currency, userWallet, providerPaymentMethod, network };
 	}
 
 	private async validateWithdrawalAmount(
@@ -425,6 +445,20 @@ export class WalletService {
 		// no user wallet, create wallets for user
 		await this.createUserWallet({ userId });
 		return this.queryUserWalletBalance({ userId });
+	}
+
+	private computeProcessingFee(amount: number, rate: number, minFee: number) {
+		if (!Number.isFinite(amount) || amount <= 0) {
+			throw new Error("Amount must be a finite positive number");
+		}
+
+		const fee = Math.max(rate * amount, minFee);
+		return roundTo(fee);
+	}
+
+	private computeNetAmount(amount: number, networkFee: number, processingFee: number) {
+		const net = amount - networkFee - processingFee;
+		return roundTo(net);
 	}
 
 	public async getUserWalletTypeBalances({
@@ -891,17 +925,14 @@ export class WalletService {
 				}),
 			]);
 		const { currency: validatedCurrency, userWallet: validatedUserWallet } =
-			this.validateWithdrawalEntities({ paymentMethod, provider, currency, userWallet });
-
-		if (
-			network &&
-			!providerPaymentMethod?.supportedNetworks?.some((sn) => sn.slug === network)
-		) {
-			throw ApplicationError({
-				name: ErrorName.VALIDATION,
-				message: "Network not supported for withdrawal",
+			this.validateWithdrawalEntities({
+				paymentMethod,
+				provider,
+				currency,
+				userWallet,
+				providerPaymentMethod,
+				network,
 			});
-		}
 
 		await this.validateWithdrawalAmount(
 			validatedCurrency.symbol,
@@ -1007,17 +1038,14 @@ export class WalletService {
 			userWallet: validatedUserWallet,
 			paymentMethod: validatedPaymentMethod,
 			provider: validatedProvider,
-		} = this.validateWithdrawalEntities({ paymentMethod, provider, currency, userWallet });
-
-		if (
-			request.network &&
-			!providerPaymentMethod?.supportedNetworks?.some((sn) => sn.slug === request.network)
-		) {
-			throw ApplicationError({
-				name: ErrorName.VALIDATION,
-				message: "Network no longer supported",
-			});
-		}
+		} = this.validateWithdrawalEntities({
+			paymentMethod,
+			provider,
+			currency,
+			userWallet,
+			providerPaymentMethod,
+			network: request.network,
+		});
 
 		await this.validateWithdrawalAmount(
 			validatedCurrency.symbol,

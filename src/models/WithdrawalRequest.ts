@@ -7,7 +7,7 @@ export interface IWithdrawalRequest extends Document {
 	currencyId: string;
 	paymentMethodId: string;
 	providerId: string;
-	network?: string;
+	network: string;
 	amount: number;
 	amountToReceive: number;
 	destinationAddress: string;

@@ -235,7 +235,7 @@ describe("Wallet Service Tests", () => {
 		});
 
 		test("should initiate a withdrawal request", async () => {
-			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId || !sampleNetwork) return;
 
 			const res = await walletService.initiateWithdrawalRequest({
 				userId: testUserId,
@@ -292,7 +292,7 @@ describe("Wallet Service Tests", () => {
 
 		test("should fail to complete withdrawal with invalid OTP", async () => {
 			// Need a fresh request because previous one is already submitted
-			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId || !sampleNetwork) return;
 			const { withdrawalRequestId: freshId } = await walletService.initiateWithdrawalRequest({
 				userId: testUserId,
 				currencyId: usdtCurrencyId,
@@ -315,7 +315,7 @@ describe("Wallet Service Tests", () => {
 		});
 
 		test("should reject withdrawal initiation below minimum amount", async () => {
-			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId || !sampleNetwork) return;
 			await expect(
 				walletService.initiateWithdrawalRequest({
 					userId: testUserId,
@@ -333,7 +333,7 @@ describe("Wallet Service Tests", () => {
 		});
 
 		test("should reject withdrawal initiation due to insufficient balance", async () => {
-			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId || !sampleNetwork) return;
 			const lowUser = "low-balance-user";
 			await walletService.getUserWalletBalances({ userId: lowUser }); // creates wallets with 0
 			await expect(
@@ -354,7 +354,7 @@ describe("Wallet Service Tests", () => {
 		});
 
 		test("should resend OTP for an active withdrawal", async () => {
-			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId || !sampleNetwork) return;
 
 			// Create initial request
 			const init = await walletService.initiateWithdrawalRequest({
@@ -393,7 +393,7 @@ describe("Wallet Service Tests", () => {
 		});
 
 		test("should fail to resend OTP when original request is expired", async () => {
-			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId || !sampleNetwork) return;
 
 			// Create initial request
 			const init = await walletService.initiateWithdrawalRequest({
@@ -425,7 +425,7 @@ describe("Wallet Service Tests", () => {
 		});
 
 		test("should fail to resend OTP when original request is already submitted", async () => {
-			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId) return;
+			if (!usdtCurrencyId || !usdtPaymentMethodId || !providerId || !sampleNetwork) return;
 
 			// Create initial request
 			const init = await walletService.initiateWithdrawalRequest({
