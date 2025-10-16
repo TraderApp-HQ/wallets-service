@@ -1315,8 +1315,7 @@ export class WalletService {
 		if (netAmount < 0) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
-				message:
-					"Withdrawal fees exceed the withdrawal amount. Please enter a higher amount.",
+				message: "Amount must exceed the withdrawal fees.",
 			});
 		}
 
