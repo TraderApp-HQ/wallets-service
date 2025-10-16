@@ -10,6 +10,7 @@ import {
 	initiateDeposit,
 	initiateWithdrawal,
 	resendWithdrawalOTP,
+	getWithdrawalFees,
 } from "../controllers/WalletController/";
 import {
 	validateCompleteWithdrawalRequest,
@@ -21,6 +22,7 @@ import {
 	validateInitiateWithdrawalRequest,
 	validateRequest,
 	validateResendWithdrawalOTPRequest,
+	validateGetWithdrawalFeesQuoteRequest,
 } from "../middlewares/WalletMiddleware";
 
 const router = Router();
@@ -43,5 +45,11 @@ router.post("/initiate-deposit", validateInitiateDepositRequest, initiateDeposit
 router.post("/initiate-withdrawal", validateInitiateWithdrawalRequest, initiateWithdrawal);
 router.post("/complete-withdrawal", validateCompleteWithdrawalRequest, completeWithdrawal);
 router.post("/resend-withdrawal-otp", validateResendWithdrawalOTPRequest, resendWithdrawalOTP);
+router.get(
+	"/withdrawal-fees",
+	validateRequest,
+	validateGetWithdrawalFeesQuoteRequest,
+	getWithdrawalFees
+);
 
 export default router;

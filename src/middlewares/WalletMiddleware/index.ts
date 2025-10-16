@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { checkAdmin, checkUser } from "../helpers";
 import Joi from "joi";
-import { WalletType } from "../../config/interfaces";
+import { IParsedAmountLocals, WalletType } from "../../config/interfaces";
 import { CurrencyCategory, PaymentCategoryName, PaymentOperation } from "../../config/enums";
 
 export const validateGetUserWalletsRequest = async (
@@ -326,4 +326,42 @@ export const validateResendWithdrawalOTPRequest = async (
 	} catch (err) {
 		next(err);
 	}
+};
+
+export const validateGetWithdrawalFeesQuoteRequest = async (
+	req: Request,
+	res: Response<any, IParsedAmountLocals>,
+	next: NextFunction
+) => {
+	const { amount, paymentMethodId, providerId, network } = req.query;
+
+	const parsedAmount = Number(amount as string);
+	if (isNaN(parsedAmount)) {
+		const error = new Error("Amount must be a valid number");
+		next(error);
+		return;
+	}
+
+	const schema = Joi.object({
+		amount: Joi.number().positive().required().label("Amount"),
+		paymentMethodId: Joi.string().required().label("Payment Method ID"),
+		providerId: Joi.string().required().label("Provider ID"),
+		network: Joi.string().required().label("Network"),
+	});
+
+	const { error } = schema.validate({
+		amount: parsedAmount,
+		paymentMethodId,
+		providerId,
+		network,
+	});
+
+	if (error) {
+		error.message = error.message.replace(/\"/g, "");
+		next(error);
+		return;
+	}
+
+	res.locals.parsedAmount = parsedAmount;
+	next();
 };

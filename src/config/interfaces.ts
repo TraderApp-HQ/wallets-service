@@ -124,3 +124,7 @@ export interface IPaginatedResult<T> {
 	hasNextPage: boolean;
 	hasPrevPage: boolean;
 }
+
+export interface IParsedAmountLocals {
+	parsedAmount: number;
+}

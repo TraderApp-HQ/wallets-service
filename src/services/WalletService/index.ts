@@ -38,6 +38,7 @@ import {
 	OTP_DEFAULT_CODE,
 	OTP_EXPIRES,
 	OTP_RATE_LIMIT_EXPIRES,
+	WITHDRAWAL_FEES,
 	WITHDRAWAL_LIMIT,
 	WITHDRAWAL_REQUEST_STATUSES,
 	WITHDRAWAL_REQUEST_TTL_SECONDS,
@@ -1237,38 +1238,88 @@ export class WalletService {
 		};
 	}
 
-	// public async withdrawFunds(
-	// 	userId: string,
-	// 	currency: string,
-	// 	amount: number,
-	// 	paymentMethodName: string
-	// ) {
-	// 	const paymentMethod = await PaymentMethod.findOne({ name: paymentMethodName });
-	// 	if (!paymentMethod) {
-	// 		throw new Error("Payment method not found");
-	// 	}
+	public async getWithdrawalFeesQuote({
+		amount,
+		paymentMethodId,
+		providerId,
+		network,
+	}: {
+		amount: number;
+		paymentMethodId: string;
+		providerId: string;
+		network: string;
+	}): Promise<{ networkFee: number; processingFee: number; netAmount: number }> {
+		if (!Number.isFinite(amount) || amount <= 0) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Amount must be a valid positive number",
+			});
+		}
 
-	// 	const provider = await Provider.findOne({
-	// 		paymentMethods: paymentMethod._id,
-	// 		default: true,
-	// 	});
-	// 	if (!provider) {
-	// 		throw new Error("No default provider found for this payment method");
-	// 	}
+		const providerPaymentMethod = await ProviderPaymentMethod.findOne({
+			paymentMethod: paymentMethodId,
+			provider: providerId,
+		}).lean<IProviderPaymentMethod | null>();
 
-	// 	// const providerInstance = WalletProviderFactory.createProvider(provider.name as WalletProvider);
-	// 	// await providerInstance.processWithdrawal(userId, currency, amount);
+		if (!providerPaymentMethod) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Provider payment method not found",
+			});
+		}
 
-	// 	const transaction = new Transaction({
-	// 		transactionId: uuidv4(),
-	// 		userId,
-	// 		currency,
-	// 		amount,
-	// 		paymentMethod: paymentMethodName,
-	// 		provider: provider.name,
-	// 		status: "completed",
-	// 	});
+		// Enforce minimum amount per symbol (default to 10 if not configured)
+		const symbol = providerPaymentMethod.symbol;
+		const min = (WITHDRAWAL_LIMIT.MINIMUM_AMOUNTS as Record<string, number>)?.[symbol] ?? 10;
+		if (amount < min) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: `Minimum withdrawal amount is ${min} ${symbol}`,
+			});
+		}
 
-	// 	await transaction.save();
-	// }
+		const supportedNetwork = providerPaymentMethod.supportedNetworks?.find(
+			(sn) => sn.slug === network
+		);
+		if (!supportedNetwork) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Network not supported for withdrawal",
+			});
+		}
+
+		// Use average fee only; error if missing/malformed
+		const avg = supportedNetwork.fees?.average;
+		if (!avg) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Network fee not available",
+			});
+		}
+		const networkFee = parseFloat(avg);
+		if (!Number.isFinite(networkFee)) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Network fee is invalid or malformed",
+			});
+		}
+
+		const processingFee = this.computeProcessingFee(
+			amount,
+			WITHDRAWAL_FEES.PROCESSING_RATE,
+			WITHDRAWAL_FEES.MIN_PROCESSING_FEE
+		);
+
+		const netAmount = this.computeNetAmount(amount, networkFee, processingFee);
+
+		if (netAmount < 0) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message:
+					"Withdrawal fees exceed the withdrawal amount. Please enter a higher amount.",
+			});
+		}
+
+		return { networkFee, processingFee, netAmount };
+	}
 }
