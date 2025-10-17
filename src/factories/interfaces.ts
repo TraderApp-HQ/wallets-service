@@ -52,6 +52,15 @@ export interface IProcessWithdrawalResponse {
 	status: string;
 }
 
+export interface ICurrencyNetworkFees
+	extends Record<
+		string,
+		{
+			networks: string[];
+			fees: Record<string, Record<string, string>>;
+		}
+	> {}
+
 export interface IFactoryPaymentProvider {
 	generateDepositDetails: ({
 		userId,
@@ -59,5 +68,6 @@ export interface IFactoryPaymentProvider {
 		addressType,
 		network,
 	}: IFactoryPaymentProviderDepositInput) => Promise<IFactoryPaymentProviderDepositResponse>;
-	processWithdrawal: (userId: IProcessWithdrawalInput) => Promise<IProcessWithdrawalResponse>;
+	processWithdrawal: (data: IProcessWithdrawalInput) => Promise<IProcessWithdrawalResponse>;
+	getNetworkFeesByCurrency: () => Promise<ICurrencyNetworkFees>;
 }

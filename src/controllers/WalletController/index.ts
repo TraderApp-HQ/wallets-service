@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
+import { WalletService } from "../../services/WalletService";
 import { apiResponseHandler } from "@traderapp/shared-resources";
 import { ResponseType } from "../../config/constants";
-import { WalletService } from "../../services/WalletService";
 import { HttpStatus } from "../../utils/httpStatus";
-import { WalletType } from "../../config/interfaces";
+import { IParsedAmountLocals, WalletType } from "../../config/interfaces";
 import { CurrencyCategory, PaymentCategoryName, PaymentOperation } from "../../config/enums";
 
 export const createUserWallets = async (req: Request, res: Response, next: NextFunction) => {
@@ -243,6 +243,37 @@ export const resendWithdrawalOTP = async (req: Request, res: Response, next: Nex
 			})
 		);
 	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const getWithdrawalFees = async (
+	req: Request,
+	res: Response<any, IParsedAmountLocals>,
+	next: NextFunction
+) => {
+	try {
+		const amount = res.locals.parsedAmount;
+		const paymentMethodId = req.query.paymentMethodId as string;
+		const providerId = req.query.providerId as string;
+		const network = req.query.network as string;
+
+		const walletService = new WalletService();
+		const result = await walletService.getWithdrawalFeesQuote({
+			amount,
+			paymentMethodId,
+			providerId,
+			network,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Withdrawal fees quote computed successfully",
+				object: result,
+			})
+		);
+	} catch (error) {
 		next(error);
 	}
 };
