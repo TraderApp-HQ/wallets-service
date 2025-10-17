@@ -8,7 +8,6 @@ export const cryptopayNetworkFeesJob = () => {
 	cron.schedule("*/1 * * * *", async () => {
 		try {
 			await walletService.updateNetworkFeesInDB(WalletProvider.CRYPTOPAY);
-			console.log("Cryptopay Network Fees Update Cron Job successful");
 		} catch (error) {
 			console.error("Error updating Cryptopay Network Fees:", error);
 		}
