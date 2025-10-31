@@ -66,7 +66,7 @@ export const MAX_OTP_ATTEMPTS = 5;
 export const OTP_DEFAULT_CODE = "123456"; // fallback when feature flag is disabled
 
 export const WITHDRAWAL_LIMIT = {
-	MINIMUM_AMOUNTS: { USDT: 12 },
+	MINIMUM_AMOUNTS: { USDT: 6 },
 	MAXIMUM_AMOUNTS: { USDT: 50000 },
 };
 

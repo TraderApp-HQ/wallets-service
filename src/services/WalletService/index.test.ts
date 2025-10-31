@@ -217,7 +217,7 @@ describe("Wallet Service Tests", () => {
 	});
 
 	describe("Withdrawals", () => {
-		const withdrawalAmount = 15; // > minimum (10)
+		const withdrawalAmount = 15; // > minimum (6)
 		const fees = 5;
 		const amountToReceive = withdrawalAmount - fees;
 		let withdrawalRequestId: string;
@@ -248,6 +248,8 @@ describe("Wallet Service Tests", () => {
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
 				firstName: "Test",
+				processingFee: 5,
+				networkFee: 0,
 			});
 
 			expect(res).toBeDefined();
@@ -304,6 +306,8 @@ describe("Wallet Service Tests", () => {
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
 				firstName: "Test",
+				processingFee: 5,
+				networkFee: 5,
 			});
 			await expect(
 				walletService.completeWithdrawal({
@@ -323,13 +327,15 @@ describe("Wallet Service Tests", () => {
 					paymentMethodId: usdtPaymentMethodId,
 					providerId,
 					network: sampleNetwork,
-					amount: 7, // below min 10
-					amountToReceive: 2,
+					amount: 7,
+					amountToReceive: 2, // below min 6
 					userEmail: "test@example.com",
 					destinationAddress: "TDESTINATIONADDRESS1234567890",
 					firstName: "Test",
+					processingFee: 5,
+					networkFee: 0,
 				})
-			).rejects.toThrow(/Minimum withdrawal amount/i);
+			).rejects.toThrow(/Amount is below the minimum withdrawal/i);
 		});
 
 		test("should reject withdrawal initiation due to insufficient balance", async () => {
@@ -348,6 +354,8 @@ describe("Wallet Service Tests", () => {
 					userEmail: "low@example.com",
 					destinationAddress: "TDESTINATIONADDRESS1234567890",
 					firstName: "Test",
+					processingFee: 5,
+					networkFee: 0,
 				})
 			).rejects.toThrow(/Insufficient funds for withdrawal/i);
 			deleteIds.push(lowUser);
@@ -368,6 +376,8 @@ describe("Wallet Service Tests", () => {
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
 				firstName: "Test",
+				processingFee: 5,
+				networkFee: 0,
 			});
 
 			const originalId = init.withdrawalRequestId;
@@ -407,6 +417,8 @@ describe("Wallet Service Tests", () => {
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
 				firstName: "Test",
+				processingFee: 5,
+				networkFee: 0,
 			});
 
 			// Force-expire it
@@ -439,6 +451,8 @@ describe("Wallet Service Tests", () => {
 				userEmail: "test@example.com",
 				destinationAddress: "TDESTINATIONADDRESS1234567890",
 				firstName: "Test",
+				processingFee: 5,
+				networkFee: 0,
 			});
 
 			// Mark it as SUBMITTED (no longer INITIATED)
