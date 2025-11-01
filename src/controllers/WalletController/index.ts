@@ -150,6 +150,8 @@ export const initiateWithdrawal = async (req: Request, res: Response, next: Next
 			destinationAddress,
 			userEmail,
 			firstName,
+			processingFee,
+			networkFee,
 		} = req.body;
 
 		const walletService = new WalletService();
@@ -165,6 +167,8 @@ export const initiateWithdrawal = async (req: Request, res: Response, next: Next
 			userEmail,
 			firstName,
 			destinationAddress,
+			processingFee,
+			networkFee,
 		});
 
 		return res.status(HttpStatus.OK).json(
@@ -265,6 +269,16 @@ export const getWithdrawalFees = async (
 			providerId,
 			network,
 		});
+
+		// if (result.isValid === false) {
+		// 	return res.status(HttpStatus.BAD_REQUEST).json(
+		// 		apiResponseHandler({
+		// 			type: ResponseType.ERROR,
+		// 			message: result.error ?? "Amount invalid",
+		// 			object: result,
+		// 		})
+		// 	);
+		// }
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({

@@ -111,6 +111,8 @@ interface IInitiateWithdrawalInput {
 	destinationAddress: string;
 	userEmail: string;
 	firstName: string;
+	processingFee: number;
+	networkFee: number;
 }
 
 interface ICompleteWithdrawalInput {
@@ -273,28 +275,29 @@ export class WalletService {
 	private async validateWithdrawalAmount(
 		currencySymbol: string,
 		amount: number,
-		available: number
+		amountToReceive: number,
+		availableBalance: number
 	) {
 		const min =
-			(WITHDRAWAL_LIMIT.MINIMUM_AMOUNTS as Record<string, number>)[currencySymbol] ?? 10;
+			(WITHDRAWAL_LIMIT.MINIMUM_AMOUNTS as Record<string, number>)[currencySymbol] ?? 6;
 		const max =
 			(WITHDRAWAL_LIMIT.MAXIMUM_AMOUNTS as Record<string, number>)[currencySymbol] ?? 50000;
 
-		if (amount < min) {
+		if (amountToReceive < min) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
-				message: `Minimum withdrawal amount is ${min} ${currencySymbol}`,
+				message: `Amount is below the minimum withdrawal of ${min} ${currencySymbol}`,
 			});
 		}
 
-		if (amount > max) {
+		if (amountToReceive > max) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
 				message: `Maximum withdrawal amount is ${max} ${currencySymbol}`,
 			});
 		}
 
-		if (amount > available) {
+		if (amount > availableBalance) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
 				message: "Insufficient funds for withdrawal",
@@ -912,6 +915,8 @@ export class WalletService {
 		userEmail,
 		firstName,
 		destinationAddress,
+		processingFee,
+		networkFee,
 	}: IInitiateWithdrawalInput) {
 		const [paymentMethod, provider, currency, userWallet, providerPaymentMethod] =
 			await Promise.all([
@@ -938,6 +943,7 @@ export class WalletService {
 		await this.validateWithdrawalAmount(
 			validatedCurrency.symbol,
 			amount,
+			amountToReceive,
 			validatedUserWallet.availableBalance
 		);
 
@@ -964,6 +970,8 @@ export class WalletService {
 			destinationAddress,
 			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
 			expiresAt: new Date(Date.now() + WITHDRAWAL_REQUEST_TTL_SECONDS * 1000),
+			processingFee,
+			networkFee,
 		});
 
 		await this.sendWithdrawalOTP({
@@ -1051,6 +1059,7 @@ export class WalletService {
 		await this.validateWithdrawalAmount(
 			validatedCurrency.symbol,
 			request.amount,
+			request.amountToReceive,
 			validatedUserWallet?.availableBalance
 		);
 
@@ -1077,7 +1086,7 @@ export class WalletService {
 						{
 							userId,
 							currencyName: validatedCurrency.symbol,
-							amount: request.amount,
+							amount: request.amountToReceive,
 							transactionType: TransactionType.WITHDRAWAL,
 							toWalletAddress: request.destinationAddress,
 							status: TransactionStatus.PENDING,
@@ -1085,10 +1094,11 @@ export class WalletService {
 							paymentCategoryName: (
 								validatedPaymentMethod.category as { name: string }
 							).name,
-							paymentMethodName: validatedPaymentMethod.name,
+							paymentMethodName: validatedPaymentMethod.symbol,
 							paymentProviderName: validatedProvider.name,
 							transactionNetwork: request.network ?? "",
 							externalTransactionId: "PENDING",
+							processingFee: request.processingFee,
 						},
 					],
 					{ session }
@@ -1121,6 +1131,8 @@ export class WalletService {
 							$set: {
 								externalTransactionId: withdrawalResult.externalId,
 								transactionHash: withdrawalResult.transactionHash ?? "",
+								providerFee: withdrawalResult.providerFee,
+								networkFee: withdrawalResult.networkFee,
 							},
 						},
 						{ session: updateSession }
@@ -1248,7 +1260,13 @@ export class WalletService {
 		paymentMethodId: string;
 		providerId: string;
 		network: string;
-	}): Promise<{ networkFee: number; processingFee: number; netAmount: number }> {
+	}): Promise<{
+		networkFee: number;
+		processingFee: number;
+		netAmount: number;
+		isValid: boolean;
+		reason?: string;
+	}> {
 		if (!Number.isFinite(amount) || amount <= 0) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
@@ -1268,16 +1286,7 @@ export class WalletService {
 			});
 		}
 
-		// Enforce minimum amount per symbol (default to 10 if not configured)
 		const symbol = providerPaymentMethod.symbol;
-		const min = (WITHDRAWAL_LIMIT.MINIMUM_AMOUNTS as Record<string, number>)?.[symbol] ?? 10;
-		if (amount < min) {
-			throw ApplicationError({
-				name: ErrorName.VALIDATION,
-				message: `Minimum withdrawal amount is ${min} ${symbol}`,
-			});
-		}
-
 		const supportedNetwork = providerPaymentMethod.supportedNetworks?.find(
 			(sn) => sn.slug === network
 		);
@@ -1312,13 +1321,17 @@ export class WalletService {
 
 		const netAmount = this.computeNetAmount(amount, networkFee, processingFee);
 
-		if (netAmount < 0) {
-			throw ApplicationError({
-				name: ErrorName.VALIDATION,
-				message: "Amount must exceed the withdrawal fees.",
-			});
+		const min = (WITHDRAWAL_LIMIT.MINIMUM_AMOUNTS as Record<string, number>)?.[symbol] ?? 6;
+		if (netAmount < min) {
+			return {
+				networkFee,
+				processingFee,
+				netAmount,
+				isValid: false,
+				reason: `Amount is below the minimum withdrawal of ${min} ${symbol}`,
+			};
 		}
 
-		return { networkFee, processingFee, netAmount };
+		return { networkFee, processingFee, netAmount, isValid: true };
 	}
 }

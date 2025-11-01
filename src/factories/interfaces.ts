@@ -50,6 +50,8 @@ export interface IProcessWithdrawalResponse {
 	externalId: string;
 	transactionHash?: string;
 	status: string;
+	providerFee: number;
+	networkFee: number;
 }
 
 export interface ICurrencyNetworkFees

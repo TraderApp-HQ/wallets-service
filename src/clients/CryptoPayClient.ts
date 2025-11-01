@@ -542,10 +542,13 @@ export class CryptoPayClient {
 			});
 
 			const data = response.data.data;
+
 			return {
 				externalId: data.id,
 				transactionHash: data.txid,
 				status: data.status,
+				providerFee: parseFloat(data.fee),
+				networkFee: parseFloat(data.network_fee),
 			};
 		} catch (error: any) {
 			if (error.response) {

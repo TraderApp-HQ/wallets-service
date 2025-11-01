@@ -222,6 +222,8 @@ export const validateInitiateWithdrawalRequest = async (
 		amount,
 		amountToReceive,
 		destinationAddress,
+		processingFee,
+		networkFee,
 	} = req.body;
 
 	const schema = Joi.object({
@@ -233,6 +235,8 @@ export const validateInitiateWithdrawalRequest = async (
 		amount: Joi.number().positive().required().label("Amount"),
 		amountToReceive: Joi.number().positive().required().label("Amount To Receive"),
 		destinationAddress: Joi.string().required().label("Destination Address"),
+		processingFee: Joi.number().positive().required().label("Processing Fee"),
+		networkFee: Joi.number().positive().allow(0).required().label("Network Fee"),
 	});
 
 	const { error } = schema.validate({
@@ -244,6 +248,8 @@ export const validateInitiateWithdrawalRequest = async (
 		amount,
 		amountToReceive,
 		destinationAddress,
+		processingFee,
+		networkFee,
 	});
 	if (error) {
 		error.message = error.message.replace(/\\"/g, "");
