@@ -34,6 +34,7 @@ export interface ITransaction extends Document<mongoose.Types.ObjectId> {
 	providerFee?: number;
 	processingFee?: number;
 	networkFee?: number;
+	actualNetworkFee?: number;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -77,6 +78,7 @@ const transactionSchema = new Schema(
 		providerFee: { type: Number },
 		processingFee: { type: Number },
 		networkFee: { type: Number },
+		actualNetworkFee: { type: Number },
 	},
 	{ timestamps: true }
 );

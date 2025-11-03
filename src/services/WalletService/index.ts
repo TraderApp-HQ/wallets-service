@@ -1099,6 +1099,7 @@ export class WalletService {
 							transactionNetwork: request.network ?? "",
 							externalTransactionId: "PENDING",
 							processingFee: request.processingFee,
+							networkFee: request.networkFee,
 						},
 					],
 					{ session }
@@ -1132,7 +1133,7 @@ export class WalletService {
 								externalTransactionId: withdrawalResult.externalId,
 								transactionHash: withdrawalResult.transactionHash ?? "",
 								providerFee: withdrawalResult.providerFee,
-								networkFee: withdrawalResult.networkFee,
+								actualNetworkFee: withdrawalResult.networkFee,
 							},
 						},
 						{ session: updateSession }
