@@ -286,7 +286,7 @@ export class WalletService {
 		if (amountToReceive < min) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
-				message: `Amount is below the minimum withdrawal of ${min} ${currencySymbol}`,
+				message: `Amount to receive is below the minimum withdrawal of ${min} ${currencySymbol}`,
 			});
 		}
 
@@ -1328,7 +1328,7 @@ export class WalletService {
 				processingFee,
 				netAmount,
 				isValid: false,
-				reason: `Amount is below the minimum withdrawal of ${min} ${symbol}`,
+				reason: `Amount to receive is below the minimum withdrawal of ${min} ${symbol}`,
 			};
 		}
 

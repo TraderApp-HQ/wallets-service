@@ -335,7 +335,7 @@ describe("Wallet Service Tests", () => {
 					processingFee: 5,
 					networkFee: 0,
 				})
-			).rejects.toThrow(/Amount is below the minimum withdrawal/i);
+			).rejects.toThrow(/Amount to receive is below the minimum withdrawal/i);
 		});
 
 		test("should reject withdrawal initiation due to insufficient balance", async () => {
