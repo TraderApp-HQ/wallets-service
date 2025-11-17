@@ -27,7 +27,7 @@ import Provider, { IPaymentProvider } from "../../models/PaymentProvider";
 import { WalletProviderFactory } from "../../factories/WalletProviderFactory";
 import WalletTypeModel from "../../models/WalletType";
 import Currency, { ICurrencyModel } from "../../models/Currency";
-import ProviderPaymentMethod from "../../models/ProviderPaymentMethod";
+import ProviderPaymentMethod, { IProviderPaymentMethod } from "../../models/ProviderPaymentMethod";
 import PaymentCategory, { IPaymentCategory } from "../../models/PaymentCategory";
 import { ApplicationError } from "../../config/helpers";
 import ExchangeRate, { IExchangeRate } from "../../models/ExchangeRate";
@@ -38,6 +38,7 @@ import {
 	OTP_DEFAULT_CODE,
 	OTP_EXPIRES,
 	OTP_RATE_LIMIT_EXPIRES,
+	WITHDRAWAL_FEES,
 	WITHDRAWAL_LIMIT,
 	WITHDRAWAL_REQUEST_STATUSES,
 	WITHDRAWAL_REQUEST_TTL_SECONDS,
@@ -47,6 +48,7 @@ import { generateOTP } from "../../utils/otp";
 import OneTimePassword from "../../models/OneTimePassword";
 import { publishMessageToQueue } from "../../clients/SQSClient/helpers";
 import WithdrawalRequest from "../../models/WithdrawalRequest";
+import { roundTo } from "../../utils";
 
 interface IWalletInput {
 	userId: string;
@@ -103,12 +105,14 @@ interface IInitiateWithdrawalInput {
 	currencyId: string;
 	paymentMethodId: string;
 	providerId: string;
-	network?: string;
+	network: string;
 	amount: number;
 	amountToReceive: number;
 	destinationAddress: string;
 	userEmail: string;
 	firstName: string;
+	processingFee: number;
+	networkFee: number;
 }
 
 interface ICompleteWithdrawalInput {
@@ -124,6 +128,21 @@ interface IValidateWithdrawalEntitiesArgs {
 	provider: IPaymentProvider | null;
 	currency: ICurrencyModel | null;
 	userWallet: IUserWallet | null;
+	providerPaymentMethod: IProviderPaymentMethod | null;
+	network: string;
+}
+
+interface IProviderPaymentMethodLean {
+	_id: mongoose.Types.ObjectId;
+	symbol: string;
+	supportedNetworks?: IProviderPaymentMethod["supportedNetworks"];
+}
+
+interface ISupportedNetworkUpdateOperation {
+	updateOne: {
+		filter: { _id: mongoose.Types.ObjectId };
+		update: { $set: { supportedNetworks: IProviderPaymentMethod["supportedNetworks"] } };
+	};
 }
 
 export class WalletService {
@@ -216,6 +235,8 @@ export class WalletService {
 		provider,
 		currency,
 		userWallet,
+		providerPaymentMethod,
+		network,
 	}: IValidateWithdrawalEntitiesArgs) {
 		if (!paymentMethod) {
 			throw ApplicationError({
@@ -233,34 +254,50 @@ export class WalletService {
 				name: ErrorName.VALIDATION,
 				message: "User wallet not found for this currency",
 			});
-		return { paymentMethod, provider, currency, userWallet };
+		if (!providerPaymentMethod) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Provider payment method not found",
+			});
+		}
+		if (!network) {
+			throw ApplicationError({ name: ErrorName.VALIDATION, message: "Network not found" });
+		}
+		if (!providerPaymentMethod.supportedNetworks?.some((sn) => sn.slug === network)) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Network not supported for withdrawal",
+			});
+		}
+		return { paymentMethod, provider, currency, userWallet, providerPaymentMethod, network };
 	}
 
 	private async validateWithdrawalAmount(
 		currencySymbol: string,
 		amount: number,
-		available: number
+		amountToReceive: number,
+		availableBalance: number
 	) {
 		const min =
-			(WITHDRAWAL_LIMIT.MINIMUM_AMOUNTS as Record<string, number>)[currencySymbol] ?? 10;
+			(WITHDRAWAL_LIMIT.MINIMUM_AMOUNTS as Record<string, number>)[currencySymbol] ?? 6;
 		const max =
 			(WITHDRAWAL_LIMIT.MAXIMUM_AMOUNTS as Record<string, number>)[currencySymbol] ?? 50000;
 
-		if (amount < min) {
+		if (amountToReceive < min) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
-				message: `Minimum withdrawal amount is ${min} ${currencySymbol}`,
+				message: `Amount to receive is below the minimum withdrawal of ${min} ${currencySymbol}`,
 			});
 		}
 
-		if (amount > max) {
+		if (amountToReceive > max) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
 				message: `Maximum withdrawal amount is ${max} ${currencySymbol}`,
 			});
 		}
 
-		if (amount > available) {
+		if (amount > availableBalance) {
 			throw ApplicationError({
 				name: ErrorName.VALIDATION,
 				message: "Insufficient funds for withdrawal",
@@ -414,6 +451,20 @@ export class WalletService {
 		return this.queryUserWalletBalance({ userId });
 	}
 
+	private computeProcessingFee(amount: number, rate: number, minFee: number) {
+		if (!Number.isFinite(amount) || amount <= 0) {
+			throw new Error("Amount must be a finite positive number");
+		}
+
+		const fee = Math.max(rate * amount, minFee);
+		return roundTo(fee);
+	}
+
+	private computeNetAmount(amount: number, networkFee: number, processingFee: number) {
+		const net = amount - networkFee - processingFee;
+		return roundTo(net);
+	}
+
 	public async getUserWalletTypeBalances({
 		userId,
 		walletTypeName,
@@ -482,6 +533,7 @@ export class WalletService {
 					slug: sn.slug,
 					name: sn.name,
 					precision: sn.precision,
+					fees: sn.fees,
 				})),
 			};
 		});
@@ -803,6 +855,55 @@ export class WalletService {
 		}
 	}
 
+	public async updateNetworkFeesInDB(provider: WalletProvider) {
+		try {
+			const providerInstance = WalletProviderFactory.createProvider(provider);
+			const networkFeesByCurrency = await providerInstance.getNetworkFeesByCurrency();
+			if (!networkFeesByCurrency)
+				throw new Error(`${provider} Provider returned no fee data`);
+
+			const symbols = Object.keys(networkFeesByCurrency);
+			if (!symbols.length) return;
+
+			const providerPaymentMethods = await ProviderPaymentMethod.find({
+				providerName: provider,
+				symbol: { $in: symbols },
+			})
+				.select("symbol supportedNetworks")
+				.lean<IProviderPaymentMethodLean[]>();
+
+			if (!providerPaymentMethods.length) return;
+
+			const operations = providerPaymentMethods.reduce<ISupportedNetworkUpdateOperation[]>(
+				(acc, providerPaymentMethod) => {
+					const feesData = networkFeesByCurrency[providerPaymentMethod.symbol];
+					if (!feesData || !providerPaymentMethod.supportedNetworks?.length) return acc;
+
+					const updatedNetworks = providerPaymentMethod.supportedNetworks.map(
+						(network) => ({
+							...network,
+							fees: feesData.fees[network.slug] || {},
+						})
+					);
+
+					acc.push({
+						updateOne: {
+							filter: { _id: providerPaymentMethod._id },
+							update: { $set: { supportedNetworks: updatedNetworks } },
+						},
+					});
+					return acc;
+				},
+				[]
+			);
+
+			if (!operations.length) return;
+			await ProviderPaymentMethod.bulkWrite(operations);
+		} catch (error) {
+			console.error(`Failed to update ${provider} network fees`, error);
+		}
+	}
+
 	public async initiateWithdrawalRequest({
 		userId,
 		currencyId,
@@ -814,6 +915,8 @@ export class WalletService {
 		userEmail,
 		firstName,
 		destinationAddress,
+		processingFee,
+		networkFee,
 	}: IInitiateWithdrawalInput) {
 		const [paymentMethod, provider, currency, userWallet, providerPaymentMethod] =
 			await Promise.all([
@@ -828,21 +931,19 @@ export class WalletService {
 				}),
 			]);
 		const { currency: validatedCurrency, userWallet: validatedUserWallet } =
-			this.validateWithdrawalEntities({ paymentMethod, provider, currency, userWallet });
-
-		if (
-			network &&
-			!providerPaymentMethod?.supportedNetworks?.some((sn) => sn.slug === network)
-		) {
-			throw ApplicationError({
-				name: ErrorName.VALIDATION,
-				message: "Network not supported for withdrawal",
+			this.validateWithdrawalEntities({
+				paymentMethod,
+				provider,
+				currency,
+				userWallet,
+				providerPaymentMethod,
+				network,
 			});
-		}
 
 		await this.validateWithdrawalAmount(
 			validatedCurrency.symbol,
 			amount,
+			amountToReceive,
 			validatedUserWallet.availableBalance
 		);
 
@@ -869,6 +970,8 @@ export class WalletService {
 			destinationAddress,
 			status: WITHDRAWAL_REQUEST_STATUSES.INITIATED,
 			expiresAt: new Date(Date.now() + WITHDRAWAL_REQUEST_TTL_SECONDS * 1000),
+			processingFee,
+			networkFee,
 		});
 
 		await this.sendWithdrawalOTP({
@@ -944,21 +1047,19 @@ export class WalletService {
 			userWallet: validatedUserWallet,
 			paymentMethod: validatedPaymentMethod,
 			provider: validatedProvider,
-		} = this.validateWithdrawalEntities({ paymentMethod, provider, currency, userWallet });
-
-		if (
-			request.network &&
-			!providerPaymentMethod?.supportedNetworks?.some((sn) => sn.slug === request.network)
-		) {
-			throw ApplicationError({
-				name: ErrorName.VALIDATION,
-				message: "Network no longer supported",
-			});
-		}
+		} = this.validateWithdrawalEntities({
+			paymentMethod,
+			provider,
+			currency,
+			userWallet,
+			providerPaymentMethod,
+			network: request.network,
+		});
 
 		await this.validateWithdrawalAmount(
 			validatedCurrency.symbol,
 			request.amount,
+			request.amountToReceive,
 			validatedUserWallet?.availableBalance
 		);
 
@@ -985,7 +1086,7 @@ export class WalletService {
 						{
 							userId,
 							currencyName: validatedCurrency.symbol,
-							amount: request.amount,
+							amount: request.amountToReceive,
 							transactionType: TransactionType.WITHDRAWAL,
 							toWalletAddress: request.destinationAddress,
 							status: TransactionStatus.PENDING,
@@ -993,10 +1094,11 @@ export class WalletService {
 							paymentCategoryName: (
 								validatedPaymentMethod.category as { name: string }
 							).name,
-							paymentMethodName: validatedPaymentMethod.name,
+							paymentMethodName: validatedPaymentMethod.symbol,
 							paymentProviderName: validatedProvider.name,
 							transactionNetwork: request.network ?? "",
 							externalTransactionId: "PENDING",
+							processingFee: request.processingFee,
 						},
 					],
 					{ session }
@@ -1029,6 +1131,8 @@ export class WalletService {
 							$set: {
 								externalTransactionId: withdrawalResult.externalId,
 								transactionHash: withdrawalResult.transactionHash ?? "",
+								providerFee: withdrawalResult.providerFee,
+								networkFee: withdrawalResult.networkFee,
 							},
 						},
 						{ session: updateSession }
@@ -1146,38 +1250,88 @@ export class WalletService {
 		};
 	}
 
-	// public async withdrawFunds(
-	// 	userId: string,
-	// 	currency: string,
-	// 	amount: number,
-	// 	paymentMethodName: string
-	// ) {
-	// 	const paymentMethod = await PaymentMethod.findOne({ name: paymentMethodName });
-	// 	if (!paymentMethod) {
-	// 		throw new Error("Payment method not found");
-	// 	}
+	public async getWithdrawalFeesQuote({
+		amount,
+		paymentMethodId,
+		providerId,
+		network,
+	}: {
+		amount: number;
+		paymentMethodId: string;
+		providerId: string;
+		network: string;
+	}): Promise<{
+		networkFee: number;
+		processingFee: number;
+		netAmount: number;
+		isValid: boolean;
+		reason?: string;
+	}> {
+		if (!Number.isFinite(amount) || amount <= 0) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Amount must be a valid positive number",
+			});
+		}
 
-	// 	const provider = await Provider.findOne({
-	// 		paymentMethods: paymentMethod._id,
-	// 		default: true,
-	// 	});
-	// 	if (!provider) {
-	// 		throw new Error("No default provider found for this payment method");
-	// 	}
+		const providerPaymentMethod = await ProviderPaymentMethod.findOne({
+			paymentMethod: paymentMethodId,
+			provider: providerId,
+		}).lean<IProviderPaymentMethod | null>();
 
-	// 	// const providerInstance = WalletProviderFactory.createProvider(provider.name as WalletProvider);
-	// 	// await providerInstance.processWithdrawal(userId, currency, amount);
+		if (!providerPaymentMethod) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Provider payment method not found",
+			});
+		}
 
-	// 	const transaction = new Transaction({
-	// 		transactionId: uuidv4(),
-	// 		userId,
-	// 		currency,
-	// 		amount,
-	// 		paymentMethod: paymentMethodName,
-	// 		provider: provider.name,
-	// 		status: "completed",
-	// 	});
+		const symbol = providerPaymentMethod.symbol;
+		const supportedNetwork = providerPaymentMethod.supportedNetworks?.find(
+			(sn) => sn.slug === network
+		);
+		if (!supportedNetwork) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Network not supported for withdrawal",
+			});
+		}
 
-	// 	await transaction.save();
-	// }
+		// Use average fee only; error if missing/malformed
+		const avg = supportedNetwork.fees?.average;
+		if (!avg) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Network fee not available",
+			});
+		}
+		const networkFee = parseFloat(avg);
+		if (!Number.isFinite(networkFee)) {
+			throw ApplicationError({
+				name: ErrorName.VALIDATION,
+				message: "Network fee is invalid or malformed",
+			});
+		}
+
+		const processingFee = this.computeProcessingFee(
+			amount,
+			WITHDRAWAL_FEES.PROCESSING_RATE,
+			WITHDRAWAL_FEES.MIN_PROCESSING_FEE
+		);
+
+		const netAmount = this.computeNetAmount(amount, networkFee, processingFee);
+
+		const min = (WITHDRAWAL_LIMIT.MINIMUM_AMOUNTS as Record<string, number>)?.[symbol] ?? 6;
+		if (netAmount < min) {
+			return {
+				networkFee,
+				processingFee,
+				netAmount,
+				isValid: false,
+				reason: `Amount to receive is below the minimum withdrawal of ${min} ${symbol}`,
+			};
+		}
+
+		return { networkFee, processingFee, netAmount, isValid: true };
+	}
 }

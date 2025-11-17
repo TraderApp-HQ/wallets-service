@@ -97,6 +97,7 @@ export interface IPaymentMethodResponse {
 		slug: string;
 		name: string;
 		precision: number;
+		fees?: { average?: string; fast?: string; slow?: string };
 	}>;
 }
 
@@ -122,4 +123,8 @@ export interface IPaginatedResult<T> {
 	pagingCounter: number;
 	hasNextPage: boolean;
 	hasPrevPage: boolean;
+}
+
+export interface IParsedAmountLocals {
+	parsedAmount: number;
 }

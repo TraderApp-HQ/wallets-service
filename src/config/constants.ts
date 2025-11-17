@@ -60,13 +60,13 @@ export const PAGINATION = {
 	LIMIT: 10,
 };
 
-export const OTP_EXPIRES = 60 * 2;
+export const OTP_EXPIRES = 90;
 export const OTP_RATE_LIMIT_EXPIRES = 60 * 60;
 export const MAX_OTP_ATTEMPTS = 5;
 export const OTP_DEFAULT_CODE = "123456"; // fallback when feature flag is disabled
 
 export const WITHDRAWAL_LIMIT = {
-	MINIMUM_AMOUNTS: { USDT: 10 },
+	MINIMUM_AMOUNTS: { USDT: 6 },
 	MAXIMUM_AMOUNTS: { USDT: 50000 },
 };
 
@@ -77,3 +77,8 @@ export const WITHDRAWAL_REQUEST_STATUSES = {
 	SUBMITTED: "SUBMITTED", // transaction created & funds locked
 	EXPIRED: "EXPIRED", // (implicit via TTL or explicit mark if needed)
 } as const;
+
+export const WITHDRAWAL_FEES = {
+	PROCESSING_RATE: 0.03, // 3%
+	MIN_PROCESSING_FEE: 5,
+};

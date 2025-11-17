@@ -7,7 +7,7 @@ export interface IWithdrawalRequest extends Document {
 	currencyId: string;
 	paymentMethodId: string;
 	providerId: string;
-	network?: string;
+	network: string;
 	amount: number;
 	amountToReceive: number;
 	destinationAddress: string;
@@ -17,6 +17,8 @@ export interface IWithdrawalRequest extends Document {
 	createdAt: Date;
 	updatedAt: Date;
 	withdrawalRequestId: string; // duplicate of _id if you prefer readable alias
+	processingFee: number;
+	networkFee: number;
 }
 
 const withdrawalRequestSchema = new Schema<IWithdrawalRequest>(
@@ -43,6 +45,8 @@ const withdrawalRequestSchema = new Schema<IWithdrawalRequest>(
 			type: Date,
 			required: true,
 		},
+		processingFee: { type: Number, required: true, default: 0 },
+		networkFee: { type: Number, required: true, default: 0 },
 	},
 	{ timestamps: true, versionKey: false }
 );

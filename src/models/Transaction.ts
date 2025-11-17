@@ -31,6 +31,9 @@ export interface ITransaction extends Document<mongoose.Types.ObjectId> {
 	paymentProviderName: string;
 	externalTransactionId: string;
 	transactionHash?: string;
+	providerFee?: number;
+	processingFee?: number;
+	networkFee?: number;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -71,6 +74,9 @@ const transactionSchema = new Schema(
 		paymentProviderName: { type: String, required: true },
 		externalTransactionId: { type: String, required: true },
 		transactionHash: { type: String },
+		providerFee: { type: Number },
+		processingFee: { type: Number },
+		networkFee: { type: Number },
 	},
 	{ timestamps: true }
 );
