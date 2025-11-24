@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import { WalletService } from "../../services/WalletService";
 import { apiResponseHandler } from "@traderapp/shared-resources";
 import { ResponseType } from "../../config/constants";
-import { WalletService } from "../../services/WalletService";
 import { HttpStatus } from "../../utils/httpStatus";
-import { WalletType } from "../../config/interfaces";
-import { PaymentCategoryName, PaymentOperation } from "../../config/enums";
+import { IParsedAmountLocals, WalletType } from "../../config/interfaces";
+import { CurrencyCategory, PaymentCategoryName, PaymentOperation } from "../../config/enums";
 
 export const createUserWallets = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -90,11 +90,13 @@ export const getWalletPaymentCategoryPaymentMethods = async (
 	try {
 		const category = req.query.category as PaymentCategoryName;
 		const operation = req.query.operation as PaymentOperation;
+		const userId = req.query.userId as string;
 
 		const walletService = new WalletService();
 		const paymentMethods = await walletService.getWalletPaymentCategoryPaymentMethods({
 			category,
 			operation,
+			userId,
 		});
 
 		return res.status(HttpStatus.OK).json(
@@ -137,21 +139,69 @@ export const initiateDeposit = async (req: Request, res: Response, next: NextFun
 
 export const initiateWithdrawal = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		// const { userId, currency, amount } = req.body;
-		// const walletService = new WalletService();
+		const {
+			userId,
+			currencyId,
+			paymentMethodId,
+			providerId,
+			network,
+			amount,
+			amountToReceive,
+			destinationAddress,
+			userEmail,
+			firstName,
+			processingFee,
+			networkFee,
+		} = req.body;
 
-		// First debit the user's wallet
-		// await walletService.createUserWallet({ userId: "user-1234" });
+		const walletService = new WalletService();
 
-		// TODO: Initiate withdrawal through CryptoPay API
+		const result = await walletService.initiateWithdrawalRequest({
+			userId,
+			currencyId,
+			paymentMethodId,
+			providerId,
+			network,
+			amount,
+			amountToReceive,
+			userEmail,
+			firstName,
+			destinationAddress,
+			processingFee,
+			networkFee,
+		});
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
 				message: "Withdrawal initiated successfully",
+				object: result,
 			})
 		);
 	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const completeWithdrawal = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { userId, otp, withdrawalRequestId } = req.body;
+
+		const walletService = new WalletService();
+		const result = await walletService.completeWithdrawal({
+			userId,
+			otp,
+			withdrawalRequestId,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Withdrawal initiated successfully",
+				object: result,
+			})
+		);
+	} catch (error) {
 		next(error);
 	}
 };
@@ -162,8 +212,9 @@ export const getWalletSupportedCurrencies = async (
 	next: NextFunction
 ) => {
 	try {
+		const category = req.query.category as CurrencyCategory;
 		const walletService = new WalletService();
-		const supportedCurrencies = await walletService.getWalletSupportedCurrencies();
+		const supportedCurrencies = await walletService.getWalletSupportedCurrencies({ category });
 
 		return res.status(HttpStatus.OK).json(
 			apiResponseHandler({
@@ -173,6 +224,70 @@ export const getWalletSupportedCurrencies = async (
 			})
 		);
 	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const resendWithdrawalOTP = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { userId, withdrawalRequestId, userEmail, firstName } = req.body;
+		const walletService = new WalletService();
+		const result = await walletService.resendWithdrawalOTP({
+			userId,
+			withdrawalRequestId,
+			userEmail,
+			firstName,
+		});
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "OTP resent successfully",
+				object: result,
+			})
+		);
+	} catch (error: any) {
+		next(error);
+	}
+};
+
+export const getWithdrawalFees = async (
+	req: Request,
+	res: Response<any, IParsedAmountLocals>,
+	next: NextFunction
+) => {
+	try {
+		const amount = res.locals.parsedAmount;
+		const paymentMethodId = req.query.paymentMethodId as string;
+		const providerId = req.query.providerId as string;
+		const network = req.query.network as string;
+
+		const walletService = new WalletService();
+		const result = await walletService.getWithdrawalFeesQuote({
+			amount,
+			paymentMethodId,
+			providerId,
+			network,
+		});
+
+		// if (result.isValid === false) {
+		// 	return res.status(HttpStatus.BAD_REQUEST).json(
+		// 		apiResponseHandler({
+		// 			type: ResponseType.ERROR,
+		// 			message: result.error ?? "Amount invalid",
+		// 			object: result,
+		// 		})
+		// 	);
+		// }
+
+		return res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: "Withdrawal fees quote computed successfully",
+				object: result,
+			})
+		);
+	} catch (error) {
 		next(error);
 	}
 };

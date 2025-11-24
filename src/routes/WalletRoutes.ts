@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+	completeWithdrawal,
 	/* createUserWallets, */
 	getUserWallets,
 	getUserWalletType,
@@ -7,19 +8,31 @@ import {
 	getWalletPaymentCategoryPaymentMethods,
 	getWalletSupportedCurrencies,
 	initiateDeposit,
+	initiateWithdrawal,
+	resendWithdrawalOTP,
+	getWithdrawalFees,
 } from "../controllers/WalletController/";
 import {
+	validateCompleteWithdrawalRequest,
 	validateGetUserWalletsRequest,
 	validateGetUserWalletTypeRequest,
 	validateGetWalletCategoryPaymentMethodsRequest,
+	validateGetWalletSupportedCurrencies,
 	validateInitiateDepositRequest,
+	validateInitiateWithdrawalRequest,
 	validateRequest,
+	validateResendWithdrawalOTPRequest,
+	validateGetWithdrawalFeesQuoteRequest,
 } from "../middlewares/WalletMiddleware";
 
 const router = Router();
 
 // router.post("/create", AuthMiddleware, createUserWallets);
-router.get("/supported-currencies", validateRequest, getWalletSupportedCurrencies);
+router.get(
+	"/supported-currencies",
+	validateGetWalletSupportedCurrencies,
+	getWalletSupportedCurrencies
+);
 router.get("/user-wallets", validateGetUserWalletsRequest, getUserWallets);
 router.get("/user-wallet-type", validateGetUserWalletTypeRequest, getUserWalletType);
 router.get(
@@ -29,5 +42,14 @@ router.get(
 );
 router.get("/payment-categories", validateRequest, getWalletPaymentCategories);
 router.post("/initiate-deposit", validateInitiateDepositRequest, initiateDeposit);
+router.post("/initiate-withdrawal", validateInitiateWithdrawalRequest, initiateWithdrawal);
+router.post("/complete-withdrawal", validateCompleteWithdrawalRequest, completeWithdrawal);
+router.post("/resend-withdrawal-otp", validateResendWithdrawalOTPRequest, resendWithdrawalOTP);
+router.get(
+	"/withdrawal-fees",
+	validateRequest,
+	validateGetWithdrawalFeesQuoteRequest,
+	getWithdrawalFees
+);
 
 export default router;

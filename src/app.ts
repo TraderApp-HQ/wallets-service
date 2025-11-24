@@ -10,6 +10,8 @@ import mongoose from "mongoose";
 import TransactionRoutes from "./routes/TransactionRoutes";
 import WalletRoutes from "./routes/WalletRoutes";
 import WebhookRoutes from "./routes/WebhookRoutes";
+import InvoiceRoutes from "./routes/InvoiceRoutes";
+import runAllJobs from "./jobs";
 
 const app: Application = express();
 
@@ -19,7 +21,7 @@ if (!env) {
 	process.exit(1);
 }
 const suffix = ENVIRONMENTS[env];
-const secretNames = ["common-secrets", "wallets-service-secrets"];
+const secretNames = ["common-secrets", "wallets-service-secrets", "users-service-secrets"];
 
 (async function () {
 	await initSecrets({
@@ -91,6 +93,7 @@ function startServer() {
 	app.use(`/transactions`, TransactionRoutes);
 	app.use(`/wallets`, WalletRoutes);
 	app.use(`/webhooks`, WebhookRoutes);
+	app.use(`/invoices`, InvoiceRoutes);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
@@ -127,4 +130,7 @@ function startServer() {
 			})
 		);
 	});
+
+	// Start all jobs when the application starts
+	runAllJobs();
 }
